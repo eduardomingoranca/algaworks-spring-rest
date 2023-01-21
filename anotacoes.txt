@@ -79,6 +79,10 @@ public void setNomeDoAtributo(NomeDaClasse variavel) {
        this.atributo = variavel;
 }
 
+AULA 2.15
+
+@Autowired(required = false) -> anotacao que permite a dependencia 
+deixa de ser obrigatoria na classe e se torna opcional. 
 
 
 
