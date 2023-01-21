@@ -1,0 +1,12 @@
+O que eh Spring DevTools?
+Spring DevTools eh utilizado quando se tem uma alteracao 
+em algum arquivo no projeto spring eh realizado um restart
+da aplicacao. Esse restart nao eh da aplicacao completa,
+o spring boot possui uma inteligente que separa em dois
+classloaders. Class Loaders eh uma classe responsavel por
+ler as estruturas das classes do projeto e ficar na memoria
+para quando precisar usar aquela classe. Os class loaders sao
+base e start, tudo o que nao muda exemplo bibliotecas eh de base
+class loader e o que eh desenvolvido eh start class loader. O devtools 
+realiza o restart apenas o class loader de start, ou seja, nao reinicia o projeto
+completo.  
