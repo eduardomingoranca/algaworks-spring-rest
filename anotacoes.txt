@@ -43,3 +43,12 @@ exemplo:
 public NomeDaClasse(NomeDaClasse variavel) {
 	this.atributo = variavel;
 }
+
+AULA 2.13
+
+@Configuration -> anotacao que define uma classe de configuracoes
+@Bean -> anotacao que indica que esse metodo realiza a instancia, configuracao e inicializa
+um novo objeto que sera gerenciado pelo container spring.
+Dentro do Spring IoC Container, por padrao o bean sera nomeado como "notificadorEmail",
+que eh exatamente o nome do metodo de definicao do bean. 
+
