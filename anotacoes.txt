@@ -52,3 +52,33 @@ um novo objeto que sera gerenciado pelo container spring.
 Dentro do Spring IoC Container, por padrao o bean sera nomeado como "notificadorEmail",
 que eh exatamente o nome do metodo de definicao do bean. 
 
+AULA 2.14
+
+@Autowired -> anotacao para injecao de dependencias
+
+Pontos de Injecao
+
+>> Ponto de injecao pode ser pelo atributo
+@Autowired
+private NomeDaClasse nomeDaClasse;
+
+
+>> Ponto de injecao eh aonde se pode injetar os objetos
+>> dentro dos beans, por exemplo o construtor eh um ponto
+>> de injecao.
+@Autowired
+public NomeDaClasse (nomeDaClasse variavel){
+      this.atributo = variavel
+}
+
+public NomeDaClasse(String qualquer) {    }
+
+>> ponto de injecao pode ser o metodo setter
+@Autowired
+public void setNomeDoAtributo(NomeDaClasse variavel) {
+       this.atributo = variavel;
+}
+
+
+
+
