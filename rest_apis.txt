@@ -1,0 +1,19 @@
+O que eh uma API?
+API eh um software que possui um conjunto de funcoes
+que intermediam o acesso as funcionalidades de algum 
+sistema operacional, aplicacao ou algum outro servico.
+
+Software Consumidor <-> API <-> Software Provedor
+
+Seu codigo <-> API do Windows 10 <-> Windows 10
+
+Seu codigo <-> API de Collections do Java <-> Implementacao de Collections
+
+Seu codigo <-> API do Spotify <-> Sistema do Spotify
+
+Seu codigo <-> API da Prefeitura <-> Sistema da Prefeitura
+
+O que eh REST?
+REST [Representational State Transfer] eh um estilo arquitetural para desenvolver web apis, ou seja,
+para desenvolver web services. O REST foi desenhado para usar
+protocolos que ja existem como o HTTP. 
