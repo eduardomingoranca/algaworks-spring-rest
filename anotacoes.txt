@@ -1,0 +1,4 @@
+AULA 2.7
+
+NomeDaClasseController -> Classe responsavel por receber requisicoes web.
+@ResponseBody -> Anotacao que indica que o retorno do endpoint seja no corpo da requisicao.

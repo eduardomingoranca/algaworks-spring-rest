@@ -1,0 +1,8 @@
+O que eh Spring MVC?
+Spring MVC eh um projeto do ecossistema spring para
+criar projetos web. 
+Spring MVC eh adicionado no projecto atraves do Starter
+"Web" (spring-boot-starter-web).
+Desenvolve controladores web que recebem requisicoes HTTP
+e devolve uma resposta, pode ser REST APIs ou tambem devolver
+HTML por exemplo.
