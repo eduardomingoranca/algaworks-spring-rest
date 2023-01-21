@@ -1,0 +1,4 @@
+Spring Boot ou Spring MVC?
+Spring Boot eh uma camada de abstracao em cima do spring
+eh uma solucao que simplifica o desenvolvimento com os
+projetos spring, inclusive o Spring MVC.
