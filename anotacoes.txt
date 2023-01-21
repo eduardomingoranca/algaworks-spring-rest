@@ -14,3 +14,24 @@ injetado uma determinada dependencia em uma classe.
 Injecao de dependencias possui baixo aclopamento
 
 exemplo: Notificador notificadorEmail = new NotificadorEmail();
+
+AULA 2.11
+
+@SpringBootApplication -> essa anotacao eh responsavel para que o Spring IoC Container
+mapeie as classes do projeto e encontre as outras anotacoes e realize uma instancia.
+
+@Component -> essa anotacao eh para o spring gerencie essa classe,
+ou seja, o container do spring encontre a classe no projeto realize
+a instancia, configuracao e a injecao de objetos dessa classe em
+outros beans.
+
+O construtor da classe eh chamado mesmo sem ter sido instanciado
+em nenhuma outra classe, por que na inicializacao da aplicacao (bootstrap)
+o Spring IoC Container mapeia todas as classes do projeto encontrou um componente
+atraves da anotacao e realizou uma instancia da classe.
+
+public NotificadorEmail() {
+    System.out.println("Construtor chamado!");
+}
+
+
