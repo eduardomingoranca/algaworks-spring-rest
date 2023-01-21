@@ -1,0 +1,37 @@
+O que eh maven?
+Maven eh uma ferramenta de gerenciamento de dependencias e
+automacao de builds de projetos java.
+
+src/test/java -> classes de teste
+src/main/java -> codigo fonte 
+src/main/resource -> arquivos de propriedade e 
+configuracao, html, css, imagens e etc.
+
+pom.xml (project object model) -> configuracoes maven no projeto.
+HELP.md -> arquivo de anotacoes sobre o projeto.
+mvnw.cmd e mvnw (maven wrapper) -> possibilita que se execute um 
+maven no terminal, mesmo sem ter o maven instalado.
+
+===========================================================================
+
+COMANDOS DE TERMINAL
+
+./mvnw package 
+ls target/
+java -jar target/algafood-api-0.0.1-SNAPSHOT.jar -> executa a aplicacao
+./mvnw clean
+./mvnw dependency:tree
+./mvnw dependency:resolve
+./mvnw help:effective-pom
+===========================================================================
+
+POM.xml
+
+</parent> -> herda configuracoes de um outro local
+
+===========================================================================
+
+starter dependency -> eh uma dependencia que agrupa varias dependencias
+
+maven-plugin -> fornece suporte para o build do projeto spring boot, responsavel
+por gerar o jar executavel (fatch jar) ou ainda configura arquivo war.
