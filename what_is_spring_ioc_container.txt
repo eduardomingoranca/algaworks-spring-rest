@@ -1,0 +1,9 @@
+O que eh Spring IoC Container?
+Spring IoC Container eh a implementacao de injecao
+de dependencias do framework spring.
+Quando a aplicacao eh executada o Spring IoC Container
+eh inicializado e comeca a inicializar os beans que sao
+gerenciados, bean eh o nome dado para objetos gerenciados
+pelo Spring IoC Container.
+Spring IoC Container instancia, configura e injetar os
+objetos em outros objetos
