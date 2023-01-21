@@ -1,0 +1,14 @@
+O que eh Spring?
+Spring eh uma tecnologia de backend, nao eh um framework
+apenas mas um conjunto de projetos. 	
+
+Por que Spring?
+>> Canivete suico para desenvolvedores Java
+>> Simplicidade
+>> Maturidade
+>> Modularidade
+>> Evolucao constante
+>> Open source
+>> Comunidade grande e forte
+>> Popularidade
+>> Empregabilidade
