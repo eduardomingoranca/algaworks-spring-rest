@@ -34,4 +34,12 @@ public NotificadorEmail() {
     System.out.println("Construtor chamado!");
 }
 
+AULA 2.12
 
+Injecao de Dependencias atraves do construtor
+por que o objeto NotificadorEmail eh um componente spring
+
+exemplo: 
+public NomeDaClasse(NomeDaClasse variavel) {
+	this.atributo = variavel;
+}
