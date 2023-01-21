@@ -2,3 +2,15 @@ AULA 2.7
 
 NomeDaClasseController -> Classe responsavel por receber requisicoes web.
 @ResponseBody -> Anotacao que indica que o retorno do endpoint seja no corpo da requisicao.
+
+AULA 2.9
+
+Injetando um notificar na instanciacao de AtivacaoClienteService, isso
+eh uma injecao de dependencias de forma manual.
+=======================================================================
+Injecao de dependencias eh uma forma de inversao de controle onde se eh
+injetado uma determinada dependencia em uma classe.
+=======================================================================
+Injecao de dependencias possui baixo aclopamento
+
+exemplo: Notificador notificadorEmail = new NotificadorEmail();
