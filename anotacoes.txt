@@ -102,4 +102,9 @@ AULA 2.18
 um identificador para diferenciar quando a interface for
 injetada.
 
+AULA 2.19
+
+@Retention -> informa quanto tempo essa anotacao TipoDoNotificador
+deve permanecer aonde ela foi usada, lido em tempo de execucao.
+
 
