@@ -139,3 +139,8 @@ a publicacao de um evento.
 publishEvent(new ClienteAtivadoEvent(cliente)) -> dizer para o container 
 que o cliente esta ativo neste momento disparando um evento informando que 
 o cliente foi ativado.
+
+AULA 2.26
+
+@ConfigurationProperties("property") -> anotacao que informa que esta classe 
+representa um arquivo de propriedades.
