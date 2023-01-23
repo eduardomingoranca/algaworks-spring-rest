@@ -127,3 +127,15 @@ ciclo de vida. Sao metodos declarados que sao chamados
 pelo proprio container quando passa por alguma fase do
 ciclo de vida.
 
+AULA 2.22
+
+Observer eh um design pattern que deixa o acoplamento
+mais baixo entre as classes. O spring implementa o observer
+dentro do framework e eh chamado de event handler
+
+ApplicationEventPublisher -> Interface responsavel por implementar
+a publicacao de um evento.
+
+publishEvent(new ClienteAtivadoEvent(cliente)) -> dizer para o container 
+que o cliente esta ativo neste momento disparando um evento informando que 
+o cliente foi ativado.
