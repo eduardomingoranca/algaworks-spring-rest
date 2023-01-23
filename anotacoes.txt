@@ -90,6 +90,11 @@ AULA 2.16
 private List<NomeDaInterface> lista -> pelo fato do spring nao saber qual das
 classes a interface sera chamado essa ambiguidade eh solucionada com uma lista.
 
+AULA 2.17 
+
+@Primary -> informa que essa classe tem prioridade
+na injecao da interface em relacao as outras classes
+que possui a mesma interface.
 
 
 
