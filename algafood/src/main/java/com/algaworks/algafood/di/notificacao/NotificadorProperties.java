@@ -10,7 +10,7 @@ public class NotificadorProperties {
     private String hostServidor;
 
     // Porta do servidor de email
-    private Integer portaServidor = 25;
+    private Integer portaServidor;
 
     public String getHostServidor() {
         return hostServidor;
