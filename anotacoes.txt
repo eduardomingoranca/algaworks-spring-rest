@@ -112,4 +112,18 @@ AULA 2.20
 @Profile -> Spring Profiles eh uma forma de separar componentes da
 aplicacao que serao disponibilizados em certos ambientes.
 
+AULA 2.21 
+
+Todos os beans do spring tem um ciclo de vida, ou seja,
+as fases desde a existencia desse bean(o surgimento da
+instancia desse bean) ate aonde o bean deixa de existir
+no container.
+O ciclo de vida do bean tem tres fases:
+- Fase de inicializacao do bean
+- Fase de utilizacao do bean
+- Fase de encerramento do bean
+Com isso pode-se implementar metodos de callback desse
+ciclo de vida. Sao metodos declarados que sao chamados
+pelo proprio container quando passa por alguma fase do
+ciclo de vida.
 

@@ -11,9 +11,6 @@ import static com.algaworks.algafood.di.notificacao.NivelUrgencia.SEM_URGENCIA;
 @TipoDoNotificador(SEM_URGENCIA)
 @Component
 public class NotificadorEmail implements Notificador {
-    public NotificadorEmail() {
-        System.out.println("NotificadorEmail REAL");
-    }
 
     @Override
     public void notificar(Cliente cliente, String mensagem) {
