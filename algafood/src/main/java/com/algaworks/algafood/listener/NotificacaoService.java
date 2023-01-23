@@ -7,12 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import static com.algaworks.algafood.di.notificacao.NivelUrgencia.URGENTE;
+import static com.algaworks.algafood.di.notificacao.NivelUrgencia.SEM_URGENCIA;
 
 @Component
 public class NotificacaoService {
 
-    @TipoDoNotificador(URGENTE)
+    @TipoDoNotificador(SEM_URGENCIA)
     @Autowired
     private Notificador notificador;
 
