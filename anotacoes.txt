@@ -96,5 +96,10 @@ AULA 2.17
 na injecao da interface em relacao as outras classes
 que possui a mesma interface.
 
+AULA 2.18
+
+@Qualifier -> qualifica a classe/componente e eh colocado
+um identificador para diferenciar quando a interface for
+injetada.
 
 
