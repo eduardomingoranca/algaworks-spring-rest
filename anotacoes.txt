@@ -107,4 +107,9 @@ AULA 2.19
 @Retention -> informa quanto tempo essa anotacao TipoDoNotificador
 deve permanecer aonde ela foi usada, lido em tempo de execucao.
 
+AULA 2.20
+
+@Profile -> Spring Profiles eh uma forma de separar componentes da
+aplicacao que serao disponibilizados em certos ambientes.
+
 
