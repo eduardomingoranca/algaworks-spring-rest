@@ -1,0 +1,3 @@
+O que eh um URL de conexao?
+URL de conexao eh a forma que o driver JDBC vai interpretar
+o codigo e conectar no banco de dados 
