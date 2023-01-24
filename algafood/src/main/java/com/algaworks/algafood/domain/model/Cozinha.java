@@ -7,13 +7,13 @@ import static java.util.Objects.hash;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
-@Table(name = "tab_cozinhas")
+@Table(name = "cozinha")
 public class Cozinha {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @Column(name = "nom_cozinha")
+    @Column(name = "nome")
     private String nome;
 
     public Long getId() {
