@@ -155,3 +155,8 @@ AULA 3.8
 EntityManager -> eh uma interface que gerencia
 o contexto de persistencia entre os codigos java
 e o sql.
+
+AULA 3.9
+
+@Transactional -> anotacao que informa quando o 
+metodo for executado sera dentro de uma transacao.
