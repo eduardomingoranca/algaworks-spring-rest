@@ -149,3 +149,9 @@ AULA 3.6
 
 IDENTITY -> informa que o responsavel pela geracao automatica do valor do ID
 eh o provedor de persistencia, ou seja, no caso o banco de dados (MySQL).
+
+AULA 3.8
+
+EntityManager -> eh uma interface que gerencia
+o contexto de persistencia entre os codigos java
+e o sql.
