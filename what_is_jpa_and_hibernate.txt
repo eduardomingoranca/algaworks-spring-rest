@@ -1,0 +1,31 @@
+O que eh persistencia de dados?
+persistencia de dados eh um termo utilizado para 
+perservar os dados por um tempo alem da utilizacao
+do software
+
+Persistencia com banco de dados usando Java
+
+Codigo Java -> Driver JDBC -> MySQL
+
+O driver JDBC eh um componente de software que intermedia
+o acesso de uma aplicacao java com um banco de dados.
+
+O que eh ORM?
+ORM (Object Relational Mapping) eh uma tecnica para mapeamento
+de classes que representam entidades para tabelas de banco de
+dados relacional 
+
+Codigo Java -> ORM -> Driver JDBC -> MySQL
+
+O que eh Java Persistence API (JPA)?
+JPA eh uma especificacao JEE uma solucao ORM para
+persistencia de dados que eh padronizada para 
+desenvolvimento de aplicacoes java. JPA define a 
+forma de mapeamento relacional, possui uma API de
+consultas e modificacoes de dados (JPQL)
+
+O que eh Hibernate?
+Hibernate eh uma implementacao da especificacao JPA,
+ou seja, JPA descreve a solucao e o Hibernate implementa.
+
+Codigo Java -> JPA/Hibernate -> Driver JDBC -> MySQL 
