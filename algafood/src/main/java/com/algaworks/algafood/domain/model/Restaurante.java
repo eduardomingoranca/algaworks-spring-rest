@@ -2,16 +2,19 @@ package com.algaworks.algafood.domain.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import java.math.BigDecimal;
 import java.util.Objects;
 
 import static java.util.Objects.hash;
+import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 public class Restaurante {
     @Id
+    @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
     private String nome;

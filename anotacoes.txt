@@ -144,3 +144,8 @@ AULA 2.26
 
 @ConfigurationProperties("property") -> anotacao que informa que esta classe 
 representa um arquivo de propriedades.
+
+AULA 3.6
+
+IDENTITY -> informa que o responsavel pela geracao automatica do valor do ID
+eh o provedor de persistencia, ou seja, no caso o banco de dados (MySQL).

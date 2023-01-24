@@ -1,17 +1,16 @@
 package com.algaworks.algafood.domain.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Objects;
 
 import static java.util.Objects.hash;
+import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Table(name = "tab_cozinhas")
 public class Cozinha {
     @Id
+    @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
     @Column(name = "nom_cozinha")
