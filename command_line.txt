@@ -1,0 +1,9 @@
+mvn package -> gerando o jar da aplicacao
+ls target
+java -jar target/ 
+java -jar target/algafood-api-0.0.1-SNAPSHOT.jar 
+
+java -jar target/algafood-api-0.0.1-SNAPSHOT.jar --spring.profiles.active=production
+
+export SPRING_PROFILES_ACTIVE=production
+java -jar target/algafood-api-0.0.1-SNAPSHOT.jar 
