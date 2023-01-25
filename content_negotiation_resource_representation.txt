@@ -1,0 +1,11 @@
+Representacoes de Recursos e Content Negotiation 
+
+O recurso eh o objeto a representacao eh a transformacao
+desse objeto em um codigo que seja possivel visualizar
+ou ler as informacoes do recurso.
+
+Tipos de representacao: JSON/PNG|JPG/TEXT/XML
+
+Qual o formato de representacao de um recurso deve
+ser retornado eh o que eh chamado de content negotiation,
+o consumidor esta negociando com o servidor 
