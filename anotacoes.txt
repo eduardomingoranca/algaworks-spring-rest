@@ -165,3 +165,9 @@ AULA 3.14
 
 Repository eh um padrao do DDD que adiciona uma camada
 de abstracao de acesso a dados.
+
+AULA 3.17
+
+Lombok eh uma biblioteca java com foco em produtividade
+e reducao de codigo boilerplate usando anotacoes proprias.
+Codigo boilerplate sao codigos padroes java repetidos.
