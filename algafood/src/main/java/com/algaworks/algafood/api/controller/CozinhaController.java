@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.beans.BeanUtils.copyProperties;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
@@ -53,7 +54,7 @@ public class CozinhaController {
         Cozinha cozinhaAtual = cozinhaRepository.porID(cozinhaId);
 
         if (cozinhaAtual != null) {
-            cozinhaAtual.setNome(cozinha.getNome());
+            copyProperties(cozinha, cozinhaAtual, "id");
 
             cozinhaRepository.adicionar(cozinhaAtual);
 
