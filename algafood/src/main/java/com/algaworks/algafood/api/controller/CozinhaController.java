@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
-import static org.springframework.http.ResponseEntity.notFound;
 import static org.springframework.http.ResponseEntity.status;
 
 @RestController
@@ -40,7 +40,7 @@ public class CozinhaController {
         if (cozinha != null)
             return status(OK).body(cozinha);
 
-        return notFound().build();
+        return status(NOT_FOUND).build();
     }
 
 }
