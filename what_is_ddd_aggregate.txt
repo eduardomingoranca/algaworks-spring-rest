@@ -1,0 +1,9 @@
+O que eh DDD?
+DDD eh uma abordagem de desenvolvimento de software
+que nos ajuda a criar software de alta qualidade com
+o foco no dominio. 
+
+O que eh DDD Aggregate?
+Aggregate eh um padrao do DDD, ou
+seja, eh um grupo de projetos de dominio que podem ser
+tratados como uma unidade unica.
