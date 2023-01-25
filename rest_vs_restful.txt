@@ -1,0 +1,5 @@
+REST vs RESTful
+
+REST eh o estilo arquitetural, a especificacao.
+RESTful eh uma API desenvolvida em conformidade
+com as constraints.
