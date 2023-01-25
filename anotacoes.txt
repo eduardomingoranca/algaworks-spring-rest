@@ -160,3 +160,8 @@ AULA 3.9
 
 @Transactional -> anotacao que informa quando o 
 metodo for executado sera dentro de uma transacao.
+
+AULA 3.14 
+
+Repository eh um padrao do DDD que adiciona uma camada
+de abstracao de acesso a dados.
