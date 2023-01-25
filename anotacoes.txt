@@ -171,3 +171,8 @@ AULA 3.17
 Lombok eh uma biblioteca java com foco em produtividade
 e reducao de codigo boilerplate usando anotacoes proprias.
 Codigo boilerplate sao codigos padroes java repetidos.
+
+AULA 4.10
+
+Controller eh uma classe responsavel por receber requisicoes
+web, tratar essas requisicoes e devolver uma resposta.
