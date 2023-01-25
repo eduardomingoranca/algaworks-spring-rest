@@ -1,0 +1,26 @@
+Metodos HTTP
+
+O que eh Idempotencia?
+Algo idempotente significa que tem a capacidade de 
+poder ser aplicado mais de uma vez sem que o resultado
+da primeira aplicacao se altere.
+
+Principais metodos HTTP
+
+GET
+POST
+PUT
+PATCH
+DELETE
+HEAD
+OPTIONS
+
+GET -> obtem a representacao de um recurso (Metodo Idempotente)
+POST -> envia dados para o servidor criar um novo recurso
+PUT -> atualiza os recursos completos (Metodo Idempotente)
+PATCH -> atualiza o recurso parcialmente (Metodo Idempotente)
+DELETE -> exclui um recurso (Metodo Idempotente)
+HEAD -> eh igual ao get com uma excessao ele nunca retorna um
+corpo na resposta, eh usado apenas para buscar um cabecalho.
+OPTIONS -> usado para obter uma lista de metodos suportados
+por um recurso.
