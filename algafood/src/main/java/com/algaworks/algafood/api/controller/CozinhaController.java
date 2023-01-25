@@ -9,16 +9,26 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
+
 @RestController
+//@RequestMapping(value = "/cozinhas", produces = APPLICATION_JSON_VALUE)
 @RequestMapping("/cozinhas")
 public class CozinhaController {
-
     @Autowired
     private CozinhaRepository cozinhaRepository;
 
     // GET /cozinhas HTTP/1.1
-    @GetMapping
-    public List<Cozinha> listar() {
+    @GetMapping(produces = APPLICATION_JSON_VALUE)
+    public List<Cozinha> listar1() {
+        System.out.println("LISTAR 1");
+        return cozinhaRepository.todas();
+    }
+
+    @GetMapping(produces = APPLICATION_XML_VALUE)
+    public List<Cozinha> listar2() {
+        System.out.println("LISTAR 2");
         return cozinhaRepository.todas();
     }
 
