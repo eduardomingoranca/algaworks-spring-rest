@@ -1,0 +1,4 @@
+O que eh REST?
+REST (Representational State Transfer) eh um modelo arquitetural,
+eh uma especificacao que define a forma de comunicacao entre componentes
+de software na web, independente da linguagem de programacao usada.
