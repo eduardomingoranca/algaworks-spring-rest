@@ -12,7 +12,7 @@ import java.util.List;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
-import static org.springframework.http.ResponseEntity.status;
+import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
 //@RequestMapping(value = "/cozinhas", produces = APPLICATION_JSON_VALUE)
@@ -37,7 +37,7 @@ public class CozinhaController {
     @GetMapping("/{cozinhaId}")
     public ResponseEntity<Cozinha> buscar(@PathVariable Long cozinhaId) {
         Cozinha cozinha = cozinhaRepository.porID(cozinhaId);
-        return status(OK).body(cozinha);
+        return ok(cozinha);
     }
 
 }
