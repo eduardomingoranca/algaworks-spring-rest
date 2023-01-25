@@ -1,0 +1,16 @@
+telnet www.uol.com.br 80 
+
+GET / HTTP/1.1
+Host: www.uol.com.br
+Accept: text/html
+
+gnutls-cli www.uol.com.br
+
+GET / HTTP/1.1
+Host: www.uol.com.br
+Accept: text/html
+
+GET /users/algaworks/repos HTTP/1.1
+Host: api.github.com
+Accept: application/json
+User-Agent: ESR
