@@ -1,0 +1,10 @@
+O que eh um recurso?
+Um recurso eh qualquer coisa exposta na web como
+um documento, uma pagina, um video, uma imagem e
+ate mesmo um processo de negocio. 
+
+Um unico produto eh um recurso
+Singleton Resource
+
+Colecao de produtos eh um recurso
+Collection Resource 
