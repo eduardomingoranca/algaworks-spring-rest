@@ -176,3 +176,11 @@ AULA 4.10
 
 Controller eh uma classe responsavel por receber requisicoes
 web, tratar essas requisicoes e devolver uma resposta.
+
+AULA 4.27
+
+domain service eh uma operacao sem estado
+que realiza uma tarefa especifica do dominio,
+ou seja, uma tarefa de negocio.
+Quando um processo no dominio nao eh responsabilidade
+natural de uma entidade eh criado um service de dominio.
