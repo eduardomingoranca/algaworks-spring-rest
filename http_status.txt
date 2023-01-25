@@ -1,0 +1,22 @@
+Status HTTP
+
+Status do HTTP - Nivel 200 (SUCESSO)
+200: OK
+201: Criado
+204: Sem conteudo
+
+Status do HTTP - Nivel 300 (REDIRECIONAMENTO)
+301: Movido permanentemente
+302: Encontrado
+
+Status do HTTP - Nivel 400 (ERRO DO CONSUMIDOR API)
+400: Requisicao mal feita
+401: Nao autorizado
+403: Proibido
+404: Nao encontrado
+405: Metodo nao permitido
+406: Nao aceito
+
+Status do HTTP - Nivel 500 (ERRO NO SERVIDOR)
+500: Erro interno no servidor
+503: Servico indisponivel
