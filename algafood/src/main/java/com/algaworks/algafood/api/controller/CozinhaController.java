@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_XML_VALUE;
 import static org.springframework.http.ResponseEntity.status;
@@ -41,6 +40,12 @@ public class CozinhaController {
             return status(OK).body(cozinha);
 
         return status(NOT_FOUND).build();
+    }
+
+    @PostMapping
+    @ResponseStatus(CREATED)
+    public Cozinha adicionar(@RequestBody Cozinha cozinha) {
+        return cozinhaRepository.adicionar(cozinha);
     }
 
 }

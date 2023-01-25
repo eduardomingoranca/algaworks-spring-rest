@@ -1,0 +1,10 @@
+GET /cozinhas HTTP/1.1
+
+GET /cozinhas/{id}
+
+POST /cozinhas HTTP/1.1
+Content-Type: application/json
+
+{
+  "nome": "Brasileira"
+}
