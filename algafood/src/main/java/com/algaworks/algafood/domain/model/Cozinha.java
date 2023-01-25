@@ -10,7 +10,7 @@ import javax.persistence.*;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-@JsonRootName("gastronomia")
+@JsonRootName("cozinha")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
@@ -23,7 +23,7 @@ public class Cozinha {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @JsonProperty("titulo")
+    @JsonProperty("nome")
     @Column(nullable = false)
     private String nome;
 
