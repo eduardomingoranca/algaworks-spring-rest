@@ -1,0 +1,20 @@
+Identificando Recursos
+
+O que eh URI?
+URI (Uniform Resource Identifier) eh um conjunto de 
+caracteres que tem como objetivo criar um endereco
+para os recursos sem ambiguidade.
+
+URI vs URL
+URL eh um tipo de URL 
+
+
+Collection Resources
+https://api.algamarket.com.br/listarProdutos 
+https://api.algamarket.com.br/produtos
+
+Singleton Resources
+/produto/{codigo}
+https://api.algamarket.com.br/produto/331
+/produtos/{codigo} 
+https://api.algamarket.com.br/produtos/331
