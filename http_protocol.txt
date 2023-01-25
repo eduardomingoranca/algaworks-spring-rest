@@ -1,0 +1,13 @@
+Protocolo HTTP
+
+Metodos/Verbos HTTP
+
+GET -> obter o recurso
+POST -> criar o recurso
+PUT -> alterar o recurso
+DELETE -> excluir o recurso
+
+Content Type -> define qual o tipo de conteudo esta
+sendo enviado no corpo da requisicao.
+Accept -> define quais os tipos de conteudo sao aceitos
+como resposta.
