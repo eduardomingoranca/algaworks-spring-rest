@@ -1,0 +1,12 @@
+O que sao Constraints do REST?
+Sao melhores praticas para a utilizacao da arquitetura
+REST
+
+Constrains
+
+>> Cliente-Servidor
+>> Stateless - cada requisicao para o servidor eh desconhecido
+>> Cache 
+>> Interface uniforme
+>> Sistema em camadas
+>> Codigo sob demanda
