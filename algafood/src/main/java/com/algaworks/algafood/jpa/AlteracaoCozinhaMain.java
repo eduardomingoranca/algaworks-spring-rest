@@ -7,7 +7,7 @@ import org.springframework.context.ApplicationContext;
 
 import static org.springframework.boot.WebApplicationType.NONE;
 
-public class InclusaoCozinhaMain {
+public class AlteracaoCozinhaMain {
 
     public static void main(String[] args) {
         // configurando a aplicacao para nao web
@@ -18,15 +18,9 @@ public class InclusaoCozinhaMain {
         CadastroCozinha cadastroCozinha = applicationContext.getBean(CadastroCozinha.class);
 
         Cozinha cozinha = new Cozinha();
+        cozinha.setId(2L);
         cozinha.setNome("Brasileira");
 
-        Cozinha cozinha2 = new Cozinha();
-        cozinha2.setNome("Japonesa");
-
-        cozinha = cadastroCozinha.salvar(cozinha);
-        cozinha2 = cadastroCozinha.salvar(cozinha2);
-
-        System.out.printf("%d - %s\n", cozinha.getId(), cozinha.getNome());
-        System.out.printf("%d - %s\n", cozinha2.getId(), cozinha2.getNome());
+        cadastroCozinha.salvar(cozinha);
     }
 }
