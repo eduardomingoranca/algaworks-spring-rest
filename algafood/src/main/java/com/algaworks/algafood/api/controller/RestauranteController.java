@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.beans.BeanUtils.copyProperties;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.ResponseEntity.status;
 
@@ -42,6 +43,22 @@ public class RestauranteController {
             restaurante = cadastroRestaurante.salvar(restaurante);
 
             return status(CREATED).body(restaurante);
+        } catch (EntidadeNaoEncontradaException e) {
+            return status(BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/{restauranteId}")
+    public ResponseEntity<?> atualizar(@PathVariable("restauranteId") Long id, @RequestBody Restaurante restaurante) {
+        try {
+            Restaurante restauranteAtual = restauranteRepository.porID(id);
+
+            if (restauranteAtual == null) return status(NOT_FOUND).build();
+
+            copyProperties(restaurante, restauranteAtual, "id");
+            cadastroRestaurante.salvar(restauranteAtual);
+
+            return status(OK).body(restauranteAtual);
         } catch (EntidadeNaoEncontradaException e) {
             return status(BAD_REQUEST).body(e.getMessage());
         }
