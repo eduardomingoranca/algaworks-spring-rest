@@ -1,7 +1,6 @@
 package com.algaworks.algafood.jpa;
 
 import com.algaworks.algafood.AlgafoodApplication;
-import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.repository.EstadoRepository;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
@@ -18,9 +17,6 @@ public class ExclusaoEstadoMain {
 
         EstadoRepository estados = applicationContext.getBean(EstadoRepository.class);
 
-        Estado estado = new Estado();
-        estado.setId(1L);
-
-        estados.remover(estado);
+        estados.remover(1L);
     }
 }

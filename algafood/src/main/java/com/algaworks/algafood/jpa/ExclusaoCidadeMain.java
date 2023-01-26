@@ -1,10 +1,7 @@
 package com.algaworks.algafood.jpa;
 
 import com.algaworks.algafood.AlgafoodApplication;
-import com.algaworks.algafood.domain.model.Cidade;
-import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.repository.CidadeRepository;
-import com.algaworks.algafood.domain.repository.EstadoRepository;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
@@ -19,13 +16,7 @@ public class ExclusaoCidadeMain {
                 .run(args);
 
         CidadeRepository cidades = applicationContext.getBean(CidadeRepository.class);
-        EstadoRepository estados = applicationContext.getBean(EstadoRepository.class);
 
-        Cidade cidade = new Cidade();
-        cidade.setId(1L);
-        Estado estado = estados.porID(1L);
-        cidade.setEstado(estado);
-
-        cidades.remover(cidade);
+        cidades.remover(1L);
     }
 }
