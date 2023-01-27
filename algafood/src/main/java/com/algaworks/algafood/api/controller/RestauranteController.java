@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.beans.BeanUtils.copyProperties;
 import static org.springframework.http.HttpStatus.*;
@@ -49,7 +50,8 @@ public class RestauranteController {
     }
 
     @PutMapping("/{restauranteId}")
-    public ResponseEntity<?> atualizar(@PathVariable("restauranteId") Long id, @RequestBody Restaurante restaurante) {
+    public ResponseEntity<?> atualizar(@PathVariable("restauranteId") Long id,
+                                       @RequestBody Restaurante restaurante) {
         try {
             Restaurante restauranteAtual = restauranteRepository.porID(id);
 
@@ -63,5 +65,24 @@ public class RestauranteController {
             return status(BAD_REQUEST).body(e.getMessage());
         }
     }
-    
+
+    @PatchMapping("/{restauranteId}")
+    public ResponseEntity<?> atualizarParcial(@PathVariable("restauranteId") Long id,
+                                              @RequestBody Map<String, Object> campos) {
+        Restaurante restauranteAtual = restauranteRepository.porID(id);
+
+        if (restauranteAtual == null) return status(NOT_FOUND).build();
+
+        merge(campos, restauranteAtual);
+
+        return atualizar(id, restauranteAtual);
+    }
+
+    // mesclar os valores do map campos para dentro do restaurante atual
+    private static void merge(Map<String, Object> camposOrigem, Restaurante restauranteDestino) {
+        camposOrigem.forEach((nomePropriedade, valorPropriedade) -> {
+            System.out.println(nomePropriedade + " = " + valorPropriedade);
+        });
+    }
+
 }
