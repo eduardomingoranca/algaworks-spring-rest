@@ -184,3 +184,9 @@ que realiza uma tarefa especifica do dominio,
 ou seja, uma tarefa de negocio.
 Quando um processo no dominio nao eh responsabilidade
 natural de uma entidade eh criado um service de dominio.
+
+AULA 4.34
+
+Reflections -> eh a capacidade de inspecionar objetos
+java em tempo de execucao ate a alteracao desses objetos
+de forma dinamica.
