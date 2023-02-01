@@ -1,0 +1,4 @@
+Spring Data JPA
+É um subprojeto spring que auxilia na criação de repositorios,
+atraves dele consegue-se eliminar codigos boilerplate, implementando
+consultas de banco de dados padrões.
