@@ -1,0 +1,6 @@
+Modelo de Maturidade de Richardson (RMM)
+
+Nivel 03 - HATEOAS
+Nivel 02 - Verbos HTTP
+Nivel 01 - Recursos
+Nivel 00 - POX
