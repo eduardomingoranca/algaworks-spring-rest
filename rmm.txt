@@ -8,5 +8,8 @@ Nivel 00 - POX
 Nivel 00 - POX (Plain Old XML) 
 HTTP apenas como mecanismo de transporte.
 Este é o modelo RPC (Remote Procedure Call) ou seja
-chamadas de procedimentos remotos. Possui um unico endpoint
+chamadas de procedimentos remotos. Possui um unico endpoint.
+
+Nivel 01 - Recursos
+Requisições para URIs com recursos.
 
