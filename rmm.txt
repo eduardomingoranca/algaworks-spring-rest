@@ -15,3 +15,8 @@ Requisições para URIs com recursos.
 
 Nivel 02 - Verbos HTTP
 Introdução aos verbos HTTP de acordo com a semantica de cada verbo.
+
+Nivel 03 - HATEOAS
+HATEOAS (Hypertext As The Engine Of Application State) ou seja
+Hipertexto como motor de estado da aplicacao. Este é o proximo
+passo após realizar uma requisição, atraves de links.
