@@ -4,3 +4,9 @@ Nivel 03 - HATEOAS
 Nivel 02 - Verbos HTTP
 Nivel 01 - Recursos
 Nivel 00 - POX
+
+Nivel 00 - POX (Plain Old XML) 
+HTTP apenas como mecanismo de transporte.
+Este é o modelo RPC (Remote Procedure Call) ou seja
+chamadas de procedimentos remotos. Possui um unico endpoint
+
