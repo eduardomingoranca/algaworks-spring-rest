@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.beans.BeanUtils.copyProperties;
 import static org.springframework.http.HttpStatus.*;
@@ -29,14 +30,16 @@ public class CozinhaController {
     @ResponseStatus(OK)
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     public List<Cozinha> listar() {
-        return cozinhaRepository.todas();
+        return cozinhaRepository.findAll();
     }
 
     @GetMapping("/{cozinhaId}")
     public ResponseEntity<Cozinha> buscar(@PathVariable Long cozinhaId) {
-        Cozinha cozinha = cozinhaRepository.porID(cozinhaId);
+        Optional<Cozinha> cozinha = cozinhaRepository.findById(cozinhaId);
 
-        if (cozinha != null) return status(OK).body(cozinha);
+        if (cozinha.isPresent()) {
+            return status(OK).body(cozinha.get());
+        }
 
         return status(NOT_FOUND).build();
     }
@@ -49,13 +52,13 @@ public class CozinhaController {
 
     @PutMapping("/{cozinhaId}")
     public ResponseEntity<Cozinha> atualizar(@PathVariable Long cozinhaId, @RequestBody Cozinha cozinha) {
-        Cozinha cozinhaAtual = cozinhaRepository.porID(cozinhaId);
+        Optional<Cozinha> cozinhaAtual = cozinhaRepository.findById(cozinhaId);
 
-        if (cozinhaAtual != null) {
-            copyProperties(cozinha, cozinhaAtual, "id");
+        if (cozinhaAtual.isPresent()) {
+            copyProperties(cozinha, cozinhaAtual.get(), "id");
 
-            cadastroCozinha.salvar(cozinhaAtual);
-            return status(OK).body(cozinhaAtual);
+            Cozinha cozinhaSalva = cadastroCozinha.salvar(cozinhaAtual.get());
+            return status(OK).body(cozinhaSalva);
         }
 
         return status(NOT_FOUND).build();
@@ -63,7 +66,7 @@ public class CozinhaController {
 
     // DELETE /cozinhas/{id}  HTTP/1.1
     @DeleteMapping("/{cozinhaId}")
-    public ResponseEntity<Cozinha> remover(@PathVariable Long cozinhaId) {
+    public ResponseEntity<?> remover(@PathVariable Long cozinhaId) {
         try {
             cadastroCozinha.excluir(cozinhaId);
             return status(NO_CONTENT).build();
@@ -71,7 +74,7 @@ public class CozinhaController {
         } catch (EntidadeNaoEncontradaException e) {
             return status(NOT_FOUND).build();
         } catch (EntidadeEmUsoException e) {
-            return status(CONFLICT).build();
+            return status(CONFLICT).body(e.getMessage());
         }
     }
 

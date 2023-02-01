@@ -17,6 +17,6 @@ public class ExclusaoCozinhaMain {
 
         CozinhaRepository cozinhaRepository = applicationContext.getBean(CozinhaRepository.class);
 
-        cozinhaRepository.remover(2L);
+        cozinhaRepository.findById(2L);
     }
 }
