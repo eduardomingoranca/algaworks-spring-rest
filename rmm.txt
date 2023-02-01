@@ -13,3 +13,5 @@ chamadas de procedimentos remotos. Possui um unico endpoint.
 Nivel 01 - Recursos
 Requisições para URIs com recursos.
 
+Nivel 02 - Verbos HTTP
+Introdução aos verbos HTTP de acordo com a semantica de cada verbo.
