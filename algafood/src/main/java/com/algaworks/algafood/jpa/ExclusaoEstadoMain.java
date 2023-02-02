@@ -17,6 +17,6 @@ public class ExclusaoEstadoMain {
 
         EstadoRepository estados = applicationContext.getBean(EstadoRepository.class);
 
-        estados.remover(1L);
+        estados.deleteById(1L);
     }
 }

@@ -21,7 +21,7 @@ public class InclusaoEstadoMain {
         Estado estado = new Estado();
         estado.setNome("Rio Grande do Sul");
 
-        estado = estadoRepository.adicionar(estado);
+        estado = estadoRepository.save(estado);
 
         System.out.printf("%d | %s\n", estado.getId(), estado.getNome());
     }

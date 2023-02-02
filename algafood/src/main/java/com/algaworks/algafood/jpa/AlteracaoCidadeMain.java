@@ -8,6 +8,8 @@ import com.algaworks.algafood.domain.repository.EstadoRepository;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
+import java.util.Optional;
+
 import static org.springframework.boot.WebApplicationType.NONE;
 
 public class AlteracaoCidadeMain {
@@ -24,9 +26,10 @@ public class AlteracaoCidadeMain {
         Cidade cidade = new Cidade();
         cidade.setId(3L);
         cidade.setNome("Cerquilho");
-        Estado estado = estadoRepository.porID(2L);
-        cidade.setEstado(estado);
+        Optional<Estado> estado = estadoRepository.findById(2L);
 
-        cidadeRepository.adicionar(cidade);
+        estado.ifPresent(cidade::setEstado);
+
+        cidadeRepository.save(cidade);
     }
 }

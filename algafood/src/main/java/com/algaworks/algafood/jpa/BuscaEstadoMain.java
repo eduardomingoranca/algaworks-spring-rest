@@ -6,6 +6,8 @@ import com.algaworks.algafood.domain.repository.EstadoRepository;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
+import java.util.Optional;
+
 import static org.springframework.boot.WebApplicationType.NONE;
 
 public class BuscaEstadoMain {
@@ -17,8 +19,8 @@ public class BuscaEstadoMain {
                 .run(args);
 
         EstadoRepository estadoRepository = applicationContext.getBean(EstadoRepository.class);
-        Estado estado = estadoRepository.porID(1L);
+        Optional<Estado> estado = estadoRepository.findById(1L);
 
-        System.out.printf("%s\n", estado.getNome());
+        estado.ifPresent(value -> System.out.printf("%s\n", value.getNome()));
     }
 }

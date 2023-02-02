@@ -24,6 +24,6 @@ public class AlteracaoRestauranteMain {
         restaurante.setNome("Tuk Tuk Comida Indiana");
         restaurante.setTaxaFrete(valueOf(11.5));
 
-        restauranteRepository.adicionar(restaurante);
+        restauranteRepository.save(restaurante);
     }
 }

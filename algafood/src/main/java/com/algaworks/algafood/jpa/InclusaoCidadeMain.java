@@ -8,6 +8,8 @@ import com.algaworks.algafood.domain.repository.EstadoRepository;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
+import java.util.Optional;
+
 import static org.springframework.boot.WebApplicationType.NONE;
 
 public class InclusaoCidadeMain {
@@ -23,10 +25,10 @@ public class InclusaoCidadeMain {
 
         Cidade cidade = new Cidade();
         cidade.setNome("Teodoro Sampaio");
-        Estado estado = estadoRepository.porID(2L);
-        cidade.setEstado(estado);
+        Optional<Estado> estado = estadoRepository.findById(2L);
+        if (estado.isPresent()) cidade.setEstado(estado.get());
 
-        cidade = cidadeRepository.adicionar(cidade);
+        cidade = cidadeRepository.save(cidade);
 
         System.out.printf("%s | %s\n", cidade.getNome(), cidade.getEstado().getNome());
     }

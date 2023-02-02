@@ -6,6 +6,8 @@ import com.algaworks.algafood.domain.repository.CidadeRepository;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
+import java.util.Optional;
+
 import static org.springframework.boot.WebApplicationType.NONE;
 
 public class BuscaCidadeMain {
@@ -17,8 +19,8 @@ public class BuscaCidadeMain {
                 .run(args);
 
         CidadeRepository cidadeRepository = applicationContext.getBean(CidadeRepository.class);
-        Cidade cidade = cidadeRepository.porID(2L);
+        Optional<Cidade> cidade = cidadeRepository.findById(2L);
 
-        System.out.printf("%s | %s\n", cidade.getNome(), cidade.getEstado().getNome());
+        cidade.ifPresent(value -> System.out.printf("%s | %s\n", value.getNome(), value.getEstado().getNome()));
     }
 }

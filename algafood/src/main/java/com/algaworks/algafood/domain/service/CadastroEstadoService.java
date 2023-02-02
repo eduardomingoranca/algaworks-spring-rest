@@ -10,6 +10,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import static java.lang.String.format;
 
@@ -19,20 +20,20 @@ public class CadastroEstadoService {
     private EstadoRepository estadoRepository;
 
     public List<Estado> listar() {
-        return estadoRepository.todas();
+        return estadoRepository.findAll();
     }
 
     public Estado salvar(Estado estado) {
-        return estadoRepository.adicionar(estado);
+        return estadoRepository.save(estado);
     }
 
-    public Estado porID(Long id) {
-        return estadoRepository.porID(id);
+    public Optional<Estado> buscar(Long id) {
+        return estadoRepository.findById(id);
     }
 
     public void excluir(Long id) {
         try {
-            estadoRepository.remover(id);
+            estadoRepository.deleteById(id);
 
         } catch (EmptyResultDataAccessException e) {
             throw new EntidadeNaoEncontradaException(

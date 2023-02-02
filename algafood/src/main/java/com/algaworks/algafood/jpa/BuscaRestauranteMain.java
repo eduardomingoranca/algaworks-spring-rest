@@ -6,6 +6,8 @@ import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
+import java.util.Optional;
+
 import static org.springframework.boot.WebApplicationType.NONE;
 
 public class BuscaRestauranteMain {
@@ -17,9 +19,12 @@ public class BuscaRestauranteMain {
                 .run(args);
 
         RestauranteRepository restauranteRepository = applicationContext.getBean(RestauranteRepository.class);
-        Restaurante restaurante = restauranteRepository.porID(1L);
+        Optional<Restaurante> restaurante = restauranteRepository.findById(1L);
 
-        System.out.println(restaurante.getNome());
-        System.out.println(restaurante.getTaxaFrete());
+        if (restaurante.isPresent()) {
+            System.out.println(restaurante.get().getNome());
+            System.out.println(restaurante.get().getTaxaFrete());
+        }
+
     }
 }

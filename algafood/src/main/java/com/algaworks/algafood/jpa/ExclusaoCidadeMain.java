@@ -17,6 +17,6 @@ public class ExclusaoCidadeMain {
 
         CidadeRepository cidades = applicationContext.getBean(CidadeRepository.class);
 
-        cidades.remover(1L);
+        cidades.deleteById(1L);
     }
 }

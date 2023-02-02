@@ -22,6 +22,6 @@ public class AlteracaoEstadoMain {
         estado.setId(3L);
         estado.setNome("Parana");
 
-        estadoRepository.adicionar(estado);
+        estadoRepository.save(estado);
     }
 }

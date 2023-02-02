@@ -8,6 +8,9 @@ import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 import static java.lang.String.format;
 
 @Service
@@ -28,7 +31,15 @@ public class CadastroRestauranteService {
 
         restaurante.setCozinha(cozinha);
 
-        return restauranteRepository.adicionar(restaurante);
+        return restauranteRepository.save(restaurante);
+    }
+
+    public List<Restaurante> listar() {
+        return restauranteRepository.findAll();
+    }
+
+    public Optional<Restaurante> buscar(Long restauranteId) {
+        return restauranteRepository.findById(restauranteId);
     }
 
 }

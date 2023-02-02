@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.beans.BeanUtils.copyProperties;
 import static org.springframework.http.HttpStatus.*;
@@ -41,14 +42,16 @@ public class CidadeController {
     @PutMapping("/{cidadeID}")
     public ResponseEntity<Object> atualizar(@PathVariable("cidadeID") Long id, @RequestBody Cidade cidade) {
         try {
-            Cidade cidadeAtual = cadastroCidade.porID(id);
+            Optional<Cidade> cidadeAtual = cadastroCidade.buscar(id);
 
-            if (cidadeAtual == null) return status(NOT_FOUND).build();
+            if (cidadeAtual.isPresent()) {
+                copyProperties(cidade, cidadeAtual.get(), "id");
+                Cidade salvarCidade = cadastroCidade.salvar(cidadeAtual.get());
 
-            copyProperties(cidade, cidadeAtual, "id");
-            cadastroCidade.salvar(cidadeAtual);
+                return status(OK).body(salvarCidade);
+            }
 
-            return status(OK).body(cidadeAtual);
+            return status(NOT_FOUND).build();
         } catch (EntidadeNaoEncontradaException e) {
             return status(BAD_REQUEST).body(e.getMessage());
 

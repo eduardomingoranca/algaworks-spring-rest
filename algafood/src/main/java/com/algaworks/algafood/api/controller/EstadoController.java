@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.beans.BeanUtils.copyProperties;
 import static org.springframework.http.HttpStatus.*;
@@ -34,14 +35,16 @@ public class EstadoController {
 
     @PutMapping("/{estadoID}")
     public ResponseEntity<Estado> atualizar(@PathVariable("estadoID") Long id, @RequestBody Estado estado) {
-        Estado estadoAtual = cadastroEstado.porID(id);
+        Optional<Estado> estadoAtual = cadastroEstado.buscar(id);
 
-        if (estadoAtual == null) return status(NOT_FOUND).build();
+        if (estadoAtual.isPresent()) {
+            copyProperties(estado, estadoAtual.get(), "id");
+            Estado salvarEstado = cadastroEstado.salvar(estadoAtual.get());
 
-        copyProperties(estado, estadoAtual, "id");
-        cadastroEstado.salvar(estadoAtual);
+            return status(OK).body(salvarEstado);
+        }
 
-        return status(OK).body(estadoAtual);
+        return status(NOT_FOUND).build();
     }
 
     @DeleteMapping("/{estadoID}")

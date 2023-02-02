@@ -27,8 +27,8 @@ public class InclusaoRestauranteMain {
         restaurante2.setNome("Le Velmont");
         restaurante2.setTaxaFrete(valueOf(20.5));
 
-        restaurante = restauranteRepository.adicionar(restaurante);
-        restaurante2 = restauranteRepository.adicionar(restaurante2);
+        restaurante = restauranteRepository.save(restaurante);
+        restaurante2 = restauranteRepository.save(restaurante2);
 
         System.out.println(restaurante.getId() + " " + restaurante.getNome() + " " + restaurante.getTaxaFrete());
         System.out.println(restaurante2.getId() + " " + restaurante2.getNome() + " " + restaurante2.getTaxaFrete());
