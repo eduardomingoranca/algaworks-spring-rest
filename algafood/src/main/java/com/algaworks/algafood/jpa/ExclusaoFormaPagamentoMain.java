@@ -18,9 +18,6 @@ public class ExclusaoFormaPagamentoMain {
 
         FormaPagamentoRepository formasPagamento = applicationContext.getBean(FormaPagamentoRepository.class);
 
-        FormaPagamento formaPagamento = new FormaPagamento();
-        formaPagamento.setId(3L);
-
-        formasPagamento.remover(formaPagamento);
+        formasPagamento.deleteById(3L);
     }
 }

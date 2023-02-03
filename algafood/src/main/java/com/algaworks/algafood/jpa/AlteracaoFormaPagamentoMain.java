@@ -22,6 +22,6 @@ public class AlteracaoFormaPagamentoMain {
         formaPagamento.setId(3L);
         formaPagamento.setDescricao("PIX");
 
-        formaPagamentoRepository.adicionar(formaPagamento);
+        formaPagamentoRepository.save(formaPagamento);
     }
 }

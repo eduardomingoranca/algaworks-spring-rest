@@ -20,7 +20,7 @@ public class ConsultaPermissaoMain {
 
         PermissaoRepository permissoes = applicationContext.getBean(PermissaoRepository.class);
 
-        List<Permissao> todasPermissoes = permissoes.todas();
+        List<Permissao> todasPermissoes = permissoes.findAll();
 
         for (Permissao permissao: todasPermissoes) {
             System.out.printf("%s | %s\n", permissao.getNome(), permissao.getDescricao());

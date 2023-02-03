@@ -21,7 +21,7 @@ public class InclusaoFormaPagamentoMain {
         FormaPagamento formaPagamento = new FormaPagamento();
         formaPagamento.setDescricao("PIX");
 
-        formaPagamento = formaPagamentoRepository.adicionar(formaPagamento);
+        formaPagamento = formaPagamentoRepository.save(formaPagamento);
 
         System.out.printf("%s\n",formaPagamento.getDescricao());
     }
