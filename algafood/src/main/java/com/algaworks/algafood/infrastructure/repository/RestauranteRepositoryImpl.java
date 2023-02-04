@@ -12,7 +12,10 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+
+import static org.springframework.util.StringUtils.hasText;
 
 @Repository
 public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
@@ -30,17 +33,26 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
         CriteriaQuery<Restaurante> criteria = builder.createQuery(Restaurante.class);
         Root<Restaurante> root  = criteria.from(Restaurante.class);// from Restaurante
 
+        var predicates = new ArrayList<>();
+
+        if (hasText(nome)) {
         // predicate -> eh um criterio/um filtro
-        Predicate nomePredicate = builder.like(root.get("nome"), "%" + nome + "%"); // like %:nome%
+            predicates.add(builder.like(root.get("nome"), "%" + nome + "%")); // like %:nome%
+        }
 
-        Predicate taxaInicialPredicate = builder.greaterThanOrEqualTo(root.get("taxaFrete"),
-                taxaFreteInicial); // taxaFrete >= :taxaFreteInicial
+        if (taxaFreteInicial != null) {
+            predicates.add(builder.greaterThanOrEqualTo(root.get("taxaFrete"),
+                    taxaFreteInicial)); // taxaFrete >= :taxaFreteInicial
+        }
 
-        Predicate taxaFinalPredicate = builder.lessThanOrEqualTo(root.get("taxaFrete"),
-                taxaFreteFinal); // taxaFrete <= :taxaFreteFinal
+        if (taxaFreteFinal != null) {
+            predicates.add(builder.lessThanOrEqualTo(root.get("taxaFrete"),
+                    taxaFreteFinal)); // taxaFrete <= :taxaFreteFinal
+        }
+
 
         // where nome like %:nome% and taxaFrete >= :taxaFreteInicial and taxaFrete <= :taxaFreteFinal
-        criteria.where(nomePredicate, taxaInicialPredicate, taxaFinalPredicate);
+        criteria.where(predicates.toArray(new Predicate[0]));
 
         // criando a query sql
         TypedQuery<Restaurante> query = manager.createQuery(criteria);
