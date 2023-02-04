@@ -37,11 +37,14 @@ public class CozinhaController {
     public ResponseEntity<Cozinha> buscar(@PathVariable Long cozinhaId) {
         Optional<Cozinha> cozinha = cozinhaRepository.findById(cozinhaId);
 
-        if (cozinha.isPresent()) {
-            return status(OK).body(cozinha.get());
-        }
+//        if (cozinha.isPresent()) {
+//            return status(OK).body(cozinha.get());
+//        }
+//
+//        return status(NOT_FOUND).build();
 
-        return status(NOT_FOUND).build();
+        return cozinha.map(value -> status(OK).body(value))
+                .orElseGet(() -> status(NOT_FOUND).build());
     }
 
     @PostMapping
