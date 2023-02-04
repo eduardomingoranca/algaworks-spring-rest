@@ -197,4 +197,8 @@ specification encapsula uma restricao e pode ser combinado com outras specificat
 se formando em uma combinacao de restricoes. Sendo criada em uma classe para obter os
 filtros das restricoes.
 
+AULA 5.20
 
+@NoRepositoryBean -> nao deve ser levada em conta para fim de instanciacao de um repositorio 
+pelo spring data jpa ou seja o spring data jpa nao deve instancia uma implementacao para essa ]
+interface.
