@@ -190,3 +190,11 @@ AULA 4.34
 Reflections -> eh a capacidade de inspecionar objetos
 java em tempo de execucao ate a alteracao desses objetos
 de forma dinamica.
+
+AULA 5.16
+
+specification encapsula uma restricao e pode ser combinado com outras specifications
+se formando em uma combinacao de restricoes. Sendo criada em uma classe para obter os
+filtros das restricoes.
+
+
