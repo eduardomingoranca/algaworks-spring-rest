@@ -14,10 +14,10 @@ public class Motoristas {
 
     public Motoristas() {
         Seguro seguro = new Seguro("Parcial - nao cobre roubo", new BigDecimal("5000"));
-        Caminhao caminhao = new Caminhao("Mercedes Atron", Optional.ofNullable(seguro));
-        Optional<Motorista> motoristaJuan = Optional.of(new Motorista("Juan", 40, Optional.ofNullable(caminhao)));
+        Caminhao caminhao = new Caminhao("Mercedes Atron", Optional.of(seguro));
+        Optional<Motorista> motoristaJuan = Optional.of(new Motorista("Juan", 40, Optional.of(caminhao)));
 
-        Optional<Motorista> motoristaJose = Optional.of(new Motorista("Jose", 25, Optional.ofNullable(null)));
+        Optional<Motorista> motoristaJose = Optional.of(new Motorista("Jose", 25, Optional.empty()));
 
         motoristas.put("Juan", motoristaJuan);
         motoristas.put("Jose", motoristaJose);

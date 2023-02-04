@@ -22,6 +22,8 @@ public class Main {
 //            }
 //        }
 
+//         map -> Optional<Optional<Object>>
+//         flatMap -> Optional<Object>
         String cobertura = motoristas.porNome("Juan")
                 .flatMap(Motorista::getCaminhao)
                 .flatMap(Caminhao::getSeguro)
