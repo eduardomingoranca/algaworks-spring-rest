@@ -215,3 +215,12 @@ uma entidade em si. E todas as propriedades dessa classe sao refletidas na tabel
 que incorpora essa classe.
 
 @Embedded -> anotacao que informa que a propridade dentro da entidade é de um tipo incorporado.
+
+AULA 6.6 
+
+@CreationTimestamp -> anotacao que atribui/informa que a propriedade anotada deve ser atribuida como uma
+data hora atual no momento em que a entidade for salva pela primeira vez. 
+
+@UpdateTimestamp -> anotacao que informa que a data hora atual deve ser atribuida a propriedade anotada sempre
+que a entidade for atualizada.
+
