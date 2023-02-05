@@ -55,7 +55,8 @@ public class RestauranteController {
             Optional<Restaurante> restauranteAtual = cadastroRestaurante.buscar(id);
 
             if (restauranteAtual.isPresent()) {
-                copyProperties(restaurante, restauranteAtual.get(), "id", "formasPagamento");
+                copyProperties(restaurante, restauranteAtual.get(), "id", "formasPagamento",
+                        "endereco");
                 Restaurante salvarRestaurante = cadastroRestaurante.salvar(restauranteAtual.get());
 
                 return status(OK).body(salvarRestaurante);
