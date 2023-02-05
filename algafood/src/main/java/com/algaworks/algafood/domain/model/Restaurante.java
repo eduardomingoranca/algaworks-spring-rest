@@ -31,6 +31,9 @@ public class Restaurante {
     @JoinColumn(name = "cozinha_id", nullable = false)
     private Cozinha cozinha;
 
+    @Embedded
+    private Endereco endereco;
+
     @JsonIgnore
     @ManyToMany
     // joinColumns -> define qual o nome da coluna da chave estrangeira da tabela intermediaria
