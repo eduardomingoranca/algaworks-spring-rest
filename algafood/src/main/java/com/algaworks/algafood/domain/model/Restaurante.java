@@ -1,7 +1,6 @@
 package com.algaworks.algafood.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
@@ -13,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.persistence.FetchType.EAGER;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -32,8 +32,7 @@ public class Restaurante {
     @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
 
-
-    @JsonIgnoreProperties("hibernateLazyInitializer")
+    @JsonIgnore
 //    alterando para carregamento lazy
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "cozinha_id", nullable = false)
@@ -54,7 +53,7 @@ public class Restaurante {
     private LocalDateTime dataAtualizacao;
 
     @JsonIgnore
-    @ManyToMany
+    @ManyToMany(fetch = EAGER)
 //     joinColumns -> define qual o nome da coluna da chave estrangeira da tabela intermediaria
     @JoinTable(name = "restaurante_forma_pagamento",
     joinColumns = @JoinColumn(name = "restaurante_id"),

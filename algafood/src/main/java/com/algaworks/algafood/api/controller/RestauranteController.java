@@ -28,9 +28,6 @@ public class RestauranteController {
     public ResponseEntity<List<Restaurante>> listar() {
         List<Restaurante> restaurantes = cadastroRestaurante.listar();
 
-        System.out.println("O nome da cozinha eh: ");
-        System.out.println(restaurantes.get(0).getCozinha().getNome());
-
         return status(OK).body(restaurantes);
     }
 
