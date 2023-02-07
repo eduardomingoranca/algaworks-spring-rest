@@ -28,18 +28,8 @@ public class RestauranteController {
     public ResponseEntity<List<Restaurante>> listar() {
         List<Restaurante> restaurantes = cadastroRestaurante.listar();
 
-        System.out.println(restaurantes.get(0).getNome());
-//         carregamento lazy loading sob demanda
-        restaurantes.get(0).getFormasPagamento()
-                .forEach(System.out::println);
-
-        System.out.println(restaurantes.get(1).getNome());
-        restaurantes.get(1).getFormasPagamento()
-                .forEach(System.out::println);
-
-        System.out.println(restaurantes.get(0).getNome());
-        restaurantes.get(0).getFormasPagamento()
-                .forEach(System.out::println);
+        System.out.println("O nome da cozinha eh: ");
+        System.out.println(restaurantes.get(0).getCozinha().getNome());
 
         return status(OK).body(restaurantes);
     }

@@ -231,7 +231,16 @@ normalmente por meio de Joins, trara todas as entidades relacionadas. Em certos 
 desnecessario, pois nem sempre quando se carrega uma entidade voce deseja ter carregado em memoria as entidades
 relacionadas. Todas as associacoes @*ToOne utilizam o Eager Loading.
 
+AULA 6.11
+
 Lazy Loading -> eh um carregamento preguicoso, quando voce executa uma consulta por uma certa entidade suas relacoes nao
 sao carregadas em memoria pela consulta inicial, no entanto, ao executar algum metodo que chama esses registros, sera 
 executada uma outra consulta para preencher essas entidades relacionadas. Todas as associacoes @*ToMany utilizam o Lazy 
 Loading.
+
+AULA 6.12
+
+A propria implementacao do JPA cria uma classe dinamicamente em tempo de execucao, a classe eh instanciada e atribuida a
+classe chamada, quando for lazy loading.
+
+
