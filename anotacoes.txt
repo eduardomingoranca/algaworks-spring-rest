@@ -259,7 +259,13 @@ AULA 7.2
 
 AB (ApacheBench) -> eh uma ferramenta para teste de desempenho de aplicacoes web.
 
-comandos terminal
+linhas de comando
 ab -n 6 -c 2  127.0.0.1:8080/restaurantes  ->  6 requisicoes com 2 requisicoes concorrentes: 2 2 2
 ab -n 2000 -c 2  127.0.0.1:8080/restaurantes  ->  2000 requisicoes com 2 requisicoes concorrentes
 ab -n 2000 -c 50  127.0.0.1:8080/restaurantes ->  2000 requisicoes com 50 requisicoes concorrentes
+
+AULA 7.3
+
+ab -n 2000 -c 50 127.0.0.1:8080/restaurantes -> 2000 requisicoes com 50 requisicoes concorrentes
+
+
