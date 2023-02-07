@@ -13,7 +13,7 @@ import static org.springframework.boot.WebApplicationType.NONE;
 public class BuscaCidadeMain {
 
     public static void main(String[] args) {
-        // configurando a aplicacao para nao web
+//         configurando a aplicacao para nao web
         ApplicationContext applicationContext = new SpringApplicationBuilder(AlgafoodApplication.class)
                 .web(NONE)
                 .run(args);

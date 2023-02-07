@@ -26,7 +26,22 @@ public class RestauranteController {
 
     @GetMapping
     public ResponseEntity<List<Restaurante>> listar() {
-        return status(OK).body(cadastroRestaurante.listar());
+        List<Restaurante> restaurantes = cadastroRestaurante.listar();
+
+        System.out.println(restaurantes.get(0).getNome());
+//         carregamento lazy loading sob demanda
+        restaurantes.get(0).getFormasPagamento()
+                .forEach(System.out::println);
+
+        System.out.println(restaurantes.get(1).getNome());
+        restaurantes.get(1).getFormasPagamento()
+                .forEach(System.out::println);
+
+        System.out.println(restaurantes.get(0).getNome());
+        restaurantes.get(0).getFormasPagamento()
+                .forEach(System.out::println);
+
+        return status(OK).body(restaurantes);
     }
 
     @GetMapping("/{restauranteId}")
@@ -82,23 +97,23 @@ public class RestauranteController {
         return status(NOT_FOUND).build();
     }
 
-    // mesclar os valores do map campos para dentro do restaurante atual
+//     mesclar os valores do map campos para dentro do restaurante atual
     private static void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino) {
-        // ObjectMapper -> class responsavel por converter objetos java em json e json em objetos java
+//         ObjectMapper -> class responsavel por converter objetos java em json e json em objetos java
         ObjectMapper objectMapper = new ObjectMapper();
         Restaurante restauranteOrigem = objectMapper.convertValue(dadosOrigem, Restaurante.class);
 
         dadosOrigem.forEach((nomePropriedade, valorPropriedade) -> {
-            // obtendo os campos de restaurante e informado no nome da propriedade informada
+//             obtendo os campos de restaurante e informado no nome da propriedade informada
             Field field = findField(Restaurante.class, nomePropriedade);
-            // acessando um atributo/metodo private
+//             acessando um atributo/metodo private
             assert field != null;
             field.setAccessible(true);
 
-            // obtendo o valor da propriedade convertido
+//             obtendo o valor da propriedade convertido
             Object novoValor = getField(field, restauranteOrigem);
 
-            // alterando o valor da variavel de instancia informada pelo valor da propriedade
+//             alterando o valor da variavel de instancia informada pelo valor da propriedade
             setField(field, restauranteDestino, novoValor);
         });
     }

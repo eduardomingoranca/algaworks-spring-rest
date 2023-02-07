@@ -226,8 +226,12 @@ que a entidade for atualizada.
 
 AULA 6.10
 
-Eager Loading -> Eh o Load(carregamento) aonde todas as classes relacionadas sao carregadas na mesma query. O ORM, 
-normalmente por meio de Joins, trara todas as entidades relacionadas. Todas as associacoes @*ToOne utilizam o Eager
-Loading. Em certos casos o Eager loading torna-se desnecessario, pois nem sempre quando se carrega uma entidade voce 
-deseja ter carregado em memoria as entidades relacionadas.
+Eager Loading -> eh o Load(carregamento) aonde todas as classes relacionadas sao carregadas na mesma query. O ORM, 
+normalmente por meio de Joins, trara todas as entidades relacionadas. Em certos casos o Eager loading torna-se 
+desnecessario, pois nem sempre quando se carrega uma entidade voce deseja ter carregado em memoria as entidades
+relacionadas. Todas as associacoes @*ToOne utilizam o Eager Loading.
 
+Lazy Loading -> eh um carregamento preguicoso, quando voce executa uma consulta por uma certa entidade suas relacoes nao
+sao carregadas em memoria pela consulta inicial, no entanto, ao executar algum metodo que chama esses registros, sera 
+executada uma outra consulta para preencher essas entidades relacionadas. Todas as associacoes @*ToMany utilizam o Lazy 
+Loading.

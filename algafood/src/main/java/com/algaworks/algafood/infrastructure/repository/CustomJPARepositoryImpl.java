@@ -19,16 +19,16 @@ public class CustomJPARepositoryImpl<T, ID> extends SimpleJpaRepository<T, ID>
 
     @Override
     public Optional<T> buscarPrimeiro() {
-        // getDomainClass -> retorna a classe da entidade
-        // from NomeDaClasse
+//         getDomainClass -> retorna a classe da entidade
+//         from NomeDaClasse
         var jpql = "from " + getDomainClass().getName();
 
-        // retona um resultado limitando o resultado em apenas um registro
+//         retona um resultado limitando o resultado em apenas um registro
         T entity = manager.createQuery(jpql, getDomainClass())
                 .setMaxResults(1)
                 .getSingleResult();
 
-        // pode ser um valor nulo.
+//         pode ser um valor nulo.
         return Optional.ofNullable(entity);
     }
 

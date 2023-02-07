@@ -67,7 +67,7 @@ public class CozinhaController {
         return status(NOT_FOUND).build();
     }
 
-    // DELETE /cozinhas/{id}  HTTP/1.1
+//     DELETE /cozinhas/{id}  HTTP/1.1
     @DeleteMapping("/{cozinhaId}")
     public ResponseEntity<?> remover(@PathVariable Long cozinhaId) {
         try {

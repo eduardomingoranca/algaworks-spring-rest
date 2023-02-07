@@ -29,7 +29,7 @@ public class Cozinha {
     @Column(nullable = false)
     private String nome;
 
-    // nao serializa a entidade restaurantes para json
+//     nao serializa a entidade restaurantes para json
     @JsonIgnore
     @OneToMany(mappedBy = "cozinha")
     private List<Restaurante> restaurantes = new ArrayList<>();
