@@ -243,4 +243,14 @@ AULA 6.12
 A propria implementacao do JPA cria uma classe dinamicamente em tempo de execucao, a classe eh instanciada e atribuida a
 classe chamada, quando for lazy loading.
 
+AULA 7.1
 
+Aplicacao sem pool de conexoes
+
+Requisicao 1 -> Aplicacao Web -> Banco de Dados
+
+Sempre que uma requisicao bater no servidor da aplicacao eh realizado uma conexao com o banco de dados.
+O pool de conexoes eh um componente de software que mantem um conjunto de conexoes com o banco de dados
+para a reutilizacao em uma aplicacao. Redizindo o tempo gasto na abertura e fechamento das conexoes.
+Quando as conexoes nao estao sendo utilizadas elas ficam no estado idle (ociosas) esperando uma conexao.
+Existe uma quantidade minima e maxima de conexoes que podem ser criadas. 
