@@ -1,0 +1,6 @@
+A maneira correta de se trabalhar com schemas eh atraves de versionamentos, com scripts de migracao de banco de dados.
+Flyway eh uma ferramenta para o gerenciamento de versionamento de schemas de banco de dados, ou seja, eh a automacao
+da criacao de schemas de versionamentos para cada alteracao. Essa ferramenta possui um historico de execucao de scripts 
+de migracao onde a ferramenta sabe qual foi a ultima versao de schema executado e executa a proxima versao.
+
+
