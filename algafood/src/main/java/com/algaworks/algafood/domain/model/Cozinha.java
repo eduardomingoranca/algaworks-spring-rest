@@ -29,9 +29,6 @@ public class Cozinha {
     @Column(nullable = false)
     private String nome;
 
-    @Column(name = "observacao", nullable = false)
-    private String descricao;
-
 //     nao serializa a entidade restaurantes para json
     @JsonIgnore
     @OneToMany(mappedBy = "cozinha")
