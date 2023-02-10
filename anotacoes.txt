@@ -268,4 +268,8 @@ AULA 7.3
 
 ab -n 2000 -c 50 127.0.0.1:8080/restaurantes -> 2000 requisicoes com 50 requisicoes concorrentes
 
+AULA 7.8
+
+select distinct nome_da_coluna from nome_da_tabela -> retorna valores distintos, ou seja, valores unicos 
+nao repetidos.
 
