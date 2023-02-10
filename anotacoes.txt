@@ -273,3 +273,8 @@ AULA 7.8
 select distinct nome_da_coluna from nome_da_tabela -> retorna valores distintos, ou seja, valores unicos 
 nao repetidos.
 
+AULA 7.11
+
+./mvnw flyway:repair -> flyway repara os erros de sql
+./mvnw flyway:repair -Dflyway.configFiles=src/main/resources/flyway.properties -> flyway repara os erros de sql com
+as configuracoes do properties.
