@@ -48,6 +48,7 @@ public class Restaurante {
     @Column(nullable = false, columnDefinition = "datetime")
     private LocalDateTime dataAtualizacao;
 
+    @JsonIgnore
     @ManyToMany
 //     joinColumns -> define qual o nome da coluna da chave estrangeira da tabela intermediaria
     @JoinTable(name = "restaurante_forma_pagamento",
