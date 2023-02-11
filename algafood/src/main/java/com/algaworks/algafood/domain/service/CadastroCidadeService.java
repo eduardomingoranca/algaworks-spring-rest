@@ -12,7 +12,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 import static java.lang.String.format;
 
@@ -27,25 +26,21 @@ public class CadastroCidadeService {
     @Autowired
     private EstadoRepository estadoRepository;
 
+    @Autowired
+    private CadastroEstadoService cadastroEstado;
+
     public List<Cidade> listar() {
         return cidadeRepository.findAll();
     }
 
     public Cidade salvar(Cidade cidade) {
         Long id = cidade.getEstado().getId();
-        Optional<Estado> estado = estadoRepository.findById(id);
 
-        if (estado.isEmpty())
-            throw new EntidadeNaoEncontradaException(
-                    format(MSG_CIDADE_NAO_ENCONTRADA, id));
+        Estado estado = cadastroEstado.buscarOuFalhar(id);
 
-        cidade.setEstado(estado.get());
+        cidade.setEstado(estado);
 
         return cidadeRepository.save(cidade);
-    }
-
-    public Optional<Cidade> buscar(Long id) {
-        return cidadeRepository.findById(id);
     }
 
     public void excluir(Long id) {

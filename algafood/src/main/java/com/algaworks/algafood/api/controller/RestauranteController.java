@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.springframework.beans.BeanUtils.copyProperties;
+import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.ResponseEntity.status;
 import static org.springframework.util.ReflectionUtils.*;
@@ -35,6 +36,7 @@ public class RestauranteController {
     }
 
     @PostMapping
+    @ResponseStatus(CREATED)
     public Restaurante adicionar(@RequestBody Restaurante restaurante) {
         return cadastroRestaurante.salvar(restaurante);
     }

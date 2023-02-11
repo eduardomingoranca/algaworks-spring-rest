@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 import static java.lang.String.format;
 
@@ -23,12 +22,13 @@ public class CadastroRestauranteService {
     @Autowired
     private CozinhaRepository cozinhaRepository;
 
+    @Autowired
+    private CadastroCozinhaService cadastroCozinha;
+
     public Restaurante salvar(Restaurante restaurante) {
         Long cozinhaID = restaurante.getCozinha().getId();
-//         caso nao exista uma cozinha lanca exception
-        Cozinha cozinha = cozinhaRepository.findById(cozinhaID)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(
-                        format(MSG_COZINHA_NAO_ENCONTRADA, cozinhaID)));
+
+        Cozinha cozinha = cadastroCozinha.buscarOuFalhar(cozinhaID);
 
         restaurante.setCozinha(cozinha);
 
@@ -37,10 +37,6 @@ public class CadastroRestauranteService {
 
     public List<Restaurante> listar() {
         return restauranteRepository.findAll();
-    }
-
-    public Optional<Restaurante> buscar(Long restauranteId) {
-        return restauranteRepository.findById(restauranteId);
     }
 
     public Restaurante buscarOuFalhar(Long id) {

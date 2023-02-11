@@ -10,7 +10,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 import static java.lang.String.format;
 
@@ -28,10 +27,6 @@ public class CadastroEstadoService {
 
     public Estado salvar(Estado estado) {
         return estadoRepository.save(estado);
-    }
-
-    public Optional<Estado> buscar(Long id) {
-        return estadoRepository.findById(id);
     }
 
     public void excluir(Long id) {
