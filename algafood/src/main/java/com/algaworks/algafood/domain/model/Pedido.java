@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Data
@@ -60,8 +61,24 @@ public class Pedido {
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario cliente;
 
-    @Embedded
-    private Endereco enderecoEntrega;
+    @Column(name = "endereco_cep", nullable = false)
+    private String cep;
+
+    @Column(name = "endereco_logradouro", nullable = false)
+    private String logradouro;
+
+    @Column(name = "endereco_numero", nullable = false)
+    private String numero;
+
+    @Column(name = "endereco_complemento")
+    private String complemento;
+
+    @Column(name = "endereco_bairro", nullable = false)
+    private String bairro;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "endereco_cidade_id", nullable = false)
+    private Cidade cidade;
 
     @OneToMany(mappedBy = "pedido")
     private List<ItemPedido> itens = new ArrayList<>();

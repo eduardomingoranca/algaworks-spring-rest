@@ -18,6 +18,9 @@ import static java.lang.String.format;
 
 @Service
 public class CadastroCidadeService {
+    public static final String MSG_CIDADE_NAO_ENCONTRADA = "Nao existe um cadastro de cidade com codigo %d";
+    public static final String MSG_CIDADE_EM_USO = "Cidade de codigo %d nao pode ser removida, pois esta em uso";
+
     @Autowired
     private CidadeRepository cidadeRepository;
 
@@ -34,7 +37,7 @@ public class CadastroCidadeService {
 
         if (estado.isEmpty())
             throw new EntidadeNaoEncontradaException(
-                    format("Nao existe cadastro de cidade com codigo %d", id));
+                    format(MSG_CIDADE_NAO_ENCONTRADA, id));
 
         cidade.setEstado(estado.get());
 
@@ -51,11 +54,17 @@ public class CadastroCidadeService {
 
         } catch (EmptyResultDataAccessException e) {
             throw new EntidadeNaoEncontradaException(
-                    format("Nao existe um cadastro de cidade com codigo %d", id));
+                    format(MSG_CIDADE_NAO_ENCONTRADA, id));
         } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(
-                    format("Cidade de codigo %d nao pode ser removida, pois esta em uso", id));
+                    format(MSG_CIDADE_EM_USO, id));
         }
+    }
+
+    public Cidade buscarOuFalhar(Long id) {
+        return cidadeRepository.findById(id)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(
+                        format(MSG_CIDADE_NAO_ENCONTRADA, id)));
     }
 
 }

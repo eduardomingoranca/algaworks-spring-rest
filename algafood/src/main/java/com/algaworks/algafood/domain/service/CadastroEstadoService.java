@@ -16,6 +16,9 @@ import static java.lang.String.format;
 
 @Service
 public class CadastroEstadoService {
+    public static final String MSG_ESTADO_NAO_ENCONTRADO = "Nao existe um cadastro de estado com codigo %d";
+    public static final String MSG_ESTADO_EM_USO = "Estado de codigo %d nao pode ser removido, pois esta em uso";
+
     @Autowired
     private EstadoRepository estadoRepository;
 
@@ -37,11 +40,17 @@ public class CadastroEstadoService {
 
         } catch (EmptyResultDataAccessException e) {
             throw new EntidadeNaoEncontradaException(
-                    format("Nao existe um cadastro de estado com codigo %d", id));
+                    format(MSG_ESTADO_NAO_ENCONTRADO, id));
         } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(
-                    format("Estado de codigo %d nao pode ser removido, pois esta em uso", id));
+                    format(MSG_ESTADO_EM_USO, id));
         }
+    }
+
+    public Estado buscarOuFalhar(Long id) {
+        return estadoRepository.findById(id)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(
+                        format(MSG_ESTADO_NAO_ENCONTRADO, id)));
     }
 
 }

@@ -15,6 +15,7 @@ import static java.lang.String.format;
 
 @Service
 public class CadastroRestauranteService {
+    public static final String MSG_COZINHA_NAO_ENCONTRADA = "Nao existe cadastro de cozinha com codigo %d";
 
     @Autowired
     private RestauranteRepository restauranteRepository;
@@ -27,7 +28,7 @@ public class CadastroRestauranteService {
 //         caso nao exista uma cozinha lanca exception
         Cozinha cozinha = cozinhaRepository.findById(cozinhaID)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException(
-                        format("Nao existe cadastro de cozinha com codigo %d", cozinhaID)));
+                        format(MSG_COZINHA_NAO_ENCONTRADA, cozinhaID)));
 
         restaurante.setCozinha(cozinha);
 
@@ -40,6 +41,12 @@ public class CadastroRestauranteService {
 
     public Optional<Restaurante> buscar(Long restauranteId) {
         return restauranteRepository.findById(restauranteId);
+    }
+
+    public Restaurante buscarOuFalhar(Long id) {
+        return restauranteRepository.findById(id)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(
+                        format(MSG_COZINHA_NAO_ENCONTRADA, id)));
     }
 
 }
