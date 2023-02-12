@@ -11,24 +11,31 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import static java.time.LocalDateTime.now;
+import static com.algaworks.algafood.api.exceptionhandler.ProblemType.ENTIDADE_NAO_ENCONTRADA;
 import static org.springframework.http.HttpStatus.*;
 
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(EntidadeNaoEncontradaException.class)
-    public ResponseEntity<Object> tratarEntidadeNaoEncontradaException(EntidadeNaoEncontradaException e,
+    public ResponseEntity<Object> handleEntidadeNaoEncontradaException(EntidadeNaoEncontradaException e,
                                                                        WebRequest request) {
-        return handleExceptionInternal(e, e.getMessage(), new HttpHeaders(), NOT_FOUND, request);
+        HttpStatus status = NOT_FOUND;
+        ProblemType problemType = ENTIDADE_NAO_ENCONTRADA;
+        String detail = e.getMessage();
+
+        Problem problem = createProblemBuilder(status, problemType, detail)
+                .build();
+
+        return handleExceptionInternal(e, problem, new HttpHeaders(), status, request);
     }
 
     @ExceptionHandler(NegocioException.class)
-    public ResponseEntity<Object> tratarNegocioException(NegocioException e, WebRequest request) {
+    public ResponseEntity<Object> handleNegocioException(NegocioException e, WebRequest request) {
         return handleExceptionInternal(e, e.getMessage(), new HttpHeaders(), BAD_REQUEST, request);
     }
 
     @ExceptionHandler(EntidadeEmUsoException.class)
-    public ResponseEntity<Object> tratarEntidadeEmUsoException(EntidadeEmUsoException e, WebRequest request) {
+    public ResponseEntity<Object> handleEntidadeEmUsoException(EntidadeEmUsoException e, WebRequest request) {
         return handleExceptionInternal(e, e.getMessage(), new HttpHeaders(), CONFLICT, request);
     }
 
@@ -37,18 +44,27 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                                                              HttpStatus status, WebRequest request) {
 
         if (body == null) {
-            body = Problema.builder()
-                    .dataHora(now())
-                    .mensagem(status.getReasonPhrase()) // ReasonPhrase -> descreve o status que esta sendo retornado
+            body = Problem.builder()
+                    .title(status.getReasonPhrase()) // ReasonPhrase -> descreve o status que esta sendo retornado
+                    .status(status.value())
                     .build();
         } else if (body instanceof String) {
-            body = Problema.builder()
-                    .dataHora(now())
-                    .mensagem((String) body)
+            body = Problem.builder()
+                    .title((String) body)
+                    .status(status.value())
                     .build();
         }
 
         return super.handleExceptionInternal(ex, body, headers, status, request);
     }
 
+    // criando um builder
+    private Problem.ProblemBuilder createProblemBuilder(HttpStatus status, ProblemType problemType,
+                                                        String detail) {
+        return Problem.builder()
+                .status(status.value())
+                .type(problemType.getUri())
+                .title(problemType.getTitle())
+                .detail(detail);
+    }
 }
