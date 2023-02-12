@@ -1,5 +1,7 @@
 package com.algaworks.algafood.api.controller;
 
+import com.algaworks.algafood.api.exceptionhandler.Problema;
+import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.EstadoNaoEncontradoException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Cidade;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.springframework.beans.BeanUtils.copyProperties;
@@ -26,6 +29,11 @@ public class CidadeController {
         return status(OK).body(cidades);
     }
 
+    @GetMapping("/{cidadeId}")
+    public Cidade buscar(@PathVariable("cidadeId") Long id) {
+        return cadastroCidade.buscarOuFalhar(id);
+    }
+
     @PostMapping
     @ResponseStatus(CREATED)
     public Cidade adicionar(@RequestBody Cidade cidade) {
@@ -36,8 +44,8 @@ public class CidadeController {
         }
     }
 
-    @PutMapping("/{cidadeID}")
-    public Cidade atualizar(@PathVariable("cidadeID") Long id, @RequestBody Cidade cidade) {
+    @PutMapping("/{cidadeId}")
+    public Cidade atualizar(@PathVariable("cidadeId") Long id, @RequestBody Cidade cidade) {
         try {
             Cidade cidadeAtual = cadastroCidade.buscarOuFalhar(id);
             copyProperties(cidade, cidadeAtual, "id");
@@ -48,10 +56,32 @@ public class CidadeController {
         }
     }
 
-    @DeleteMapping("/{cidadeID}")
+    @DeleteMapping("/{cidadeId}")
     @ResponseStatus(NO_CONTENT)
-    public void remover(@PathVariable("cidadeID") Long id) {
+    public void remover(@PathVariable("cidadeId") Long id) {
         cadastroCidade.excluir(id);
+    }
+
+    // metodo responsavel por tratar e capturar exceptions do proprio controller
+    // ExceptionHandler -> informa a classe que sera tratada a exception
+    @ExceptionHandler(EntidadeNaoEncontradaException.class)
+    public ResponseEntity<Object> tratarEntidadeNaoEncontradaException(EntidadeNaoEncontradaException e) {
+        Problema problema = Problema.builder()
+                .dataHora(LocalDateTime.now())
+                .mensagem(e.getMessage())
+                .build();
+
+        return status(NOT_FOUND).body(problema);
+    }
+
+    @ExceptionHandler(NegocioException.class)
+    public ResponseEntity<Object> tratarNegocioException(NegocioException e) {
+        Problema problema = Problema.builder()
+                .dataHora(LocalDateTime.now())
+                .mensagem(e.getMessage())
+                .build();
+
+        return status(BAD_REQUEST).body(problema);
     }
 
 }
