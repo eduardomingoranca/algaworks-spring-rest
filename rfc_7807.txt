@@ -1,0 +1,10 @@
+IETF [Internet Engineering Task Force] -> eh uma instituicao que especifica padroes que serao
+usados e implementados na internet.
+
+RFC 7807 Problem Details for HTTP APIs -> eh um especificacao que padroniza o formato do corpo de resposta 
+com os detalhes do erro.
+
+Beneficios
+-> Formato unico para descrever erros na API de forma que o consumidor possa entender o que
+aconteceu lendo a resposta com o erro e tomar uma decisao, seja corrigindo a chamada da API
+ou mostrando uma mensagem de erro para o usuario.
