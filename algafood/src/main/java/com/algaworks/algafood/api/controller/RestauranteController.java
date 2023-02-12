@@ -1,6 +1,6 @@
 package com.algaworks.algafood.api.controller;
 
-import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
+import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
@@ -42,21 +42,21 @@ public class RestauranteController {
     public Restaurante adicionar(@RequestBody Restaurante restaurante) {
         try {
             return cadastroRestaurante.salvar(restaurante);
-        } catch (EntidadeNaoEncontradaException e) {
-            throw new NegocioException(e.getMessage());
+        } catch (CozinhaNaoEncontradaException e) {
+            throw new NegocioException(e.getMessage(), e);
         }
     }
 
     @PutMapping("/{restauranteId}")
     public Restaurante atualizar(@PathVariable("restauranteId") Long id, @RequestBody Restaurante restaurante) {
-        Restaurante restauranteAtual = cadastroRestaurante.buscarOuFalhar(id);
-        copyProperties(restaurante, restauranteAtual, "id", "formasPagamento",
-                "endereco", "dataCadastro", "produtos");
-
         try {
+            Restaurante restauranteAtual = cadastroRestaurante.buscarOuFalhar(id);
+            copyProperties(restaurante, restauranteAtual, "id", "formasPagamento",
+                    "endereco", "dataCadastro", "produtos");
+
             return cadastroRestaurante.salvar(restauranteAtual);
-        } catch (EntidadeNaoEncontradaException e) {
-            throw new NegocioException(e.getMessage());
+        } catch (CozinhaNaoEncontradaException e) {
+            throw new NegocioException(e.getMessage(), e);
         }
     }
 

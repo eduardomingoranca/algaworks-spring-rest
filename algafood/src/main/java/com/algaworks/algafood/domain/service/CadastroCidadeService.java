@@ -1,7 +1,7 @@
 package com.algaworks.algafood.domain.service;
 
+import com.algaworks.algafood.domain.exception.CidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
-import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.repository.CidadeRepository;
@@ -17,7 +17,6 @@ import static java.lang.String.format;
 
 @Service
 public class CadastroCidadeService {
-    public static final String MSG_CIDADE_NAO_ENCONTRADA = "Nao existe um cadastro de cidade com codigo %d";
     public static final String MSG_CIDADE_EM_USO = "Cidade de codigo %d nao pode ser removida, pois esta em uso";
 
     @Autowired
@@ -48,8 +47,7 @@ public class CadastroCidadeService {
             cidadeRepository.deleteById(id);
 
         } catch (EmptyResultDataAccessException e) {
-            throw new EntidadeNaoEncontradaException(
-                    format(MSG_CIDADE_NAO_ENCONTRADA, id));
+            throw new CidadeNaoEncontradaException(id);
         } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(
                     format(MSG_CIDADE_EM_USO, id));
@@ -58,8 +56,7 @@ public class CadastroCidadeService {
 
     public Cidade buscarOuFalhar(Long id) {
         return cidadeRepository.findById(id)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(
-                        format(MSG_CIDADE_NAO_ENCONTRADA, id)));
+                .orElseThrow(() -> new CidadeNaoEncontradaException(id));
     }
 
 }
