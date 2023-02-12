@@ -13,12 +13,8 @@ import java.time.LocalDateTime;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.ResponseEntity.status;
 
-// @ControllerAdvice -> anotacao informa que dentro deste componente pode-se adicionar
-// as exception handler que as exceptions que todos os controllers do projeto serao tratadas por aqui.
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
-    // metodo responsavel por tratar e capturar exceptions dos controllers
-    // ExceptionHandler -> informa a classe e excecao que tera o tratamento e o retorno.
     @ExceptionHandler(EntidadeNaoEncontradaException.class)
     public ResponseEntity<Object> tratarEntidadeNaoEncontradaException(EntidadeNaoEncontradaException e) {
         Problema problema = Problema.builder()

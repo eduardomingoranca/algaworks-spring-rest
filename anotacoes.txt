@@ -279,6 +279,14 @@ AULA 7.11
 ./mvnw flyway:repair -Dflyway.configFiles=src/main/resources/flyway.properties -> flyway repara os erros de sql com
 as configuracoes do properties.
 
+AULA 8.14 
+
+@ControllerAdvice -> anotacao informa que dentro deste componente spring pode-se adicionar
+as exception handlers em que todos os controllers do projeto possui serao tratadas por aqui.
+
+@ExceptionHandler -> anotacao que informa a classe e excecao que tera o tratamento e o retorno,
+eh criado um metodo responsavel por tratar e capturar exceptions dos controllers.
+
 AULA 8.15
 
 ResponseEntityExceptionHandler eh um classe de conveniencia para classes de exception handler 
