@@ -291,3 +291,9 @@ AULA 8.15
 
 ResponseEntityExceptionHandler eh um classe de conveniencia para classes de exception handler 
 globais que tem um implementacao padrao para as exceptions que sao internas do spring mvc.
+
+AULA 8.21
+
+commons lang -> projeto apache, uma biblioteca que oferece varios metodos utilitarios para 
+trabalhar de uma maneira simplificada com strings, numeros, exceptions e etc.
+
