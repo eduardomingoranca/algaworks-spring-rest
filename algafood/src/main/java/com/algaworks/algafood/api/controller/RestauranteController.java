@@ -4,15 +4,22 @@ import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 
+import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES;
+import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
+import static org.apache.commons.lang3.exception.ExceptionUtils.getRootCause;
 import static org.springframework.beans.BeanUtils.copyProperties;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
@@ -61,32 +68,46 @@ public class RestauranteController {
     }
 
     @PatchMapping("/{restauranteId}")
-    public Restaurante atualizarParcial(@PathVariable("restauranteId") Long id, @RequestBody Map<String, Object> campos) {
+    public Restaurante atualizarParcial(@PathVariable("restauranteId") Long id,
+                                        @RequestBody Map<String, Object> campos, HttpServletRequest request) {
         Restaurante restauranteAtual = cadastroRestaurante.buscarOuFalhar(id);
-        merge(campos, restauranteAtual);
+        merge(campos, restauranteAtual, request);
 
         return atualizar(id, restauranteAtual);
     }
 
 //     mesclar os valores do map campos para dentro do restaurante atual
-    private static void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino) {
-//         ObjectMapper -> class responsavel por converter objetos java em json e json em objetos java
-        ObjectMapper objectMapper = new ObjectMapper();
-        Restaurante restauranteOrigem = objectMapper.convertValue(dadosOrigem, Restaurante.class);
+    private static void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino,
+                              HttpServletRequest request) {
+        ServletServerHttpRequest serverHttpRequest  = new ServletServerHttpRequest(request);
 
-        dadosOrigem.forEach((nomePropriedade, valorPropriedade) -> {
+        try {
+//         ObjectMapper -> class responsavel por converter objetos java em json e json em objetos java
+            ObjectMapper objectMapper = new ObjectMapper();
+//        configurando o object mapper para quando uma propriedade for invalida
+            objectMapper.configure(FAIL_ON_IGNORED_PROPERTIES, true);
+            objectMapper.configure(FAIL_ON_UNKNOWN_PROPERTIES, true);
+
+            Restaurante restauranteOrigem = objectMapper.convertValue(dadosOrigem, Restaurante.class);
+
+            dadosOrigem.forEach((nomePropriedade, valorPropriedade) -> {
 //             obtendo os campos de restaurante e informado no nome da propriedade informada
-            Field field = findField(Restaurante.class, nomePropriedade);
+                Field field = findField(Restaurante.class, nomePropriedade);
 //             acessando um atributo/metodo private
-            assert field != null;
-            field.setAccessible(true);
+                assert field != null;
+                field.setAccessible(true);
 
 //             obtendo o valor da propriedade convertido
-            Object novoValor = getField(field, restauranteOrigem);
+                Object novoValor = getField(field, restauranteOrigem);
 
 //             alterando o valor da variavel de instancia informada pelo valor da propriedade
-            setField(field, restauranteDestino, novoValor);
-        });
+                setField(field, restauranteDestino, novoValor);
+            });
+        } catch (IllegalArgumentException e) {
+//            capturando IllegalArgumentException e relanca a exception HttpMessageNotReadableException
+            Throwable rootCause = getRootCause(e);
+            throw new HttpMessageNotReadableException(e.getMessage(), rootCause, serverHttpRequest);
+        }
     }
 
 }
