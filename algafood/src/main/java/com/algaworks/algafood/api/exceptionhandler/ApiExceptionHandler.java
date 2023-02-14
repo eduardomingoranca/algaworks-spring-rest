@@ -5,6 +5,7 @@ import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         if (rootCause instanceof InvalidFormatException)
             return handleInvalidFormatException((InvalidFormatException) rootCause, headers, status, request);
+        else if (rootCause instanceof PropertyBindingException)
+            return handlePropertyBindingException((PropertyBindingException) rootCause, headers, status, request);
 
         String detail = "O corpo da requisicao esta invalido. Verifique erro de sintaxe.";
 
@@ -51,6 +54,23 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         String detail = format("A propriedade '%s' recebeu o valor '%s', " +
                 "que eh de um tipo invalido. Corrija e informe um valor compativel com o tipo %s.",
                 path, ex.getValue(), ex.getTargetType().getSimpleName());
+
+        Problem problem = createProblemBuilder(status, MENSAGEM_INCOMPREENSIVEL, detail)
+                .build();
+
+        return handleExceptionInternal(ex, problem, headers, status, request);
+    }
+
+    protected ResponseEntity<Object> handlePropertyBindingException(PropertyBindingException ex, HttpHeaders headers,
+                                                                    HttpStatus status, WebRequest request) {
+        // obtendo o campo informado erronemente
+        String path = ex.getPath().stream()
+                .map(JsonMappingException.Reference::getFieldName)
+                .collect(joining("."));
+
+        String detail = format("A propriedade %s do tipo %s esta invalida. " +
+                        "Por favor corrija e informe uma propriedade valida.",
+                path, ex.getReferringClass().getSimpleName());
 
         Problem problem = createProblemBuilder(status, MENSAGEM_INCOMPREENSIVEL, detail)
                 .build();
