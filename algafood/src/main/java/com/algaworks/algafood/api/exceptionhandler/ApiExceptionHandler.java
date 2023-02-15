@@ -6,6 +6,7 @@ import com.algaworks.algafood.domain.exception.NegocioException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
+import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,10 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import java.util.Objects;
 
 import static com.algaworks.algafood.api.exceptionhandler.ProblemType.*;
 import static java.lang.String.format;
@@ -34,6 +38,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             return handleInvalidFormatException((InvalidFormatException) rootCause, headers, status, request);
         else if (rootCause instanceof PropertyBindingException)
             return handlePropertyBindingException((PropertyBindingException) rootCause, headers, status, request);
+        else if (rootCause instanceof TypeMismatchException)
+            return handleTypeMismatch((TypeMismatchException) rootCause, headers, status, request);
 
         String detail = "O corpo da requisicao esta invalido. Verifique erro de sintaxe.";
 
@@ -52,7 +58,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .collect(joining("."));
 
         String detail = format("A propriedade '%s' recebeu o valor '%s', " +
-                "que eh de um tipo invalido. Corrija e informe um valor compativel com o tipo %s.",
+                        "que eh de um tipo invalido. Corrija e informe um valor compativel com o tipo %s.",
                 path, ex.getValue(), ex.getTargetType().getSimpleName());
 
         Problem problem = createProblemBuilder(status, MENSAGEM_INCOMPREENSIVEL, detail)
@@ -62,7 +68,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     private ResponseEntity<Object> handlePropertyBindingException(PropertyBindingException ex, HttpHeaders headers,
-                                                                    HttpStatus status, WebRequest request) {
+                                                                  HttpStatus status, WebRequest request) {
         // obtendo o campo informado erronemente
         String path = ex.getPath().stream()
                 .map(JsonMappingException.Reference::getFieldName)
@@ -76,6 +82,26 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .build();
 
         return handleExceptionInternal(ex, problem, headers, status, request);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex, HttpHeaders headers,
+                                                        HttpStatus status, WebRequest request) {
+
+        if (ex instanceof MethodArgumentTypeMismatchException) {
+            String path = ((MethodArgumentTypeMismatchException) ex).getName();
+
+            String detail = format("O parametro de URL %s recebeu o valor %s, que eh de um tipo invalido. " +
+                            "Corrija e informe um valor compativel com o tipo %s.",
+                    path, ex.getValue(), Objects.requireNonNull(ex.getRequiredType()).getSimpleName());
+
+            Problem problem = createProblemBuilder(status, PARAMETRO_INVALIDO, detail)
+                    .build();
+
+            return handleExceptionInternal(ex, problem, headers, status, request);
+        }
+
+        return super.handleTypeMismatch(ex, headers, status, request);
     }
 
     @ExceptionHandler(EntidadeNaoEncontradaException.class)
