@@ -11,10 +11,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.Objects;
@@ -40,6 +42,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             return handlePropertyBindingException((PropertyBindingException) rootCause, headers, status, request);
         else if (rootCause instanceof TypeMismatchException)
             return handleTypeMismatch((TypeMismatchException) rootCause, headers, status, request);
+        else if (rootCause instanceof NoHandlerFoundException)
+            return handleNoHandlerFoundException((NoHandlerFoundException) rootCause, headers, status, request);
 
         String detail = "O corpo da requisicao esta invalido. Verifique erro de sintaxe.";
 
@@ -104,6 +108,20 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return super.handleTypeMismatch(ex, headers, status, request);
     }
 
+    @Override
+    protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers,
+                                                                   HttpStatus status, WebRequest request) {
+        String path = ex.getRequestURL();
+
+        String detail = format("O recurso %s, que voce tentou acessar, eh inexistente.",
+                path);
+
+        Problem problem = createProblemBuilder(status, RECURSO_NAO_ENCONTRADO, detail)
+                .build();
+
+        return this.handleExceptionInternal(ex, problem, headers, status, request);
+    }
+
     @ExceptionHandler(EntidadeNaoEncontradaException.class)
     public ResponseEntity<Object> handleEntidadeNaoEncontradaException(EntidadeNaoEncontradaException e,
                                                                        WebRequest request) {
@@ -111,7 +129,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 //        ProblemType problemType = ENTIDADE_NAO_ENCONTRADA;
         String detail = e.getMessage();
 
-        Problem problem = createProblemBuilder(status, ENTIDADE_NAO_ENCONTRADA, detail)
+        Problem problem = createProblemBuilder(status, RECURSO_NAO_ENCONTRADO, detail)
                 .build();
 
         return handleExceptionInternal(e, problem, new HttpHeaders(), status, request);
@@ -122,7 +140,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         HttpStatus status = BAD_REQUEST;
         String detail = e.getMessage();
 
-        Problem problem = createProblemBuilder(status, EXCEPTION_DE_NEGOCIO, detail)
+        Problem problem = createProblemBuilder(status, ERR0_NEGOCIO, detail)
                 .build();
 
         return handleExceptionInternal(e, problem, new HttpHeaders(), status, request);
