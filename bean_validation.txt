@@ -1,0 +1,9 @@
+Quando se recebe entrada de dados dos usuarios eh muito importante validar esses dados para garantir que esses dados
+estejam conforme nos esperamos, para validar os dados em uma rest api desenvolvida com java pode-se usar a especificacao
+Bean.
+
+O que eh Bean Validation?
+Bean Validation eh uma especificacao que faz parte do JEE e tem como objetivo facilitar a validacao de propriedades
+em objetos java.
+
+ 
