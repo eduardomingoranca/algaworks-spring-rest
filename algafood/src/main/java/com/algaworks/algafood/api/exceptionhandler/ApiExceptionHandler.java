@@ -11,6 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -19,7 +20,10 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static com.algaworks.algafood.api.exceptionhandler.ProblemType.*;
 import static java.lang.String.format;
@@ -139,7 +143,19 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         String detail = "Um ou mais campos estao invalidos. Faca o preenchimento correto e " +
                 "tente novamente.";
 
+//        BindingResult -> armazena as violacoes de constraints de validacao, ou seja,
+//        dentro dessa classe pode-se ter o acesso a quais fields/propriedades foram violadas
+        BindingResult bindingResult = ex.getBindingResult();
+
+//        construindo o response para as propriedades violadas.
+        List<Problem.Field> problemFields = bindingResult.getFieldErrors()
+                .stream().map(fieldError -> Problem.Field.builder()
+                        .name(fieldError.getField())
+                        .userMessage(fieldError.getDefaultMessage())
+                        .build()).collect(Collectors.toList());
+
         Problem problem = createProblemBuilder(status, DADOS_INVALIDOS, detail, detail)
+                .fields(problemFields)
                 .build();
 
         return this.handleExceptionInternal(ex, problem, headers, status, request);
