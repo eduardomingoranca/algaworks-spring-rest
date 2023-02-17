@@ -12,6 +12,7 @@ import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
@@ -43,9 +44,10 @@ public class RestauranteController {
         return cadastroRestaurante.buscarOuFalhar(id);
     }
 
+//     @Valid -> anotacao valida a entrada de dados na instancia da classe antes de executar o metodo.
     @PostMapping
     @ResponseStatus(CREATED)
-    public Restaurante adicionar(@RequestBody Restaurante restaurante) {
+    public Restaurante adicionar(@RequestBody @Valid Restaurante restaurante) {
         try {
             return cadastroRestaurante.salvar(restaurante);
         } catch (CozinhaNaoEncontradaException e) {
