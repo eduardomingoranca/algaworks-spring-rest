@@ -21,4 +21,7 @@ public class Problem {
 
     // detail -> descricao especifica sobre a ocorrencia do erro.
     private String detail;
+
+
+    private String userMessage;
 }

@@ -28,6 +28,10 @@ import static org.springframework.http.HttpStatus.*;
 
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
+
+    public static final String MSG_ERRO_GENERICA_USUARIO_FINAL = "Ocorreu um erro interno inesperado no sistema. " +
+            "Tente novamente e se o problema persistir, entre em contato com o administrador do sistema.";
+
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
                                                                   HttpHeaders headers, HttpStatus status,
@@ -65,6 +69,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 path, ex.getValue(), ex.getTargetType().getSimpleName());
 
         Problem problem = createProblemBuilder(status, MENSAGEM_INCOMPREENSIVEL, detail)
+                .userMessage(MSG_ERRO_GENERICA_USUARIO_FINAL)
                 .build();
 
         return handleExceptionInternal(ex, problem, headers, status, request);
@@ -82,6 +87,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 path, ex.getReferringClass().getSimpleName());
 
         Problem problem = createProblemBuilder(status, MENSAGEM_INCOMPREENSIVEL, detail)
+                .userMessage(MSG_ERRO_GENERICA_USUARIO_FINAL)
                 .build();
 
         return handleExceptionInternal(ex, problem, headers, status, request);
@@ -151,6 +157,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         String detail = e.getMessage();
 
         Problem problem = createProblemBuilder(status, ENTIDADE_EM_USO, detail)
+                .userMessage(detail)
                 .build();
 
         return handleExceptionInternal(e, problem, new HttpHeaders(), status, request);
@@ -160,10 +167,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleOtherException(Exception ex, WebRequest request) {
         HttpStatus status = INTERNAL_SERVER_ERROR;
 
-        String detail = "Ocorreu um erro interno inesperado no sistema. Tente novamente e se o " +
-                "problema persistir, entre em contato com o administrador do sistema.";
-
-        Problem problem = createProblemBuilder(status, ERRO_DE_SISTEMA, detail)
+        Problem problem = createProblemBuilder(status, ERRO_DE_SISTEMA, MSG_ERRO_GENERICA_USUARIO_FINAL)
                 .build();
 
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
