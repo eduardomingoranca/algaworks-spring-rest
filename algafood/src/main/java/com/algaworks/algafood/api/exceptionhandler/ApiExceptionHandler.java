@@ -11,7 +11,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -140,7 +139,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         HttpStatus status = BAD_REQUEST;
         String detail = e.getMessage();
 
-        Problem problem = createProblemBuilder(status, ERR0_NEGOCIO, detail)
+        Problem problem = createProblemBuilder(status, ERRO_NEGOCIO, detail)
                 .build();
 
         return handleExceptionInternal(e, problem, new HttpHeaders(), status, request);
@@ -155,6 +154,19 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .build();
 
         return handleExceptionInternal(e, problem, new HttpHeaders(), status, request);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Object> handleOtherException(Exception ex, WebRequest request) {
+        HttpStatus status = INTERNAL_SERVER_ERROR;
+
+        String detail = "Ocorreu um erro interno inesperado no sistema. Tente novamente e se o " +
+                "problema persistir, entre em contato com o administrador do sistema.";
+
+        Problem problem = createProblemBuilder(status, ERRO_DE_SISTEMA, detail)
+                .build();
+
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
 
     @Override

@@ -6,9 +6,10 @@ import lombok.Getter;
 public enum ProblemType {
     MENSAGEM_INCOMPREENSIVEL("/mensagem-incompreensivel", "Mensagem incompreensivel"),
     RECURSO_NAO_ENCONTRADO("/recurso-nao-encontrado", "Recurso nao encontrado"),
-    ERR0_NEGOCIO("/erro-negocio", "Violacao de regra de negocio"),
+    ERRO_NEGOCIO("/erro-negocio", "Violacao de regra de negocio"),
     ENTIDADE_EM_USO("/entidade-em-uso", "Entidade em uso"),
-    PARAMETRO_INVALIDO("/parametro-invalido", "Parametro Invalido");
+    PARAMETRO_INVALIDO("/parametro-invalido", "Parametro Invalido"),
+    ERRO_DE_SISTEMA("/erro-de-sistema", "Erro de sistema");
 
     private final String title;
     private final String uri;
