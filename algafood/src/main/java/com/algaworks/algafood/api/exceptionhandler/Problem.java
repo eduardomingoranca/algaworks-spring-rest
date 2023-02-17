@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+
 // so incluia na representacao json se o valor nao estiver nulo.
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Getter
@@ -24,4 +26,6 @@ public class Problem {
 
 
     private String userMessage;
+    private LocalDateTime timestamp;
+
 }

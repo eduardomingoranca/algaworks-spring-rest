@@ -22,6 +22,7 @@ import java.util.Objects;
 
 import static com.algaworks.algafood.api.exceptionhandler.ProblemType.*;
 import static java.lang.String.format;
+import static java.time.LocalDateTime.now;
 import static java.util.stream.Collectors.joining;
 import static org.apache.commons.lang3.exception.ExceptionUtils.getRootCause;
 import static org.springframework.http.HttpStatus.*;
@@ -50,7 +51,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         String detail = "O corpo da requisicao esta invalido. Verifique erro de sintaxe.";
 
-        Problem problem = createProblemBuilder(status, MENSAGEM_INCOMPREENSIVEL, detail)
+        Problem problem = createProblemBuilder(status, MENSAGEM_INCOMPREENSIVEL, detail,
+                MSG_ERRO_GENERICA_USUARIO_FINAL)
                 .build();
 
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
@@ -68,8 +70,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                         "que eh de um tipo invalido. Corrija e informe um valor compativel com o tipo %s.",
                 path, ex.getValue(), ex.getTargetType().getSimpleName());
 
-        Problem problem = createProblemBuilder(status, MENSAGEM_INCOMPREENSIVEL, detail)
-                .userMessage(MSG_ERRO_GENERICA_USUARIO_FINAL)
+        Problem problem = createProblemBuilder(status, MENSAGEM_INCOMPREENSIVEL, detail,
+                MSG_ERRO_GENERICA_USUARIO_FINAL)
                 .build();
 
         return handleExceptionInternal(ex, problem, headers, status, request);
@@ -86,8 +88,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                         "Por favor corrija e informe uma propriedade valida.",
                 path, ex.getReferringClass().getSimpleName());
 
-        Problem problem = createProblemBuilder(status, MENSAGEM_INCOMPREENSIVEL, detail)
-                .userMessage(MSG_ERRO_GENERICA_USUARIO_FINAL)
+        Problem problem = createProblemBuilder(status, MENSAGEM_INCOMPREENSIVEL, detail,
+                MSG_ERRO_GENERICA_USUARIO_FINAL)
                 .build();
 
         return handleExceptionInternal(ex, problem, headers, status, request);
@@ -104,7 +106,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                             "Corrija e informe um valor compativel com o tipo %s.",
                     path, ex.getValue(), Objects.requireNonNull(ex.getRequiredType()).getSimpleName());
 
-            Problem problem = createProblemBuilder(status, PARAMETRO_INVALIDO, detail)
+            Problem problem = createProblemBuilder(status, PARAMETRO_INVALIDO, detail,
+                    MSG_ERRO_GENERICA_USUARIO_FINAL)
                     .build();
 
             return handleExceptionInternal(ex, problem, headers, status, request);
@@ -121,7 +124,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         String detail = format("O recurso %s, que voce tentou acessar, eh inexistente.",
                 path);
 
-        Problem problem = createProblemBuilder(status, RECURSO_NAO_ENCONTRADO, detail)
+        Problem problem = createProblemBuilder(status, RECURSO_NAO_ENCONTRADO, detail,
+                MSG_ERRO_GENERICA_USUARIO_FINAL)
                 .build();
 
         return this.handleExceptionInternal(ex, problem, headers, status, request);
@@ -134,7 +138,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 //        ProblemType problemType = ENTIDADE_NAO_ENCONTRADA;
         String detail = e.getMessage();
 
-        Problem problem = createProblemBuilder(status, RECURSO_NAO_ENCONTRADO, detail)
+        Problem problem = createProblemBuilder(status, RECURSO_NAO_ENCONTRADO, detail, detail)
                 .build();
 
         return handleExceptionInternal(e, problem, new HttpHeaders(), status, request);
@@ -145,7 +149,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         HttpStatus status = BAD_REQUEST;
         String detail = e.getMessage();
 
-        Problem problem = createProblemBuilder(status, ERRO_NEGOCIO, detail)
+        Problem problem = createProblemBuilder(status, ERRO_NEGOCIO, detail,
+                MSG_ERRO_GENERICA_USUARIO_FINAL)
                 .build();
 
         return handleExceptionInternal(e, problem, new HttpHeaders(), status, request);
@@ -156,8 +161,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         HttpStatus status = CONFLICT;
         String detail = e.getMessage();
 
-        Problem problem = createProblemBuilder(status, ENTIDADE_EM_USO, detail)
-                .userMessage(detail)
+        Problem problem = createProblemBuilder(status, ENTIDADE_EM_USO, detail, detail)
                 .build();
 
         return handleExceptionInternal(e, problem, new HttpHeaders(), status, request);
@@ -167,7 +171,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleOtherException(Exception ex, WebRequest request) {
         HttpStatus status = INTERNAL_SERVER_ERROR;
 
-        Problem problem = createProblemBuilder(status, ERRO_DE_SISTEMA, MSG_ERRO_GENERICA_USUARIO_FINAL)
+        Problem problem = createProblemBuilder(status, ERRO_DE_SISTEMA, MSG_ERRO_GENERICA_USUARIO_FINAL,
+                MSG_ERRO_GENERICA_USUARIO_FINAL)
                 .build();
 
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
@@ -181,11 +186,15 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             body = Problem.builder()
                     .title(status.getReasonPhrase()) // ReasonPhrase -> descreve o status que esta sendo retornado
                     .status(status.value())
+                    .timestamp(now())
+                    .userMessage(MSG_ERRO_GENERICA_USUARIO_FINAL)
                     .build();
         } else if (body instanceof String) {
             body = Problem.builder()
                     .title((String) body)
                     .status(status.value())
+                    .timestamp(now())
+                    .userMessage(body.toString())
                     .build();
         }
 
@@ -194,11 +203,13 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     // criando um builder
     private Problem.ProblemBuilder createProblemBuilder(HttpStatus status, ProblemType problemType,
-                                                        String detail) {
+                                                        String detail, String userMessage) {
         return Problem.builder()
                 .status(status.value())
                 .type(problemType.getUri())
                 .title(problemType.getTitle())
+                .userMessage(userMessage)
+                .timestamp(now())
                 .detail(detail);
     }
 
