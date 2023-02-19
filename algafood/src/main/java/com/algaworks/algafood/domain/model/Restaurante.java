@@ -4,14 +4,15 @@ import com.algaworks.algafood.Groups;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import net.bytebuddy.pool.TypePool;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
-import javax.validation.groups.Default;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
+import javax.validation.groups.ConvertGroup;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -31,17 +32,20 @@ public class Restaurante {
 
 //    @NotNull
 //    @NotEmpty // nao aceita valor vazio
-    @NotBlank(groups = Groups.CadastroRestaurante.class) // nao pode ser nulo, vazio e em branco
+    @NotBlank // nao pode ser nulo, vazio e em branco
     @Column(nullable = false)
     private String nome;
 
 //    @DecimalMin("0")
-    @PositiveOrZero(groups = Groups.CadastroRestaurante.class) // permitido apenas valor positivo ou zero
+    @PositiveOrZero // permitido apenas valor positivo ou zero
     @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
 
     @Valid // validando as propriedades da classe
-    @NotNull(groups = Groups.CadastroRestaurante.class)
+// no momento de validar a classe converta o group default para um group especifico
+//    @ConvertGroup(from = Default.class, to = Groups.CadastroRestaurante.class)
+    @ConvertGroup(to = Groups.CozinhaID.class)
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "cozinha_id", nullable = false)
     private Cozinha cozinha;
