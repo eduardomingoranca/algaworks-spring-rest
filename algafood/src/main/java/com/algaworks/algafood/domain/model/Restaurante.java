@@ -32,7 +32,7 @@ public class Restaurante {
 
 //    @NotNull
 //    @NotEmpty // nao aceita valor vazio
-    @NotBlank // nao pode ser nulo, vazio e em branco
+    @NotBlank(message = "Nome eh obrigatorio.") // nao pode ser nulo, vazio e em branco
     @Column(nullable = false)
     private String nome;
 
