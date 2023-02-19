@@ -42,7 +42,7 @@ public class Restaurante {
     private BigDecimal taxaFrete;
 
     @Valid // validando as propriedades da classe
-// no momento de validar a classe converta o group default para um group especifico
+// no momento de validar a classe converte o group default para um group especifico
 //    @ConvertGroup(from = Default.class, to = Groups.CadastroRestaurante.class)
     @ConvertGroup(to = Groups.CozinhaID.class)
     @NotNull
