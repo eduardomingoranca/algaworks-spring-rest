@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static org.springframework.beans.BeanUtils.copyProperties;
@@ -26,12 +27,12 @@ public class EstadoController {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public Estado adicionar(@RequestBody Estado estado) {
+    public Estado adicionar(@RequestBody @Valid Estado estado) {
         return cadastroEstado.salvar(estado);
     }
 
     @PutMapping("/{estadoID}")
-    public Estado atualizar(@PathVariable("estadoID") Long id, @RequestBody Estado estado) {
+    public Estado atualizar(@PathVariable("estadoID") Long id, @RequestBody @Valid Estado estado) {
         Estado estadoAtual = cadastroEstado.buscarOuFalhar(id);
         copyProperties(estado, estadoAtual, "id");
 

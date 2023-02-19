@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static org.springframework.beans.BeanUtils.copyProperties;
@@ -33,7 +34,7 @@ public class CidadeController {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public Cidade adicionar(@RequestBody Cidade cidade) {
+    public Cidade adicionar(@RequestBody @Valid Cidade cidade) {
         try {
             return cadastroCidade.salvar(cidade);
         } catch (EstadoNaoEncontradoException e) {
@@ -42,7 +43,7 @@ public class CidadeController {
     }
 
     @PutMapping("/{cidadeId}")
-    public Cidade atualizar(@PathVariable("cidadeId") Long id, @RequestBody Cidade cidade) {
+    public Cidade atualizar(@PathVariable("cidadeId") Long id, @RequestBody @Valid Cidade cidade) {
         try {
             Cidade cidadeAtual = cadastroCidade.buscarOuFalhar(id);
             copyProperties(cidade, cidadeAtual, "id");

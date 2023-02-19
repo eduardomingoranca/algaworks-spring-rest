@@ -60,7 +60,7 @@ public class RestauranteController {
     }
 
     @PutMapping("/{restauranteId}")
-    public Restaurante atualizar(@PathVariable("restauranteId") Long id, @RequestBody Restaurante restaurante) {
+    public Restaurante atualizar(@PathVariable("restauranteId") Long id, @RequestBody @Valid Restaurante restaurante) {
         try {
             Restaurante restauranteAtual = cadastroRestaurante.buscarOuFalhar(id);
             copyProperties(restaurante, restauranteAtual, "id", "formasPagamento",
