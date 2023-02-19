@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 import org.springframework.beans.TypeMismatchException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +31,7 @@ import static java.lang.String.format;
 import static java.time.LocalDateTime.now;
 import static java.util.stream.Collectors.joining;
 import static org.apache.commons.lang3.exception.ExceptionUtils.getRootCause;
+import static org.springframework.context.i18n.LocaleContextHolder.getLocale;
 import static org.springframework.http.HttpStatus.*;
 
 @ControllerAdvice
@@ -36,6 +39,9 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     public static final String MSG_ERRO_GENERICA_USUARIO_FINAL = "Ocorreu um erro interno inesperado no sistema. " +
             "Tente novamente e se o problema persistir, entre em contato com o administrador do sistema.";
+
+    @Autowired
+    private MessageSource messageSource;
 
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
@@ -135,6 +141,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return this.handleExceptionInternal(ex, problem, headers, status, request);
     }
 
+//    metodo que captura a exception que eh lancada quando uma regra de validacao eh violada.
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers, HttpStatus status,
@@ -148,10 +155,15 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
 //        construindo o response para as propriedades violadas.
         List<Problem.Field> problemFields = bindingResult.getFieldErrors()
-                .stream().map(fieldError -> Problem.Field.builder()
-                        .name(fieldError.getField())
-                        .userMessage(fieldError.getDefaultMessage())
-                        .build()).collect(Collectors.toList());
+                .stream().map(fieldError -> {
+                    // obtendo a mensagem do messages.properties
+                    String message = messageSource.getMessage(fieldError, getLocale());
+
+                    return Problem.Field.builder()
+                            .name(fieldError.getField())
+                            .userMessage(message)
+                            .build();
+                }).collect(Collectors.toList());
 
         Problem problem = createProblemBuilder(status, DADOS_INVALIDOS, detail, detail)
                 .fields(problemFields)
