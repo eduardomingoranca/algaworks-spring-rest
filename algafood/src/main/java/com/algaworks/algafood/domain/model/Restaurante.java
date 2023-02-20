@@ -37,7 +37,8 @@ public class Restaurante {
     private String nome;
 
 //    @DecimalMin("0")
-    @PositiveOrZero // permitido apenas valor positivo ou zero
+    @NotNull
+    @PositiveOrZero(message = "{TaxaFrete.invalida}") // permitido apenas valor positivo ou zero
     @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
 
