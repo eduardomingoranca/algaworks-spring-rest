@@ -129,7 +129,7 @@ ciclo de vida.
 
 AULA 2.22
 
-Observer eh um design pattern que deixa o acoplamento
+Observer -> design pattern que deixa o acoplamento
 mais baixo entre as classes. O spring implementa o observer
 dentro do framework e eh chamado de event handler
 
@@ -152,7 +152,7 @@ eh o provedor de persistencia, ou seja, no caso o banco de dados (MySQL).
 
 AULA 3.8
 
-EntityManager -> eh uma interface que gerencia
+EntityManager -> interface que gerencia
 o contexto de persistencia entre os codigos java
 e o sql.
 
@@ -163,18 +163,18 @@ metodo for executado sera dentro de uma transacao.
 
 AULA 3.14 
 
-Repository eh um padrao do DDD que adiciona uma camada
+Repository -> padrao do DDD que adiciona uma camada
 de abstracao de acesso a dados.
 
 AULA 3.17
 
-Lombok eh uma biblioteca java com foco em produtividade
+Lombok -> biblioteca java com foco em produtividade
 e reducao de codigo boilerplate usando anotacoes proprias.
 Codigo boilerplate sao codigos padroes java repetidos.
 
 AULA 4.10
 
-Controller eh uma classe responsavel por receber requisicoes
+Controller -> classe responsavel por receber requisicoes
 web, tratar essas requisicoes e devolver uma resposta.
 
 AULA 4.27
@@ -187,7 +187,7 @@ natural de uma entidade eh criado um service de dominio.
 
 AULA 4.34
 
-Reflections -> eh a capacidade de inspecionar objetos
+Reflections -> capacidade de inspecionar objetos
 java em tempo de execucao ate a alteracao desses objetos
 de forma dinamica.
 
@@ -226,14 +226,14 @@ que a entidade for atualizada.
 
 AULA 6.10
 
-Eager Loading -> eh o Load(carregamento) aonde todas as classes relacionadas sao carregadas na mesma query. O ORM, 
+Eager Loading -> Load(carregamento) aonde todas as classes relacionadas sao carregadas na mesma query. O ORM, 
 normalmente por meio de Joins, trara todas as entidades relacionadas. Em certos casos o Eager loading torna-se 
 desnecessario, pois nem sempre quando se carrega uma entidade voce deseja ter carregado em memoria as entidades
 relacionadas. Todas as associacoes @*ToOne utilizam o Eager Loading.
 
 AULA 6.11
 
-Lazy Loading -> eh um carregamento preguicoso, quando voce executa uma consulta por uma certa entidade suas relacoes nao
+Lazy Loading -> carregamento preguicoso, quando voce executa uma consulta por uma certa entidade suas relacoes nao
 sao carregadas em memoria pela consulta inicial, no entanto, ao executar algum metodo que chama esses registros, sera 
 executada uma outra consulta para preencher essas entidades relacionadas. Todas as associacoes @*ToMany utilizam o Lazy 
 Loading.
@@ -257,7 +257,7 @@ Existe uma quantidade minima e maxima de conexoes que podem ser criadas.
 
 AULA 7.2
 
-AB (ApacheBench) -> eh uma ferramenta para teste de desempenho de aplicacoes web.
+AB (ApacheBench) -> ferramenta para teste de desempenho de aplicacoes web.
 
 linhas de comando
 ab -n 6 -c 2  127.0.0.1:8080/restaurantes  ->  6 requisicoes com 2 requisicoes concorrentes: 2 2 2
@@ -289,7 +289,7 @@ eh criado um metodo responsavel por tratar e capturar exceptions dos controllers
 
 AULA 8.15
 
-ResponseEntityExceptionHandler eh um classe de conveniencia para classes de exception handler 
+ResponseEntityExceptionHandler -> classe de conveniencia para classes de exception handler 
 globais que tem um implementacao padrao para as exceptions que sao internas do spring mvc.
 
 AULA 8.21
@@ -297,3 +297,20 @@ AULA 8.21
 commons lang -> projeto apache, uma biblioteca que oferece varios metodos utilitarios para 
 trabalhar de uma maneira simplificada com strings, numeros, exceptions e etc.
 
+AULA 9.15
+
+@Target -> responsavel por informar aonde que a anotacao especifica pode ser utilizada. ex: metodo, campo/atributo e etc.
+@Retention -> informa que a anotacao especifica pode ser lida em tempo de execucao.
+@Repeatable -> informa que a anotacao especifica pode ser repetida, ou seja, a mesma propriedade pode utilizar mais de uma
+vez a anotacao especifica.
+@Documented -> informa que a anotacao especifica eh documentada (javadoc).
+@Constraint -> informa a constraint e qual a classe que implementa a anotacao especifica.
+
+@OverridesAttribute -> substituicao de atributo de uma anotacao por outra.
+
+message() -> propriedade da anotacao especifica que informa qual a mensagem que sera atribuida caso essa
+validacao nao seja satisfeita.
+groups() -> propriedade da anotacao especifica que informa os grupos de validacao, ou seja, possibilita quem vai
+utilizar essa anotacao.
+payload() -> propriedade da anotacao especifica quen passa os metadados de validacao.
+ 
