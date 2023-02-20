@@ -1,5 +1,6 @@
 package com.algaworks.algafood.api.exceptionhandler;
 
+import com.algaworks.algafood.core.validation.ValidacaoException;
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
@@ -13,7 +14,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -147,35 +150,13 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers, HttpStatus status,
                                                                   WebRequest request) {
-        String detail = "Um ou mais campos estao invalidos. Faca o preenchimento correto e " +
-                "tente novamente.";
+        return getObjectResponseEntity(ex, ex.getBindingResult(), headers, status, request);
+    }
 
-//        BindingResult -> armazena as violacoes de constraints de validacao, ou seja,
-//        dentro dessa classe pode-se ter o acesso a quais fields/propriedades foram violadas
-        BindingResult bindingResult = ex.getBindingResult();
-
-//        construindo o response para as propriedades violadas.
-        List<Problem.Object> problemObjects = bindingResult.getAllErrors()
-                .stream().map(objectError -> {
-                    // obtendo a mensagem do messages.properties
-                    String message = messageSource.getMessage(objectError, getLocale());
-
-                    String name = objectError.getObjectName();
-
-                    if (objectError instanceof FieldError)
-                        name = ((FieldError) objectError).getField();
-
-                    return Problem.Object.builder()
-                            .name(name)
-                            .userMessage(message)
-                            .build();
-                }).collect(Collectors.toList());
-
-        Problem problem = createProblemBuilder(status, DADOS_INVALIDOS, detail, detail)
-                .objects(problemObjects)
-                .build();
-
-        return this.handleExceptionInternal(ex, problem, headers, status, request);
+    @ExceptionHandler(ValidacaoException.class)
+    public ResponseEntity<Object> handleValidacaoException(ValidacaoException ex,
+                                                           WebRequest request) {
+        return getObjectResponseEntity(ex, ex.getBindingResult(), new HttpHeaders(), BAD_REQUEST, request);
     }
 
     @ExceptionHandler(EntidadeNaoEncontradaException.class)
@@ -258,6 +239,34 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .userMessage(userMessage)
                 .timestamp(now())
                 .detail(detail);
+    }
+
+    private ResponseEntity<Object> getObjectResponseEntity(Exception ex, BindingResult bindingResult, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        String detail = "Um ou mais campos estao invalidos. Faca o preenchimento correto e " +
+                "tente novamente.";
+
+//        construindo o response para as propriedades violadas.
+        List<Problem.Object> problemObjects = bindingResult.getAllErrors()
+                .stream().map(objectError -> {
+                    // obtendo a mensagem do messages.properties
+                    String message = messageSource.getMessage(objectError, getLocale());
+
+                    String name = objectError.getObjectName();
+
+                    if (objectError instanceof FieldError)
+                        name = ((FieldError) objectError).getField();
+
+                    return Problem.Object.builder()
+                            .name(name)
+                            .userMessage(message)
+                            .build();
+                }).collect(Collectors.toList());
+
+        Problem problem = createProblemBuilder(status, DADOS_INVALIDOS, detail, detail)
+                .objects(problemObjects)
+                .build();
+
+        return this.handleExceptionInternal(ex, problem, headers, status, request);
     }
 
 }

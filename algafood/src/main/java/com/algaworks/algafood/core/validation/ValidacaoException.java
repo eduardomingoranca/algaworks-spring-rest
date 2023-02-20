@@ -8,9 +8,8 @@ import org.springframework.validation.BindingResult;
 @Getter
 public class ValidacaoException extends RuntimeException {
 
+//        BindingResult -> armazena as violacoes de constraints de validacao, ou seja,
+//        dentro dessa classe pode-se ter o acesso a quais fields/propriedades foram violadas
     private BindingResult bindingResult;
-
-
-
 
 }
