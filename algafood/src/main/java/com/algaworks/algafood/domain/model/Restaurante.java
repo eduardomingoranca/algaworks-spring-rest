@@ -1,7 +1,7 @@
 package com.algaworks.algafood.domain.model;
 
 import com.algaworks.algafood.core.validation.Groups;
-import com.algaworks.algafood.core.validation.Multiplo;
+import com.algaworks.algafood.core.validation.ValorZeroIncluiDescricao;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,6 +21,8 @@ import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
+@ValorZeroIncluiDescricao(valorField = "taxaFrete", descricaoField = "nome",
+        descricaoObrigatoria = "Frete Gratis")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
@@ -40,7 +42,6 @@ public class Restaurante {
 //    @DecimalMin("0")
     @NotNull
     @PositiveOrZero // permitido apenas valor positivo ou zero
-    @Multiplo(numero = 5)
     @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
 
