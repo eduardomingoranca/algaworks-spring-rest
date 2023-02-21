@@ -318,3 +318,8 @@ payload() -> propriedade da anotacao especifica quen passa os metadados de valid
 AULA 10.2
 
 JUnit -> biblioteca simples para escrever e executar codigos de testes unitarios. 
+
+AULA 10.6
+
+.\mvnw test
+.\mvnw clean package
