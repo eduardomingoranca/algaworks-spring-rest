@@ -1,0 +1,2 @@
+Testes de Integracao -> sao testes que validam o funcionamento dos componentes do software em conjunto.
+Testes de APIs -> sao testes que fazem chamadas HTTP real para a API esperando uma resposta.
