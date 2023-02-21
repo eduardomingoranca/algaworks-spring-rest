@@ -313,4 +313,8 @@ validacao nao seja satisfeita.
 groups() -> propriedade da anotacao especifica que informa os grupos de validacao, ou seja, possibilita quem vai
 utilizar essa anotacao.
 payload() -> propriedade da anotacao especifica quen passa os metadados de validacao.
- 
+
+
+AULA 10.2
+
+JUnit -> biblioteca simples para escrever e executar codigos de testes unitarios. 
