@@ -1,7 +1,9 @@
 package com.algaworks.algafood;
 
+import com.algaworks.algafood.domain.model.Cozinha;
+import com.algaworks.algafood.domain.repository.CozinhaRepository;
+import com.algaworks.algafood.util.DatabaseCleaner;
 import io.restassured.RestAssured;
-import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +30,10 @@ class CadastroCozinhaAPITests {
     private int port;
 
     @Autowired
-    private Flyway flyway;
+    private DatabaseCleaner databaseCleaner;
+
+    @Autowired
+    private CozinhaRepository cozinhaRepository;
 
     @BeforeEach
     void setUp() {
@@ -38,7 +43,9 @@ class CadastroCozinhaAPITests {
         RestAssured.port = port;
         RestAssured.basePath = "/cozinhas";
 
-        flyway.migrate();
+        // limpando os dados de todas as tabelas do banco de dados
+        databaseCleaner.clearTables();
+        prepararDados();
     }
 
     @Test
@@ -55,7 +62,7 @@ class CadastroCozinhaAPITests {
     }
 
     @Test
-    void deveConterQuatroCozinhasQuandoConsultarCozinhas() {
+    void deveConterDuasCozinhasQuandoConsultarCozinhas() {
         given()
                 .accept(JSON)
         .when()
@@ -63,8 +70,8 @@ class CadastroCozinhaAPITests {
         .then()
                 // hamcrest -> biblioteca para escrever expressoes
                 // com regras de correspondencia entre objetos
-                .body("", hasSize(4))
-                .body("nome", hasItems("Indiana", "Tailandesa"));
+                .body("", hasSize(2))
+                .body("nome", hasItems("Americana", "Tailandesa"));
     }
 
     @Test
@@ -77,6 +84,17 @@ class CadastroCozinhaAPITests {
                 .post()
         .then()
                 .statusCode(CREATED.value());
+    }
+
+    // responsavel por inserir massa de dados
+    private void prepararDados() {
+        Cozinha cozinhaUm = new Cozinha();
+        cozinhaUm.setNome("Tailandesa");
+        cozinhaRepository.save(cozinhaUm);
+
+        Cozinha cozinhaDois = new Cozinha();
+        cozinhaDois.setNome("Americana");
+        cozinhaRepository.save(cozinhaDois);
     }
 
 }
