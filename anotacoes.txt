@@ -334,3 +334,10 @@ falhae o build caso aconteca algum problema.
 AULA 10.8
 
 .\mvnw verify -> comando que executa os testes de integracao.
+
+AULA 11.1
+
+@Transactional -> adicionando a anotacao de transacao de dados com o banco de dados,
+caso tenha mais de uma operacao/transacao com o banco de dados e
+ocorra uma exception entre as transacoes pode acontecer um estado
+de inconsistencia no banco de dados.
