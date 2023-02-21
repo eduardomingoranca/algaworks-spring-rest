@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.test.context.TestPropertySource;
 
 import static io.restassured.RestAssured.enableLoggingOfRequestAndResponseIfValidationFails;
 import static io.restassured.RestAssured.given;
@@ -18,6 +19,8 @@ import static org.springframework.http.HttpStatus.OK;
 
 // subindo um servidor web
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+// configurando para utilizar o arquivo de propriedades application-test.properties
+@TestPropertySource("/application-test.properties")
 class CadastroCozinhaAPITests {
 
     // injetando o numero da porta aleatoria
