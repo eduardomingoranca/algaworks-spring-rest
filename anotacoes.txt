@@ -341,3 +341,10 @@ AULA 11.1
 caso tenha mais de uma operacao/transacao com o banco de dados e
 ocorra uma exception entre as transacoes pode acontecer um estado
 de inconsistencia no banco de dados.
+
+AULA 11.3
+
+Quando nao poder adicionar/ou nao querer anotacoes do jackson cria uma classe de mixin.
+o que sao classes mixin?
+Classe que possui membros/propriedades de outra classe original, onde a configuracao/anotacoes
+do jackson ficam na classe mixin e nao na classe original.
