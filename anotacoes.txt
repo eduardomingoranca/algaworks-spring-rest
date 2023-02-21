@@ -323,3 +323,14 @@ AULA 10.6
 
 .\mvnw test
 .\mvnw clean package
+
+
+AULA 10.7
+
+maven failsafe plugin -> plugin do maven para rodar testes de integracao, com esse plugin
+o build do projeto usando maven nao vai executar os testes de integracao, por isso nao vai
+falhae o build caso aconteca algum problema.
+
+AULA 10.8
+
+.\mvnw verify -> comando que executa os testes de integracao.
