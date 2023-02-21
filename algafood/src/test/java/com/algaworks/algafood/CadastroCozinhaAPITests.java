@@ -14,10 +14,8 @@ import org.springframework.test.context.TestPropertySource;
 import static io.restassured.RestAssured.enableLoggingOfRequestAndResponseIfValidationFails;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
-import static org.hamcrest.Matchers.hasItems;
-import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.OK;
+import static org.hamcrest.Matchers.*;
+import static org.springframework.http.HttpStatus.*;
 
 // subindo um servidor web
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -84,6 +82,30 @@ class CadastroCozinhaAPITests {
                 .post()
         .then()
                 .statusCode(CREATED.value());
+    }
+
+    // GET /cozinhas/{cozinhaId}
+    @Test
+    void deveRetornarRespostaEStatusCorretosQuandoConsultarCozinhaExistente() {
+        given()
+                .pathParam("cozinhaId", 2)
+                .accept(JSON)
+        .when()
+                .get("/{cozinhaId}")
+        .then()
+                .statusCode(OK.value())
+                .body("nome", equalTo("Americana"));
+    }
+
+    @Test
+    void deveRetornarStatus404QuandoConsultarCozinhaInexistente() {
+        given()
+                .pathParam("cozinhaId", 100)
+                .accept(JSON)
+        .when()
+                .get("/{cozinhaId}")
+        .then()
+                .statusCode(NOT_FOUND.value());
     }
 
     // responsavel por inserir massa de dados
