@@ -1,5 +1,7 @@
 package com.algaworks.algafood;
 
+import io.restassured.RestAssured;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -19,34 +21,35 @@ class CadastroCozinhaAPITests {
     @LocalServerPort
     private int port;
 
+    @BeforeEach
+    void setUp() {
+        // habilitatando os logs e verificando a resposta quando ocorre o erro no teste
+        enableLoggingOfRequestAndResponseIfValidationFails();
+        // Rest Assured -> biblioteca para teste e validacao de rest apis
+        RestAssured.port = port;
+        RestAssured.basePath = "/cozinhas";
+    }
+
     @Test
     void deveRetornarStatus200QuandoConsultarCozinhas() {
-        // verificando a resposta quando ocorre o erro no teste
-        enableLoggingOfRequestAndResponseIfValidationFails();
-
-        // Rest Assured -> biblioteca para teste e validacao de rest apis
         // dado que o caminho /cozinhas com a porta 8080 aceitando um retorno em json
-            given()
-                .basePath("/cozinhas")
-                .port(port)
+        given()
                 .accept(JSON)
-        // quando chamar o metodo get
-           .when()
+                // quando chamar o metodo get
+                .when()
                 .get()
-        // entao o status que deve retornar eh o 200
-           .then()
+                // entao o status que deve retornar eh o 200
+                .then()
                 .statusCode(OK.value());
     }
 
     @Test
     void deveConterQuatroCozinhasQuandoConsultarCozinhas() {
         given()
-                .basePath("/cozinhas")
-                .port(port)
                 .accept(JSON)
-        .when()
+                .when()
                 .get()
-        .then()
+                .then()
                 // hamcrest -> biblioteca para escrever expressoes
                 // com regras de correspondencia entre objetos
                 .body("", hasSize(4))
