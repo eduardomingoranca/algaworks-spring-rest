@@ -1,8 +1,10 @@
 package com.algaworks.algafood;
 
 import io.restassured.RestAssured;
+import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
@@ -22,6 +24,9 @@ class CadastroCozinhaAPITests {
     @LocalServerPort
     private int port;
 
+    @Autowired
+    private Flyway flyway;
+
     @BeforeEach
     void setUp() {
         // habilitatando os logs e verificando a resposta quando ocorre o erro no teste
@@ -29,6 +34,8 @@ class CadastroCozinhaAPITests {
         // Rest Assured -> biblioteca para teste e validacao de rest apis
         RestAssured.port = port;
         RestAssured.basePath = "/cozinhas";
+
+        flyway.migrate();
     }
 
     @Test
