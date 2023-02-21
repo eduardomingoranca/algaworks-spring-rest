@@ -81,7 +81,7 @@ class CadastroCozinhaAPITests {
     @Test
     void deveRetornarStatus201QuandoCadastrarCozinha() {
         given()
-                .body(getContentFromResource("/adicionarCozinha.json"))
+                .body(getContentFromResource("/json/adicionarCozinhaChinesa.json"))
                 .contentType(JSON)
                 .accept(JSON)
         .when()

@@ -1,0 +1,7 @@
+{
+  "nome": "Nova Delhi Comida Indiana",
+  "taxaFrete": 12,
+  "cozinha": {
+    "id": 2
+  }
+}
