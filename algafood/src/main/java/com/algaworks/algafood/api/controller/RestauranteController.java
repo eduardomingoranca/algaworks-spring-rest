@@ -55,8 +55,11 @@ public class RestauranteController {
     }
 
     @PutMapping("/{restauranteId}")
-    public RestauranteModel atualizar(@PathVariable("restauranteId") Long id, @RequestBody @Valid Restaurante restaurante) {
+    public RestauranteModel atualizar(@PathVariable("restauranteId") Long id,
+                                      @RequestBody @Valid RestauranteInput restauranteInput) {
         try {
+            Restaurante restaurante = toDomainObject(restauranteInput);
+
             Restaurante restauranteAtual = cadastroRestaurante.buscarOuFalhar(id);
             copyProperties(restaurante, restauranteAtual, "id", "formasPagamento",
                     "endereco", "dataCadastro", "produtos");
