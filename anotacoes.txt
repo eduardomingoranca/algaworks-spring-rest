@@ -348,3 +348,15 @@ Quando nao poder adicionar/ou nao querer anotacoes do jackson cria uma classe de
 o que sao classes mixin?
 Classe que possui membros/propriedades de outra classe original, onde a configuracao/anotacoes
 do jackson ficam na classe mixin e nao na classe original.
+
+AULA 11.5
+
+TimeZone -> fuso horario
+
+O que eh fuso horario?
+regiao do globo terrestre que define qual eh o horario que deve ser usado
+pela populacao.
+
+Offset -> diferenca de horario.
+
+UTC -> padrao de horario universal, para fuso horario mundial.
