@@ -360,3 +360,19 @@ pela populacao.
 Offset -> diferenca de horario.
 
 UTC -> padrao de horario universal, para fuso horario mundial.
+
+AULA 11.6
+
+Boas práticas para trabalhar com data e hora em REST APIs.
+
+1) Use ISO-8601 para
+   formatar data/hora
+
+2) Aceite qualquer fuso horario
+
+3) Armazene em UTC
+
+4) Retorne em UTC
+
+5) Nao inclua o horario, se nao
+for necessario.
