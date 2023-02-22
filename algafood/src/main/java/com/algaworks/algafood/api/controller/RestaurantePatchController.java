@@ -1,5 +1,6 @@
 package com.algaworks.algafood.api.controller;
 
+import com.algaworks.algafood.api.assembler.RestauranteModelAssembler;
 import com.algaworks.algafood.api.model.RestauranteModel;
 import com.algaworks.algafood.core.validation.ValidacaoException;
 import com.algaworks.algafood.domain.model.Restaurante;
@@ -16,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
 import java.util.Map;
 
-import static com.algaworks.algafood.api.controller.RestauranteController.toModel;
 import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES;
 import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
 import static org.apache.commons.lang3.exception.ExceptionUtils.getRootCause;
@@ -32,6 +32,9 @@ public class RestaurantePatchController {
     //    API de validacao de classe e atributos
     @Autowired
     private SmartValidator validator;
+
+    @Autowired
+    private RestauranteModelAssembler restauranteModelAssembler;
 
     @PatchMapping("/{restauranteId}")
     public RestauranteModel atualizarParcial(@PathVariable("restauranteId") Long id,
@@ -50,7 +53,7 @@ public class RestaurantePatchController {
                 "endereco", "dataCadastro", "produtos");
 
         Restaurante salvarRestaurante = cadastroRestaurante.salvar(restauranteAtual);
-        return toModel(salvarRestaurante);
+        return restauranteModelAssembler.toModel(salvarRestaurante);
     }
 
     private void validate(Restaurante restaurante) {
