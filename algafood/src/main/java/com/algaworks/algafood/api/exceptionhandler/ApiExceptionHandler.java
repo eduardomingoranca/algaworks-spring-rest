@@ -14,9 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -26,13 +24,13 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.algaworks.algafood.api.exceptionhandler.ProblemType.*;
 import static java.lang.String.format;
-import static java.time.LocalDateTime.now;
 import static java.util.stream.Collectors.joining;
 import static org.apache.commons.lang3.exception.ExceptionUtils.getRootCause;
 import static org.springframework.context.i18n.LocaleContextHolder.getLocale;
@@ -214,14 +212,14 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             body = Problem.builder()
                     .title(status.getReasonPhrase()) // ReasonPhrase -> descreve o status que esta sendo retornado
                     .status(status.value())
-                    .timestamp(now())
+                    .timestamp(OffsetDateTime.now())
                     .userMessage(MSG_ERRO_GENERICA_USUARIO_FINAL)
                     .build();
         } else if (body instanceof String) {
             body = Problem.builder()
                     .title((String) body)
                     .status(status.value())
-                    .timestamp(now())
+                    .timestamp(OffsetDateTime.now())
                     .userMessage(body.toString())
                     .build();
         }
@@ -237,7 +235,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .type(problemType.getUri())
                 .title(problemType.getTitle())
                 .userMessage(userMessage)
-                .timestamp(now())
+                .timestamp(OffsetDateTime.now())
                 .detail(detail);
     }
 

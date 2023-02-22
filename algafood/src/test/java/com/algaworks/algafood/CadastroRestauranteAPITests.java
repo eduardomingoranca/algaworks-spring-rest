@@ -13,12 +13,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.TestPropertySource;
 
+import java.time.OffsetDateTime;
+
 import static com.algaworks.algafood.util.ResourceUtils.getContentFromResource;
 import static io.restassured.RestAssured.enableLoggingOfRequestAndResponseIfValidationFails;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static java.math.BigDecimal.valueOf;
-import static java.time.LocalDateTime.now;
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.http.HttpStatus.*;
 
@@ -137,16 +138,16 @@ public class CadastroRestauranteAPITests {
         restauranteUm.setNome("Thai Delivery");
         restauranteUm.setTaxaFrete(valueOf(9.50));
         restauranteUm.setCozinha(cozinhaUm);
-        restauranteUm.setDataCadastro(now());
-        restauranteUm.setDataAtualizacao(now());
+        restauranteUm.setDataCadastro(OffsetDateTime.now());
+        restauranteUm.setDataAtualizacao(OffsetDateTime.now());
         restauranteRepository.save(restauranteUm);
 
         restauranteDois = new Restaurante();
         restauranteDois.setNome("Tuk Tuk Comida Indiana");
         restauranteDois.setTaxaFrete(valueOf(15));
         restauranteDois.setCozinha(cozinhaDois);
-        restauranteDois.setDataCadastro(now());
-        restauranteDois.setDataAtualizacao(now());
+        restauranteDois.setDataCadastro(OffsetDateTime.now());
+        restauranteDois.setDataAtualizacao(OffsetDateTime.now());
         restauranteRepository.save(restauranteDois);
     }
 

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 // so incluia na representacao json se o valor nao estiver nulo.
@@ -16,7 +16,7 @@ public class Problem {
     // status -> o codigo de status HTTP.
     private Integer status;
 
-    private LocalDateTime timestamp;
+    private OffsetDateTime timestamp;
 
     // type -> URI que especifica o tipo do problema.
     private String type;
