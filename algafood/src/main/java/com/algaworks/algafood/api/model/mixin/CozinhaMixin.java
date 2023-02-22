@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CozinhaMixin {
+public abstract class CozinhaMixin {
 
     // nao serializa a entidade restaurantes para json
     @JsonIgnore

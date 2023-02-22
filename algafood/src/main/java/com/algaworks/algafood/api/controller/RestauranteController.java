@@ -1,5 +1,6 @@
 package com.algaworks.algafood.api.controller;
 
+import com.algaworks.algafood.api.model.RestauranteModel;
 import com.algaworks.algafood.core.validation.ValidacaoException;
 import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
@@ -47,8 +48,12 @@ public class RestauranteController {
     }
 
     @GetMapping("/{restauranteId}")
-    public Restaurante buscar(@PathVariable("restauranteId") Long id) {
-        return cadastroRestaurante.buscarOuFalhar(id);
+    public RestauranteModel buscar(@PathVariable("restauranteId") Long id) {
+        Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(id);
+
+        RestauranteModel restauranteModel = null; // conversao da entidade Restaurante para RestauranteModel
+
+        return restauranteModel;
     }
 
 //     @Valid -> anotacao valida a entrada de dados na instancia da classe antes de executar o metodo.

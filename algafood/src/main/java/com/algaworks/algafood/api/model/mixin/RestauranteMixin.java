@@ -22,10 +22,10 @@ public class RestauranteMixin {
     private Endereco endereco;
 
     // OffsetDateTime -> data e hora informando o fuso horario do UTC.
-//    @JsonIgnore
+    @JsonIgnore
     private OffsetDateTime dataCadastro;
 
-//    @JsonIgnore
+    @JsonIgnore
     private OffsetDateTime dataAtualizacao;
 
     @JsonIgnore

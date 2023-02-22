@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GrupoMixin {
+public abstract class GrupoMixin {
 
     @JsonIgnore
     private List<Permissao> permissoes = new ArrayList<>();

@@ -7,9 +7,9 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UsuarioMixin {
+public abstract class UsuarioMixin {
 
-//    @JsonIgnore
+    @JsonIgnore
     private OffsetDateTime dataCadastro;
 
     @JsonIgnore
