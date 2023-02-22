@@ -16,9 +16,11 @@ import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
 import java.util.Map;
 
+import static com.algaworks.algafood.api.controller.RestauranteController.toModel;
 import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES;
 import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
 import static org.apache.commons.lang3.exception.ExceptionUtils.getRootCause;
+import static org.springframework.beans.BeanUtils.copyProperties;
 import static org.springframework.util.ReflectionUtils.*;
 
 @RestController
@@ -31,9 +33,6 @@ public class RestaurantePatchController {
     @Autowired
     private SmartValidator validator;
 
-    @Autowired
-    private RestauranteController restauranteController;
-
     @PatchMapping("/{restauranteId}")
     public RestauranteModel atualizarParcial(@PathVariable("restauranteId") Long id,
                                              @RequestBody Map<String, Object> campos, HttpServletRequest request) {
@@ -42,7 +41,16 @@ public class RestaurantePatchController {
 
         validate(restauranteAtual);
 
-        return restauranteController.atualizar(id, restauranteAtual);
+        return atualizar(id, restauranteAtual);
+    }
+
+    private RestauranteModel atualizar(Long id, Restaurante restaurante) {
+        Restaurante restauranteAtual = cadastroRestaurante.buscarOuFalhar(id);
+        copyProperties(restaurante, restauranteAtual, "id", "formasPagamento",
+                "endereco", "dataCadastro", "produtos");
+
+        Restaurante salvarRestaurante = cadastroRestaurante.salvar(restauranteAtual);
+        return toModel(salvarRestaurante);
     }
 
     private void validate(Restaurante restaurante) {

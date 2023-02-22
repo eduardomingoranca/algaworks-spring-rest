@@ -34,22 +34,22 @@ public class Restaurante {
 
 //    @NotNull
 //    @NotEmpty // nao aceita valor vazio
-    @NotBlank // nao pode ser nulo, vazio e em branco
+//    @NotBlank // nao pode ser nulo, vazio e em branco
     @Column(nullable = false)
     private String nome;
 
 //    @DecimalMin("0")
-    @NotNull
-    @PositiveOrZero // permitido apenas valor positivo ou zero
+//    @NotNull
+//    @PositiveOrZero // permitido apenas valor positivo ou zero
     @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
 
     // ignorando o nome na deserealizacao json para object
-    @Valid // validando as propriedades da classe
+//    @Valid // validando as propriedades da classe
 // no momento de validar a classe converte o group default para um group especifico
 //    @ConvertGroup(from = Default.class, to = Groups.CadastroRestaurante.class)
-    @ConvertGroup(to = Groups.CozinhaID.class)
-    @NotNull
+//    @ConvertGroup(to = Groups.CozinhaID.class)
+//    @NotNull
     @ManyToOne
     @JoinColumn(name = "cozinha_id", nullable = false)
     private Cozinha cozinha;
