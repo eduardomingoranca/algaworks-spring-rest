@@ -16,4 +16,17 @@ public class RestauranteModel {
     private BigDecimal taxaFrete;
 
     private CozinhaModel cozinha;
+
+    /*
+     * Origem: cozinha, nome
+     * Destino: nome, cozinha
+     *
+     * o model mapper tem a estrategia de
+     * correspondencia, separando os nomes
+     * das propriedades em pedacos [chamados
+     * de tokens]
+     */
+    private String nomeCozinha;
+    private Long idCozinha;
+
 }
