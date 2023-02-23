@@ -13,7 +13,7 @@ public class RestauranteModel {
 
     private String nome;
 
-    private BigDecimal taxaFrete;
+    private BigDecimal precoFrete;
 
     private CozinhaModel cozinha;
 
@@ -26,7 +26,7 @@ public class RestauranteModel {
      * das propriedades em pedacos [chamados
      * de tokens]
      */
-    private String nomeCozinha;
-    private Long idCozinha;
+//    private String nomeCozinha;
+//    private Long idCozinha;
 
 }

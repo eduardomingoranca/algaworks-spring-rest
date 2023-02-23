@@ -12,6 +12,7 @@ public class CozinhaModel {
      * Origem: cozinha, nome
      * Destino: cozinha, cozinha, nome
      */
-    private String cozinhaNome;
+//    private String cozinhaNome;
+    private String nome;
 
 }
