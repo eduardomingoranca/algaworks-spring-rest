@@ -376,3 +376,8 @@ Boas práticas para trabalhar com data e hora em REST APIs.
 
 5) Nao inclua o horario, se nao
 for necessario.
+
+AULA 11.17
+
+ModelMapper -> biblioteca com o objetivo de fazer o mapeamento de objetos, e a transformacao de um
+modelo para o outro.

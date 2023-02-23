@@ -63,11 +63,14 @@ public class RestauranteController {
     public RestauranteModel atualizar(@PathVariable("restauranteId") Long id,
                                       @RequestBody @Valid RestauranteInput restauranteInput) {
         try {
-            Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput);
+//            Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput);
 
             Restaurante restauranteAtual = cadastroRestaurante.buscarOuFalhar(id);
-            copyProperties(restaurante, restauranteAtual, "id", "formasPagamento",
-                    "endereco", "dataCadastro", "produtos");
+
+            restauranteInputDisassembler.copyToDomainObject(restauranteInput, restauranteAtual);
+
+//            copyProperties(restaurante, restauranteAtual, "id", "formasPagamento",
+//                    "endereco", "dataCadastro", "produtos");
 
             Restaurante salvarRestaurante = cadastroRestaurante.salvar(restauranteAtual);
 
