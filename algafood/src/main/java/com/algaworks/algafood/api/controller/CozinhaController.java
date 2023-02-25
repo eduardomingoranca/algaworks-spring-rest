@@ -12,8 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -63,6 +62,12 @@ public class CozinhaController {
         Cozinha salvarCozinha = cadastroCozinha.salvar(cozinhaAtual);
 
         return cozinhaModelAssembler.toModel(salvarCozinha);
+    }
+
+    @DeleteMapping("/{cozinhaId}")
+    @ResponseStatus(NO_CONTENT)
+    public void remover(@PathVariable("cozinhaId") Long id) {
+        cadastroCozinha.excluir(id);
     }
 
 }
