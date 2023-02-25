@@ -1,0 +1,16 @@
+Modelando sub-recursos
+
+GET /restaurantes/1  -> granularidade grossa
+
+GET /restaurantes/1/endereco -> granularidade fina
+GET /produtos?restaurante=1 
+GET /restaurantes/1/produtos/100
+
+Granularidade de recursos
+
+Chatty API -> granularidade fina, o consumidor a API
+precisa fazervarias chamada para API para executar uma 
+unica operacao comum.
+
+Chunky API -> granularidade grossa, operacoes sao
+feitas em uma unica requisicao.
