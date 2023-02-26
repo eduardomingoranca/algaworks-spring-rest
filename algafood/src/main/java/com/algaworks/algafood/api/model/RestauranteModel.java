@@ -19,6 +19,8 @@ public class RestauranteModel {
 
     private Boolean ativo;
 
+    private EnderecoModel endereco;
+
     /*
      * Origem: cozinha, nome
      * Destino: nome, cozinha
