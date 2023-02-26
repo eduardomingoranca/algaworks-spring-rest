@@ -1,6 +1,7 @@
 package com.algaworks.algafood.api.assembler;
 
 import com.algaworks.algafood.api.model.input.RestauranteInput;
+import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
 import org.modelmapper.ModelMapper;
@@ -22,6 +23,9 @@ public class RestauranteInputDisassembler {
         // para evitar a exception org.hibernate.HibernateException: identifier of an instance of
         // com.algaworks.algafood.domain.model.Cozinha was altered from 1 to 2
         restaurante.setCozinha(new Cozinha());
+
+        if (restaurante.getEndereco() != null)
+            restaurante.getEndereco().setCidade(new Cidade());
 
         // destino nao eh um tipo e sim a instancia de um objeto
         modelMapper.map(restauranteInput, restaurante);
