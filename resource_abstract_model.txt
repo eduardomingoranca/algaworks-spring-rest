@@ -1,0 +1,15 @@
+Modelando conceitos abstratos de negocio e acoes nao-CRUD como recursos
+
+Uma situacao exemplo de conceitos abstratos de negocios seria uma ocasiao de
+notificacoes por email para os restaurantes, quando a plataforma notifica os 
+restaurantes para uma campanha por exemplo no Natal para que os restaurantes
+fiquem atentos ao numero de pedidos que vai aumentar. Neste caso nao precisa
+ter tabelas no banco de dados e nem entidade de relacionamento, para modelar
+este recurso.
+
+POST /notificacoes-restaurantes
+
+{
+  "assunto": "Campanha de Natal",
+  "mensagem": "Vamos iniciar uma campanha..."
+}
