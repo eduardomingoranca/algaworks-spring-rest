@@ -1,4 +1,6 @@
-package com.algaworks.algafood.core.validation;
+package com.algaworks.algafood.core.validation.validator;
+
+import com.algaworks.algafood.core.validation.annotation.ValorZeroIncluiDescricao;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

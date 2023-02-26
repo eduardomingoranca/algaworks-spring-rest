@@ -9,6 +9,9 @@ import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
+/*
+    Grupo -> Listar, Buscar, Adicionar, Atualizar
+ */
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity

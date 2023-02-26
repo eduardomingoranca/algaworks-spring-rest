@@ -1,6 +1,8 @@
 package com.algaworks.algafood.api.exceptionhandler;
 
-import com.algaworks.algafood.core.validation.ValidacaoException;
+import com.algaworks.algafood.api.exceptionhandler.enumeration.ProblemType;
+import com.algaworks.algafood.api.exceptionhandler.model.Problem;
+import com.algaworks.algafood.core.validation.exception.ValidacaoException;
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
@@ -29,7 +31,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static com.algaworks.algafood.api.exceptionhandler.ProblemType.*;
+import static com.algaworks.algafood.api.exceptionhandler.enumeration.ProblemType.*;
 import static java.lang.String.format;
 import static java.util.stream.Collectors.joining;
 import static org.apache.commons.lang3.exception.ExceptionUtils.getRootCause;

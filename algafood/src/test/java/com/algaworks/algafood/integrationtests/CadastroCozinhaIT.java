@@ -1,4 +1,4 @@
-package com.algaworks.algafood;
+package com.algaworks.algafood.integrationtests;
 
 import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Cozinha;
