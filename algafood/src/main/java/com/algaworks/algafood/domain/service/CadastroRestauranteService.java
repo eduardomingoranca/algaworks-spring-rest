@@ -39,6 +39,24 @@ public class CadastroRestauranteService {
     }
 
     @Transactional
+    public void ativar(Long id) {
+        // nao precisa salvar no repositorio por que ao buscar um restaurante
+        // a instancia do restaurante fica em um estado gerenciado pelo contexto
+        // de persistencia do JPA. Qualquer alteracao sera sincronizada com o
+        // banco de dados.
+        Restaurante restauranteAtual = buscarOuFalhar(id);
+
+        restauranteAtual.ativar();
+    }
+
+    @Transactional
+    public void inativar(Long id) {
+        Restaurante restauranteAtual = buscarOuFalhar(id);
+
+        restauranteAtual.inativar();
+    }
+
+    @Transactional
     public Restaurante buscarOuFalhar(Long id) {
         return restauranteRepository.findById(id)
                 .orElseThrow(() -> new RestauranteNaoEncontradoException(id));

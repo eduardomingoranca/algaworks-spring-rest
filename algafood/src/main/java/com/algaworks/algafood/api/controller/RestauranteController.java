@@ -15,6 +15,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 @RestController
 @RequestMapping("/restaurantes")
@@ -77,6 +78,19 @@ public class RestauranteController {
         } catch (CozinhaNaoEncontradaException e) {
             throw new NegocioException(e.getMessage(), e);
         }
+    }
+
+    // PUT /restaurantes/{id}/ativo
+    @PutMapping("/{restauranteId}/ativo")
+    @ResponseStatus(NO_CONTENT)
+    public void ativar(@PathVariable("restauranteId") Long id) {
+        cadastroRestaurante.ativar(id);
+    }
+
+    @DeleteMapping("/{restauranteId}/ativo")
+    @ResponseStatus(NO_CONTENT)
+    public void inativar(@PathVariable("restauranteId") Long id) {
+        cadastroRestaurante.inativar(id);
     }
 
 }

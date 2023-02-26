@@ -17,6 +17,8 @@ public class RestauranteModel {
 
     private CozinhaModel cozinha;
 
+    private Boolean ativo;
+
     /*
      * Origem: cozinha, nome
      * Destino: nome, cozinha
