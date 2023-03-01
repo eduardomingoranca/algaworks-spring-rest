@@ -98,9 +98,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .map(JsonMappingException.Reference::getFieldName)
                 .collect(joining("."));
 
-        String detail = format("A propriedade %s do tipo %s esta invalida. " +
-                        "Por favor corrija e informe uma propriedade valida.",
-                path, ex.getReferringClass().getSimpleName());
+        String detail = format("A propriedade %s nao existe. " +
+                        "Por favor corrija e informe uma propriedade valida.", path);
 
         Problem problem = createProblemBuilder(status, MENSAGEM_INCOMPREENSIVEL, detail,
                 MSG_ERRO_GENERICA_USUARIO_FINAL)
