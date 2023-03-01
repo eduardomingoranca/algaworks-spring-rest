@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import javax.persistence.EntityManager;
 import java.util.Optional;
 
+import static java.util.Optional.ofNullable;
+
 public class CustomJPARepositoryImpl<T, ID> extends SimpleJpaRepository<T, ID>
         implements CustomJPARepository<T, ID> {
     private final EntityManager manager;
@@ -29,7 +31,12 @@ public class CustomJPARepositoryImpl<T, ID> extends SimpleJpaRepository<T, ID>
                 .getSingleResult();
 
 //         pode ser um valor nulo.
-        return Optional.ofNullable(entity);
+        return ofNullable(entity);
+    }
+
+    @Override
+    public void detach(T entity) {
+        manager.detach(entity);
     }
 
 }
