@@ -8,6 +8,6 @@ public class RestauranteNaoEncontradoException extends EntidadeNaoEncontradaExce
     }
 
     public RestauranteNaoEncontradoException(Long id) {
-        this(format("Nao existe cadastro de cozinha com codigo %d", id));
+        this(format("Nao existe cadastro de restaurante com codigo %d", id));
     }
 }

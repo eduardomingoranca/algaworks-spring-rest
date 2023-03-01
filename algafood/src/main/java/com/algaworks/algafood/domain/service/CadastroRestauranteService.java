@@ -3,6 +3,7 @@ package com.algaworks.algafood.domain.service;
 import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradoException;
 import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.model.Cozinha;
+import com.algaworks.algafood.domain.model.FormaPagamento;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
@@ -25,6 +26,9 @@ public class CadastroRestauranteService {
 
     @Autowired
     private CadastroCidadeService cadastroCidade;
+
+    @Autowired
+    private CadastroFormaPagamentoService cadastroFormaPagamento;
 
     @Transactional
     public Restaurante salvar(Restaurante restaurante) {
@@ -53,20 +57,52 @@ public class CadastroRestauranteService {
         // banco de dados.
         Restaurante restauranteAtual = buscarOuFalhar(id);
 
-        restauranteAtual.ativar();
+        ativarRestaurante(restauranteAtual);
     }
 
     @Transactional
     public void inativar(Long id) {
         Restaurante restauranteAtual = buscarOuFalhar(id);
 
-        restauranteAtual.inativar();
+        inativarRestaurante(restauranteAtual);
+    }
+
+    @Transactional
+    public void desassociarFormaPagamento(Long codigoRestaurante, Long codigoFormaPagamento) {
+        Restaurante restaurante = buscarOuFalhar(codigoRestaurante);
+        FormaPagamento formaPagamento = cadastroFormaPagamento.buscarOuFalhar(codigoFormaPagamento);
+
+        removerFormaPagamento(formaPagamento, restaurante);
+    }
+
+    @Transactional
+    public void associarFormaPagamento(Long codigoRestaurante, Long codigoFormaPagamento) {
+        Restaurante restaurante = buscarOuFalhar(codigoRestaurante);
+        FormaPagamento formaPagamento = cadastroFormaPagamento.buscarOuFalhar(codigoFormaPagamento);
+
+        adicionarFormaPagamento(formaPagamento, restaurante);
     }
 
     @Transactional
     public Restaurante buscarOuFalhar(Long id) {
         return restauranteRepository.findById(id)
                 .orElseThrow(() -> new RestauranteNaoEncontradoException(id));
+    }
+
+    private void ativarRestaurante(Restaurante restauranteAtual) {
+        restauranteAtual.setAtivo(true);
+    }
+
+    private void inativarRestaurante(Restaurante restauranteAtual) {
+        restauranteAtual.setAtivo(false);
+    }
+
+    private boolean removerFormaPagamento(FormaPagamento formaPagamento, Restaurante restaurante) {
+        return restaurante.getFormasPagamento().remove(formaPagamento);
+    }
+
+    private boolean adicionarFormaPagamento(FormaPagamento formaPagamento, Restaurante restaurante) {
+        return restaurante.getFormasPagamento().add(formaPagamento);
     }
 
 }
