@@ -6,8 +6,8 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -37,6 +37,6 @@ public class Usuario {
     @JoinTable(name = "usuario_grupo",
             joinColumns = @JoinColumn(name = "usuario_id"),
             inverseJoinColumns = @JoinColumn(name = "grupo_id"))
-    private List<Grupo> grupos = new ArrayList<>();
+    private Set<Grupo> grupos = new HashSet<>();
 
 }

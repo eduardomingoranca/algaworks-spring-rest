@@ -73,3 +73,5 @@ insert into usuario (id, nome, email, senha, data_cadastro) values (1, 'John Smi
 (3, 'Joseph Smith', 'joseph.aux@algafood.com', '123', utc_timestamp),(4, 'Sebastian Marley', 'sebastian.cad@algafood.com', '123', utc_timestamp);
 
 insert into grupo_permissao (grupo_id, permissao_id) values (1, 1), (1, 2), (2, 1), (2, 2), (3, 1);
+
+insert into usuario_grupo (usuario_id, grupo_id) values (1, 1), (1, 2), (2, 2);

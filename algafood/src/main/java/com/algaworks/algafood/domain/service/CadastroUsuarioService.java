@@ -2,6 +2,7 @@ package com.algaworks.algafood.domain.service;
 
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.exception.UsuarioNaoEncontradoException;
+import com.algaworks.algafood.domain.model.Grupo;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ import static java.lang.String.format;
 public class CadastroUsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private CadastroGrupoService cadastroGrupo;
 
     @Transactional
     public List<Usuario> listar() {
@@ -51,6 +55,30 @@ public class CadastroUsuarioService {
             throw new NegocioException("Senha atual informada nao coincide com a senha do usuario.");
 
         usuario.setSenha(novaSenha);
+    }
+
+    @Transactional
+    public void associarGrupo(Long id, Long grupoID) {
+        Usuario usuario = buscarOuFalhar(id);
+        Grupo grupo = cadastroGrupo.buscarOuFalhar(grupoID);
+
+        adicionarGrupo(usuario, grupo);
+    }
+
+    @Transactional
+    public void desassociarGrupo(Long grupoID, Long id) {
+        Usuario usuario = buscarOuFalhar(id);
+        Grupo grupo = cadastroGrupo.buscarOuFalhar(grupoID);
+
+        removerGrupo(usuario, grupo);
+    }
+
+    private void adicionarGrupo(Usuario usuario, Grupo grupo) {
+        usuario.getGrupos().add(grupo);
+    }
+
+    private void removerGrupo(Usuario usuario, Grupo grupo) {
+        usuario.getGrupos().remove(grupo);
     }
 
 }
