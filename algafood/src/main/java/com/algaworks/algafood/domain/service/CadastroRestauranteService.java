@@ -1,10 +1,7 @@
 package com.algaworks.algafood.domain.service;
 
 import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradoException;
-import com.algaworks.algafood.domain.model.Cidade;
-import com.algaworks.algafood.domain.model.Cozinha;
-import com.algaworks.algafood.domain.model.FormaPagamento;
-import com.algaworks.algafood.domain.model.Restaurante;
+import com.algaworks.algafood.domain.model.*;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +26,9 @@ public class CadastroRestauranteService {
 
     @Autowired
     private CadastroFormaPagamentoService cadastroFormaPagamento;
+
+    @Autowired
+    private CadastroUsuarioService cadastroUsuario;
 
     @Transactional
     public Restaurante salvar(Restaurante restaurante) {
@@ -98,6 +98,22 @@ public class CadastroRestauranteService {
     }
 
     @Transactional
+    public void associarUsuarioResponsavel(Long codigoRestaurante, Long codigoUsuarioResponsavel) {
+        Restaurante restaurante = buscarOuFalhar(codigoRestaurante);
+        Usuario usuario = cadastroUsuario.buscarOuFalhar(codigoUsuarioResponsavel);
+
+        adicionarUsuarioResponsavel(usuario, restaurante);
+    }
+
+    @Transactional
+    public void desassociarUsuarioResponsavel(Long codigoRestaurante, Long codigoUsuarioResponsavel) {
+        Restaurante restaurante = buscarOuFalhar(codigoRestaurante);
+        Usuario usuario = cadastroUsuario.buscarOuFalhar(codigoUsuarioResponsavel);
+
+        removerUsuarioResponsavel(usuario, restaurante);
+    }
+
+    @Transactional
     public Restaurante buscarOuFalhar(Long id) {
         return restauranteRepository.findById(id)
                 .orElseThrow(() -> new RestauranteNaoEncontradoException(id));
@@ -125,6 +141,14 @@ public class CadastroRestauranteService {
 
     private void adicionarFormaPagamento(FormaPagamento formaPagamento, Restaurante restaurante) {
         restaurante.getFormasPagamento().add(formaPagamento);
+    }
+
+    private void adicionarUsuarioResponsavel(Usuario usuario, Restaurante restaurante) {
+        restaurante.getUsuarios().add(usuario);
+    }
+
+    private void removerUsuarioResponsavel(Usuario usuario, Restaurante restaurante) {
+        restaurante.getUsuarios().remove(usuario);
     }
 
 }
