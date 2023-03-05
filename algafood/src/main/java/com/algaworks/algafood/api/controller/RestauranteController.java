@@ -7,6 +7,7 @@ import com.algaworks.algafood.api.model.input.RestauranteInput;
 import com.algaworks.algafood.domain.exception.CidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
+import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradoException;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,6 +93,28 @@ public class RestauranteController {
     @ResponseStatus(NO_CONTENT)
     public void inativar(@PathVariable("restauranteId") Long id) {
         cadastroRestaurante.inativar(id);
+    }
+
+    // PUT /restaurantes/ativacoes
+    @PutMapping("/ativacoes")
+    @ResponseStatus(NO_CONTENT)
+    public void ativarMultiplos(@RequestBody List<Long> restauranteIDs) {
+        try {
+            cadastroRestaurante.ativar(restauranteIDs);
+        } catch (RestauranteNaoEncontradoException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
+    }
+
+    // DELETE /restaurantes/ativacoes
+    @DeleteMapping("/ativacoes")
+    @ResponseStatus(NO_CONTENT)
+    public void inativarMultiplos(@RequestBody List<Long> restauranteIDs) {
+        try {
+            cadastroRestaurante.inativar(restauranteIDs);
+        } catch (RestauranteNaoEncontradoException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
     }
 
     @PutMapping("/{restauranteId}/fechamento")
