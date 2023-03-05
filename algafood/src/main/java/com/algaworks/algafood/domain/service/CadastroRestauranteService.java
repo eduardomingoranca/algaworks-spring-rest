@@ -119,12 +119,12 @@ public class CadastroRestauranteService {
         restaurante.setAberto(true);
     }
 
-    private boolean removerFormaPagamento(FormaPagamento formaPagamento, Restaurante restaurante) {
-        return restaurante.getFormasPagamento().remove(formaPagamento);
+    private void removerFormaPagamento(FormaPagamento formaPagamento, Restaurante restaurante) {
+        restaurante.getFormasPagamento().remove(formaPagamento);
     }
 
-    private boolean adicionarFormaPagamento(FormaPagamento formaPagamento, Restaurante restaurante) {
-        return restaurante.getFormasPagamento().add(formaPagamento);
+    private void adicionarFormaPagamento(FormaPagamento formaPagamento, Restaurante restaurante) {
+        restaurante.getFormasPagamento().add(formaPagamento);
     }
 
 }
