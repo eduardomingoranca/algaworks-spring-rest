@@ -13,6 +13,7 @@ import java.util.List;
 
 import static com.algaworks.algafood.domain.enumeration.StatusPedido.CRIADO;
 import static javax.persistence.EnumType.STRING;
+import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Data
@@ -52,7 +53,8 @@ public class Pedido {
     @Column(columnDefinition = "datetime")
     private OffsetDateTime dataEntrega;
 
-    @ManyToOne
+    // LAZY -> realiza a consulta quando precisar/for utilizada
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(nullable = false)
     private FormaPagamento formaPagamento;
 
