@@ -11,7 +11,8 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static javax.persistence.FetchType.LAZY;
+import static com.algaworks.algafood.domain.enumeration.StatusPedido.CRIADO;
+import static javax.persistence.EnumType.STRING;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Data
@@ -33,9 +34,14 @@ public class Pedido {
     @Column(nullable = false)
     private BigDecimal valorTotal;
 
+    @Embedded
+    private Endereco enderecoEntrega;
+
+    @Enumerated(STRING)
+    private StatusPedido status = CRIADO;
+
     @CreationTimestamp
-    @Column(nullable = false, columnDefinition = "datetime")
-    private OffsetDateTime dataCadastro;
+    private OffsetDateTime dataCriacao;
 
     @Column(columnDefinition = "datetime")
     private OffsetDateTime dataConfirmacao;
@@ -46,39 +52,17 @@ public class Pedido {
     @Column(columnDefinition = "datetime")
     private OffsetDateTime dataEntrega;
 
-    @Column(nullable = false)
-    private StatusPedido status;
-
     @ManyToOne
-    @JoinColumn(name = "forma_pagamento_id", nullable = false)
+    @JoinColumn(nullable = false)
     private FormaPagamento formaPagamento;
 
     @ManyToOne
-    @JoinColumn(name = "restaurante_id", nullable = false)
+    @JoinColumn(nullable = false)
     private Restaurante restaurante;
 
     @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = false)
+    @JoinColumn(name = "usuario_cliente_id", nullable = false)
     private Usuario cliente;
-
-    @Column(name = "endereco_cep", nullable = false)
-    private String cep;
-
-    @Column(name = "endereco_logradouro", nullable = false)
-    private String logradouro;
-
-    @Column(name = "endereco_numero", nullable = false)
-    private String numero;
-
-    @Column(name = "endereco_complemento")
-    private String complemento;
-
-    @Column(name = "endereco_bairro", nullable = false)
-    private String bairro;
-
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "endereco_cidade_id", nullable = false)
-    private Cidade cidade;
 
     @OneToMany(mappedBy = "pedido")
     private List<ItemPedido> itens = new ArrayList<>();
