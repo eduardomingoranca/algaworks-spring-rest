@@ -15,6 +15,7 @@ import java.util.List;
 import static com.algaworks.algafood.domain.enumeration.StatusPedido.*;
 import static java.lang.String.format;
 import static java.time.OffsetDateTime.now;
+import static java.util.UUID.randomUUID;
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.EnumType.STRING;
 import static javax.persistence.FetchType.LAZY;
@@ -29,6 +30,8 @@ public class Pedido {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
+
+    private String codigo;
 
     @Column(nullable = false)
     private BigDecimal subtotal;
@@ -90,11 +93,17 @@ public class Pedido {
 
     private void setStatus(StatusPedido novoStatus) {
         if (getStatus().naoPodeAlterarPara(novoStatus)) {
-            throw new NegocioException(format("O status do pedido %d nao pode ser alterado de %s para %s",
-                    getId(), getStatus().getDescricao(), novoStatus.getDescricao()));
+            throw new NegocioException(format("O status do pedido %s nao pode ser alterado de %s para %s",
+                    getCodigo(), getStatus().getDescricao(), novoStatus.getDescricao()));
         }
 
         this.status = novoStatus;
+    }
+
+    // antes de persistir a entidade execute o metodo
+    @PrePersist
+    private void gerarCodigo() {
+        setCodigo(randomUUID().toString());
     }
 
 }

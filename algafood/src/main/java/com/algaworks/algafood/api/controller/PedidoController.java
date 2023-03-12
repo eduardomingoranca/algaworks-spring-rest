@@ -39,9 +39,9 @@ public class PedidoController {
         return pedidoResumoModelAssembler.toCollectionModel(pedidos);
     }
 
-    @GetMapping("/{pedidoID}")
-    public PedidoModel buscar(@PathVariable("pedidoID") Long id) {
-        Pedido pedido = emissaoPedido.buscarOuFalhar(id);
+    @GetMapping("/{codigoPedido}")
+    public PedidoModel buscar(@PathVariable("codigoPedido") String codigo) {
+        Pedido pedido = emissaoPedido.buscarOuFalhar(codigo);
 
         return pedidoModelAssembler.toModel(pedido);
     }
@@ -55,7 +55,7 @@ public class PedidoController {
 
             return pedidoModelAssembler.toModel(salvarPedido);
         } catch (RestauranteNaoEncontradoException | FormaPagamentoNaoEncontradaException |
-        UsuarioNaoEncontradoException | CidadeNaoEncontradaException e) {
+                 UsuarioNaoEncontradoException | CidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage(), e);
         }
     }
