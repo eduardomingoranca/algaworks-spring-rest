@@ -15,7 +15,7 @@ import static java.lang.String.format;
 import static java.math.BigDecimal.ZERO;
 
 @Service
-public class CadastroPedidoService {
+public class EmissaoPedidoService {
     @Autowired
     private PedidoRepository pedidoRepository;
 

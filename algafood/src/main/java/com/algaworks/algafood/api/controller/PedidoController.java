@@ -8,7 +8,7 @@ import com.algaworks.algafood.api.model.PedidoResumoModel;
 import com.algaworks.algafood.api.model.input.PedidoInput;
 import com.algaworks.algafood.domain.exception.*;
 import com.algaworks.algafood.domain.model.Pedido;
-import com.algaworks.algafood.domain.service.CadastroPedidoService;
+import com.algaworks.algafood.domain.service.EmissaoPedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +21,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RequestMapping("/pedidos")
 public class PedidoController {
     @Autowired
-    private CadastroPedidoService cadastroPedido;
+    private EmissaoPedidoService emissaoPedido;
 
     @Autowired
     private PedidoModelAssembler pedidoModelAssembler;
@@ -34,14 +34,14 @@ public class PedidoController {
 
     @GetMapping
     public List<PedidoResumoModel> listar() {
-        List<Pedido> pedidos = cadastroPedido.listar();
+        List<Pedido> pedidos = emissaoPedido.listar();
 
         return pedidoResumoModelAssembler.toCollectionModel(pedidos);
     }
 
     @GetMapping("/{pedidoID}")
     public PedidoModel buscar(@PathVariable("pedidoID") Long id) {
-        Pedido pedido = cadastroPedido.buscarOuFalhar(id);
+        Pedido pedido = emissaoPedido.buscarOuFalhar(id);
 
         return pedidoModelAssembler.toModel(pedido);
     }
@@ -51,7 +51,7 @@ public class PedidoController {
     public PedidoModel adicionar(@RequestBody @Valid PedidoInput pedidoInput) {
         try {
             Pedido pedido = pedidoInputDisassembler.toDomainObject(pedidoInput);
-            Pedido salvarPedido = cadastroPedido.salvar(pedido);
+            Pedido salvarPedido = emissaoPedido.salvar(pedido);
 
             return pedidoModelAssembler.toModel(salvarPedido);
         } catch (RestauranteNaoEncontradoException | FormaPagamentoNaoEncontradaException |
