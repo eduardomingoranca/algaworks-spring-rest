@@ -1,6 +1,7 @@
 package com.algaworks.algafood.domain.model;
 
 import com.algaworks.algafood.domain.enumeration.StatusPedido;
+import com.algaworks.algafood.domain.exception.NegocioException;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
@@ -11,7 +12,9 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.algaworks.algafood.domain.enumeration.StatusPedido.CRIADO;
+import static com.algaworks.algafood.domain.enumeration.StatusPedido.*;
+import static java.lang.String.format;
+import static java.time.OffsetDateTime.now;
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.EnumType.STRING;
 import static javax.persistence.FetchType.LAZY;
@@ -69,5 +72,29 @@ public class Pedido {
 
     @OneToMany(mappedBy = "pedido", cascade = ALL)
     private List<ItemPedido> itens = new ArrayList<>();
+
+    public void confirmar() {
+        setStatus(CONFIRMADO);
+        setDataConfirmacao(now());
+    }
+
+    public void entregar() {
+        setStatus(ENTREGUE);
+        setDataEntrega(now());
+    }
+
+    public void cancelar() {
+        setStatus(CANCELADO);
+        setDataCancelamento(now());
+    }
+
+    private void setStatus(StatusPedido novoStatus) {
+        if (getStatus().naoPodeAlterarPara(novoStatus)) {
+            throw new NegocioException(format("O status do pedido %d nao pode ser alterado de %s para %s",
+                    getId(), getStatus().getDescricao(), novoStatus.getDescricao()));
+        }
+
+        this.status = novoStatus;
+    }
 
 }
