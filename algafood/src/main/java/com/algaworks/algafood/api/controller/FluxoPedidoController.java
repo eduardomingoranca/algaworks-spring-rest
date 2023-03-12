@@ -18,4 +18,16 @@ public class FluxoPedidoController {
         fluxoPedido.confirmar(id);
     }
 
+    @PutMapping("/entrega")
+    @ResponseStatus(NO_CONTENT)
+    public void entregar(@PathVariable("pedidoId") Long id) {
+        fluxoPedido.entregar(id);
+    }
+
+    @PutMapping("/cancelamento")
+    @ResponseStatus(NO_CONTENT)
+    public void cancelar(@PathVariable("pedidoId") Long id) {
+        fluxoPedido.cancelar(id);
+    }
+
 }
