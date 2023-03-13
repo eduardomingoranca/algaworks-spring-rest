@@ -4,12 +4,14 @@ import com.algaworks.algafood.api.assembler.input.disassembler.RestauranteInputD
 import com.algaworks.algafood.api.assembler.model.RestauranteModelAssembler;
 import com.algaworks.algafood.api.model.RestauranteModel;
 import com.algaworks.algafood.api.model.input.RestauranteInput;
+import com.algaworks.algafood.api.model.view.RestauranteView;
 import com.algaworks.algafood.domain.exception.CidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradoException;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,11 +33,36 @@ public class RestauranteController {
     @Autowired
     private RestauranteInputDisassembler restauranteInputDisassembler;
 
+    // MappingJacksonValue -> permite atribuir uma json view dinamicamente
+//    @GetMapping
+//    public MappingJacksonValue listar(@RequestParam(required = false) String projecao) {
+//        List<Restaurante> restaurantes = cadastroRestaurante.listar();
+//        List<RestauranteModel> restaurantesModel = restauranteModelAssembler.toCollectionModel(restaurantes);
+//
+//        MappingJacksonValue restaurantesWrapper = new MappingJacksonValue(restaurantesModel);
+//
+//        restaurantesWrapper.setSerializationView(RestauranteView.Resumo.class);
+//
+//        if ("apenas-nome".equals(projecao))
+//            restaurantesWrapper.setSerializationView(RestauranteView.ApenasNome.class);
+//        else if ("completo".equals(projecao))
+//            restaurantesWrapper.setSerializationView(null);
+//
+//        return restaurantesWrapper;
+//    }
+
+    @JsonView(RestauranteView.Resumo.class)
     @GetMapping
     public List<RestauranteModel> listar() {
         List<Restaurante> restaurantes = cadastroRestaurante.listar();
 
         return restauranteModelAssembler.toCollectionModel(restaurantes);
+    }
+
+    @JsonView(RestauranteView.ApenasNome.class)
+    @GetMapping(params = "projecao=apenas-nome")
+    public List<RestauranteModel> listarApenasNome() {
+        return listar();
     }
 
     @GetMapping("/{restauranteId}")
