@@ -9,12 +9,17 @@ import com.algaworks.algafood.api.model.input.PedidoInput;
 import com.algaworks.algafood.domain.exception.*;
 import com.algaworks.algafood.domain.model.Pedido;
 import com.algaworks.algafood.domain.service.EmissaoPedidoService;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
+import static com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter.filterOutAllExcept;
+import static com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter.serializeAll;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
@@ -33,10 +38,27 @@ public class PedidoController {
     private PedidoInputDisassembler pedidoInputDisassembler;
 
     @GetMapping
-    public List<PedidoResumoModel> listar() {
+    public MappingJacksonValue listar(@RequestParam(required = false) String campos) {
+        // buscando a lista de pedidos do banco de dados
         List<Pedido> pedidos = emissaoPedido.listar();
+        // convertendo a lista de pedidos para uma model
+        List<PedidoResumoModel> pedidosModel = pedidoResumoModelAssembler.toCollectionModel(pedidos);
 
-        return pedidoResumoModelAssembler.toCollectionModel(pedidos);
+        // instancia da classe de envelopamento adicionando a classe de modelo retornavel
+        MappingJacksonValue pedidosWrapper = new MappingJacksonValue(pedidosModel);
+
+        // instancia da classe responsavel por criar o filtro
+        SimpleFilterProvider filterProvider = new SimpleFilterProvider();
+        // adicionando a customizacao do filtro que sera retornado
+        filterProvider.addFilter("pedidoFilter", serializeAll());
+
+        if (isNotBlank(campos))
+            filterProvider.addFilter("pedidoFilter", filterOutAllExcept(campos.split(",")));
+
+        // atribuindo na instancia o filtro customizado
+        pedidosWrapper.setFilters(filterProvider);
+
+        return pedidosWrapper;
     }
 
     @GetMapping("/{codigoPedido}")
