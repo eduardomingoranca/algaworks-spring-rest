@@ -1,0 +1,53 @@
+Modelando pesquisas complexas na API
+
+Solucao 1
+Receber parametros de URL 
+no recurso de colecao.
+
+Exemplo: 
+GET /pedidos?dataCriacaoInicio=2023-03-15T14:00:00Z
+&dataCriacaoFim=2023-03-20T14:00:00Z&restauranteId=1&clienteId=2         
+
+Solucao 2
+Considerar a propria pesquisa
+como um recurso.
+
+Exemplo:
+POST /pedidos/filtros
+{
+  "dataCriacaoInicio": "2023-03-15T14:00:00Z",
+  "dataCriacaoFim": "2023-03-20T14:00:00Z",
+  "restauranteId": 1,
+  "clienteId": 2
+}
+
+retorna: HTTP/1.1 200 OK
+
+Solucao 3
+Considerar a propria pesquisa
+como um recurso (de verdade).
+
+Exemplo:
+POST /pedidos/filtros
+{
+  "dataCriacaoInicio": "2023-03-15T14:00:00Z",
+  "dataCriacaoFim": "2023-03-20T14:00:00Z",
+  "restauranteId": 1,
+  "clienteId": 2
+}
+
+retorna: HTTP/1.1 201 CREATED
+
+GET /pedidos/filtros/234
+
+Solucao 3.1
+Usa o ID do filtro criado como
+parametro no recurso de colecao
+
+GET /pedidos?filtro=234
+
+Solucao 3.2
+Quando os criterios de pesquisa
+sao realmente complexos.
+
+
