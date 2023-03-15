@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class CadastroProdutoService {
     @Autowired
@@ -30,4 +32,13 @@ public class CadastroProdutoService {
         return produtoRepository.save(produto);
     }
 
+    @Transactional
+    public List<Produto> buscarTodosOsProdutosAtivosPorRestaurante(Restaurante restaurante) {
+        return produtoRepository.findAtivosByRestaurante(restaurante);
+    }
+
+    @Transactional
+    public List<Produto> buscarTodosOsProdutosPorRestaurante(Restaurante restaurante) {
+        return produtoRepository.findTodosByRestaurante(restaurante);
+    }
 }
