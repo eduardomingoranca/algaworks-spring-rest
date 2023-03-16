@@ -5,6 +5,7 @@ import com.algaworks.algafood.domain.exception.PedidoNaoEncontradoException;
 import com.algaworks.algafood.domain.model.*;
 import com.algaworks.algafood.domain.repository.PedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,8 +36,8 @@ public class EmissaoPedidoService {
     private CadastroProdutoService cadastroProduto;
 
     @Transactional
-    public List<Pedido> listar() {
-        return pedidoRepository.findAll();
+    public List<Pedido> listar(Specification<Pedido> pedidoSpecification) {
+        return pedidoRepository.findAll(pedidoSpecification);
     }
 
     @Transactional

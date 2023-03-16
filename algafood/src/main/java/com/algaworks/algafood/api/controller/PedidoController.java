@@ -8,6 +8,7 @@ import com.algaworks.algafood.api.model.PedidoResumoModel;
 import com.algaworks.algafood.api.model.input.PedidoInput;
 import com.algaworks.algafood.domain.exception.*;
 import com.algaworks.algafood.domain.model.Pedido;
+import com.algaworks.algafood.domain.repository.filter.PedidoFilter;
 import com.algaworks.algafood.domain.service.EmissaoPedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+import static com.algaworks.algafood.infrastructure.repository.spec.PedidoSpecs.usandoFiltro;
 import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
@@ -33,8 +35,8 @@ public class PedidoController {
     private PedidoInputDisassembler pedidoInputDisassembler;
 
     @GetMapping
-    public List<PedidoResumoModel> listar() {
-        List<Pedido> pedidos = emissaoPedido.listar();
+    public List<PedidoResumoModel> pesquisar(PedidoFilter filtro) {
+        List<Pedido> pedidos = emissaoPedido.listar(usandoFiltro(filtro));
 
         return pedidoResumoModelAssembler.toCollectionModel(pedidos);
     }
