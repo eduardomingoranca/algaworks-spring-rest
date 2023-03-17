@@ -16,6 +16,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -46,6 +47,12 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Autowired
     private MessageSource messageSource;
+
+    @Override
+    protected ResponseEntity<Object> handleBindException(BindException ex, HttpHeaders headers, HttpStatus status,
+                                                         WebRequest request) {
+        return handleValidationInternal(ex, ex.getBindingResult(), headers, status, request);
+    }
 
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
@@ -149,13 +156,13 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers, HttpStatus status,
                                                                   WebRequest request) {
-        return getObjectResponseEntity(ex, ex.getBindingResult(), headers, status, request);
+        return handleValidationInternal(ex, ex.getBindingResult(), headers, status, request);
     }
 
     @ExceptionHandler(ValidacaoException.class)
     public ResponseEntity<Object> handleValidacaoException(ValidacaoException ex,
                                                            WebRequest request) {
-        return getObjectResponseEntity(ex, ex.getBindingResult(), new HttpHeaders(), BAD_REQUEST, request);
+        return handleValidationInternal(ex, ex.getBindingResult(), new HttpHeaders(), BAD_REQUEST, request);
     }
 
     @ExceptionHandler(EntidadeNaoEncontradaException.class)
@@ -240,7 +247,9 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .detail(detail);
     }
 
-    private ResponseEntity<Object> getObjectResponseEntity(Exception ex, BindingResult bindingResult, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    private ResponseEntity<Object> handleValidationInternal(Exception ex, BindingResult bindingResult,
+                                                            HttpHeaders headers, HttpStatus status,
+                                                            WebRequest request) {
         String detail = "Um ou mais campos estao invalidos. Faca o preenchimento correto e " +
                 "tente novamente.";
 
@@ -262,6 +271,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 }).collect(Collectors.toList());
 
         Problem problem = createProblemBuilder(status, DADOS_INVALIDOS, detail, detail)
+
                 .objects(problemObjects)
                 .build();
 
