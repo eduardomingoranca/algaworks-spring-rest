@@ -10,11 +10,14 @@ import java.util.List;
 
 public class PedidoSpecs {
 
+    // specification encapsula as restricoes/filtros
     public static Specification<Pedido> usandoFiltro(PedidoFilter filtro) {
         return (root, query, builder) -> {
-            // agrupando em uma unica busca
-            root.fetch("restaurante").fetch("cozinha");
-            root.fetch("cliente");
+            if (Pedido.class.equals(query.getResultType())) {
+                // agrupando em uma unica busca
+                root.fetch("restaurante").fetch("cozinha");
+                root.fetch("cliente");
+            }
 
             // criando uma lista de filtros
             List<Predicate> predicates = new ArrayList<>();

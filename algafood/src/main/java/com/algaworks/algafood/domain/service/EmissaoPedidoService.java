@@ -5,12 +5,13 @@ import com.algaworks.algafood.domain.exception.PedidoNaoEncontradoException;
 import com.algaworks.algafood.domain.model.*;
 import com.algaworks.algafood.domain.repository.PedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 import static java.lang.String.format;
 import static java.math.BigDecimal.ZERO;
@@ -36,8 +37,8 @@ public class EmissaoPedidoService {
     private CadastroProdutoService cadastroProduto;
 
     @Transactional
-    public List<Pedido> listar(Specification<Pedido> pedidoSpecification) {
-        return pedidoRepository.findAll(pedidoSpecification);
+    public Page<Pedido> listar(Specification<Pedido> pedidoSpecification, Pageable pageable) {
+        return pedidoRepository.findAll(pedidoSpecification, pageable);
     }
 
     @Transactional
