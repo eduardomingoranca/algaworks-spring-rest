@@ -9,8 +9,12 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static com.algaworks.algafood.domain.enumeration.StatusPedido.CONFIRMADO;
+import static com.algaworks.algafood.domain.enumeration.StatusPedido.ENTREGUE;
 
 // anotato como repositorio porque o spring traduz algumas exceptions para exceptions de persistencia
 // do spring
@@ -38,11 +42,38 @@ public class VendaQueryServiceImpl implements VendaQueryService {
                 builder.count(root.get("id")),
                 builder.sum(root.get("valorTotal")));
 
+        Predicate predicate = usandoFiltroVendas(filtro, builder, root);
+
         query.select(selection);
+        query.where(predicate);
         query.groupBy(functionDateDataCriacao);
 
         // retorna uma lista de vendas diarias
         return manager.createQuery(query).getResultList();
     }
 
+    private Predicate usandoFiltroVendas(VendaDiariaFilter filtro,
+                                         CriteriaBuilder builder,
+                                         Root<Pedido> root) {
+        // criando uma lista de filtros
+        List<Predicate> predicates = new ArrayList<>();
+
+        if (filtro.getRestauranteId() != null)
+            predicates.add(builder.equal(root.get("restaurante"), filtro.getRestauranteId()));
+
+        // data de criacao do pedido deve ser maior que a data de criacao de inicio
+        if (filtro.getDataCriacaoInicio() != null)
+            predicates.add(builder.greaterThanOrEqualTo(root.get("dataCriacao"),
+                    filtro.getDataCriacaoInicio()));
+
+        // data de criacao do pedido deve ser menor que a data de criacao final
+        if (filtro.getDataCriacaoFim() != null)
+            predicates.add(builder.lessThanOrEqualTo(root.get("dataCriacao"),
+                    filtro.getDataCriacaoFim()));
+
+        predicates.add(root.get("status").in(CONFIRMADO, ENTREGUE));
+
+        return builder.and(predicates.toArray(new Predicate[0]));
+    }
+    
 }
