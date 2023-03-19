@@ -1,0 +1,26 @@
+Modelando endpoints de consultas com dados agregados (ideal para graficos e dashboards)
+
+Requisicao
+GET /estatisticas/vendas-diarias?dataCriacaoInicio=2023-01-30T00:00:00Z
+&dataCriacaoFim=2023-02-02T23:59:59Z&restauranteId=1
+
+HTTP/1.1 200 OK
+
+[
+    {
+        "data": "2023-01-30",
+        "totalVendas": 1,
+        "totalFatura": 120.00
+    },
+    {
+        "data": "2023-02-02",
+        "totalVendas": 2,
+        "totalFatura": 276.60
+    }
+]
+
+Algumas alternativas de URIs:
+. /restaurantes/1/estatisticas/vendas-diarias
+. /pedidos/estatisticas/vendas-diarias
+. /relatorios/vendas-diarias
+. /insights/vendas-diarias
