@@ -1,0 +1,4 @@
+O que eh Jasper Reports?
+Jasper Reports eh uma biblioteca de relatorios em java, criando em diferentes
+formatos como em PDF, XLS, HTML e etc. Permitindo ter varias fontes de dados
+como o JDBC, JavaBeans, XML, JSON e etc.
