@@ -10,6 +10,7 @@ import com.algaworks.algafood.domain.exception.*;
 import com.algaworks.algafood.domain.model.Pedido;
 import com.algaworks.algafood.domain.repository.filter.PedidoFilter;
 import com.algaworks.algafood.domain.service.EmissaoPedidoService;
+import com.google.common.collect.ImmutableMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+import static com.algaworks.algafood.core.data.PageableTranslator.translate;
 import static com.algaworks.algafood.infrastructure.repository.spec.PedidoSpecs.usandoFiltro;
 import static org.springframework.http.HttpStatus.CREATED;
 
@@ -41,6 +43,9 @@ public class PedidoController {
     @GetMapping
     public Page<PedidoResumoModel> pesquisar(PedidoFilter filtro,
                                              @PageableDefault(size = 10) Pageable pageable) {
+        // converter para um novo pageable com propriedades da classe de dominio/entidade
+        pageable = traduzirPageable(pageable);
+
         Page<Pedido> pedidosPage = emissaoPedido.listar(usandoFiltro(filtro), pageable);
 
         List<PedidoResumoModel> pedidosResumoModel = pedidoResumoModelAssembler
@@ -68,6 +73,17 @@ public class PedidoController {
                  UsuarioNaoEncontradoException | CidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage(), e);
         }
+    }
+
+    private Pageable traduzirPageable(Pageable pageable) {
+        // tambem poderia usar Map.of()
+        ImmutableMap<String, String> mapeamento = ImmutableMap.of(
+                "codigo", "codigo",
+                "restaurante.nome", "restaurante.nome",
+                "nomeCliente", "cliente.nome",
+                "valorTotal", "valorTotal");
+
+        return translate(pageable, mapeamento);
     }
 
 }
