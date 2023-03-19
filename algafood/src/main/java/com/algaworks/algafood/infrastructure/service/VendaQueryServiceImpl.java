@@ -24,7 +24,7 @@ public class VendaQueryServiceImpl implements VendaQueryService {
     private EntityManager manager;
 
     @Override
-    public List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter filtro) {
+    public List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter filtro, String timeOffset) {
         // implementando a consulta
         CriteriaBuilder builder = manager.getCriteriaBuilder();
         // especificando o tipo da consulta/tipo do retorno
@@ -33,8 +33,11 @@ public class VendaQueryServiceImpl implements VendaQueryService {
         Root<Pedido> root = query.from(Pedido.class);
 
         // criando uma expressao para uma funcao no banco de dados
+        Expression<Date> functionConvertTzDataCriacao = builder.function("convert_tz",
+                Date.class, root.get("dataCriacao"), builder.literal("+00:00"), builder.literal(timeOffset));
+
         Expression<Date> functionDateDataCriacao = builder.function("date",
-                Date.class, root.get("dataCriacao"));
+                Date.class, functionConvertTzDataCriacao);
 
         // realizando a pesquisa/busca
         CompoundSelection<VendaDiaria> selection = builder.construct(VendaDiaria.class,
@@ -75,5 +78,5 @@ public class VendaQueryServiceImpl implements VendaQueryService {
 
         return builder.and(predicates.toArray(new Predicate[0]));
     }
-    
+
 }
