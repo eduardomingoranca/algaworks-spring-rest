@@ -1,0 +1,53 @@
+REQUISICAO
+PUT /restaurantes/1/produtos/10/foto
+[Payload]
+
+
+RESPOSTA
+HTTP/1.1 200 OK
+
+{
+    "nome": "Prime Rib.jpg",
+    "descricao": "Prime rib ao ponto",
+    "tamanho": 60552
+}
+
+
+Solucao 01
+application/json
+
+REQUISICAO
+PUT /restaurantes/1/produtos/10/foto
+Content-Type: application/json
+
+No campo "arquivo" utilizar o base 64, que eh
+um metodo de codificacao de dados usado especialmente
+para transferencia de dados binarios em um campo
+texto.
+
+{
+    "nome": "Prime Rib.jpg",
+    "descricao": "Prime rib ao ponto",
+    "arquivo": "o que colocamos aqui?"
+}
+
+Solucao 02
+multipart/form-data
+
+
+REQUISICAO
+PUT /restaurantes/1/produtos/10/foto
+Content-Type: multipart/form-data; boundary=xxx
+
+--xxx
+Content-Disposition: form-data; name="arquivo"; filename="Prime Rib.jpg"
+Content-Type: image/jpeg
+
+MEOJVNE´FOBNQEVÓNEV´LJEVOEVNKVÓEVBQE´JVLNEVB0=VHJ0ONV BTV9U0JN VE0IPJ2NVEVJCP
+
+--xxx
+Content-Disposition: form-data; name="descricao"
+
+Prime Rib ao ponto
+--xxx--
+
