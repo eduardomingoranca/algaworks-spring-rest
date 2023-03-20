@@ -51,3 +51,24 @@ Content-Disposition: form-data; name="descricao"
 Prime Rib ao ponto
 --xxx--
 
+Content-Type: application/json -> Upload de imagens
+
+Vantagens:
+Simplicidade
+
+Desvantagens:
+O arquivo fica maior que o normal.
+Consome muita memoria.
+Degrada a performance.
+
+Content-Type: multipart/form-data -> Upload de imagens
+
+Vantagens:
+O arquivo nao fica na memoria do servidor web
+porque o fluxo de entrada do upload eh automaticamente
+colocada em um arquivo temporario, sem sobrecarregar a
+memoria do servidor.
+
+Desvantagens:
+O consumidor da api tem mais dificuldades em criar
+a requisicao.
