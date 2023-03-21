@@ -1,5 +1,6 @@
 package com.algaworks.algafood.domain.repository;
 
+import com.algaworks.algafood.domain.model.FotoProduto;
 import com.algaworks.algafood.domain.model.Produto;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.query.ProdutoRepositoryQueries;
@@ -21,4 +22,9 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long>, Produto
     List<Produto> findAtivosByRestaurante(Restaurante restaurante);
 
     List<Produto> findTodosByRestaurante(Restaurante restaurante);
+
+    @Query("select f from FotoProduto f join f.produto p where p.restaurante.id = :restauranteId " +
+            " and f.produto.id = :produtoId")
+    Optional<FotoProduto> findFotoProdutoById(Long restauranteId, Long produtoId);
+
 }
