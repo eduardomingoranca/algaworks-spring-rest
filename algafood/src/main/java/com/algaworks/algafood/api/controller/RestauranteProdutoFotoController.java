@@ -22,7 +22,7 @@ public class RestauranteProdutoFotoController {
         String nomeArquivo = randomUUID() + "_" + fotoProdutoInput.getArquivo().getOriginalFilename();
 
         // salvando o arquivo no caminho informado
-        Path arquivoFoto = Path.of("/Users/eduar/upload/catalogo", nomeArquivo);
+        Path arquivoFoto = Path.of("/tests", nomeArquivo);
 
         try {
             // transferiando o arquivo recebido pela requisicao para
