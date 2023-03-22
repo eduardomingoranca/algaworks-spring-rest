@@ -32,7 +32,8 @@ public class RestauranteProdutoFotoController {
 
     @PutMapping(consumes = MULTIPART_FORM_DATA_VALUE)
     public FotoProdutoModel atualizarFoto(@PathVariable("restauranteId") Long id,
-                                          @PathVariable Long produtoId, @Valid FotoProdutoInput fotoProdutoInput) {
+                                          @PathVariable Long produtoId,
+                                          @Valid FotoProdutoInput fotoProdutoInput) {
         Produto produto = cadastroProduto.buscarOuFalhar(id, produtoId);
 
         MultipartFile arquivo = fotoProdutoInput.getArquivo();
