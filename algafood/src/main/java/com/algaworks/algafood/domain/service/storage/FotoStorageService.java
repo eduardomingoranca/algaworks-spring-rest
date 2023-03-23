@@ -8,6 +8,8 @@ import java.io.InputStream;
 import static java.util.UUID.randomUUID;
 
 public interface FotoStorageService {
+    InputStream recuperar(String nomeArquivo);
+
     void armazenar(NovaFoto novaFoto);
 
     void remover(String nomeArquivo);
