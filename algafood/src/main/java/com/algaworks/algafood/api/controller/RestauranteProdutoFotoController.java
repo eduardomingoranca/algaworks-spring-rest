@@ -16,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
+import java.io.IOException;
+
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 @RestController
@@ -33,7 +35,7 @@ public class RestauranteProdutoFotoController {
     @PutMapping(consumes = MULTIPART_FORM_DATA_VALUE)
     public FotoProdutoModel atualizarFoto(@PathVariable("restauranteId") Long id,
                                           @PathVariable Long produtoId,
-                                          @Valid FotoProdutoInput fotoProdutoInput) {
+                                          @Valid FotoProdutoInput fotoProdutoInput) throws IOException {
         Produto produto = cadastroProduto.buscarOuFalhar(id, produtoId);
 
         MultipartFile arquivo = fotoProdutoInput.getArquivo();
@@ -45,7 +47,7 @@ public class RestauranteProdutoFotoController {
         fotoProduto.setTamanho(arquivo.getSize());
         fotoProduto.setNomeArquivo(arquivo.getOriginalFilename());
 
-        FotoProduto fotoProdutoSalvar = catalogoFotoProduto.salvar(fotoProduto);
+        FotoProduto fotoProdutoSalvar = catalogoFotoProduto.salvar(fotoProduto, arquivo.getInputStream());
 
         return fotoProdutoModelAssembler.toModel(fotoProdutoSalvar);
     }
