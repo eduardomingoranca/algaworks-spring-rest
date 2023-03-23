@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.nio.file.Path;
 
+import static java.nio.file.Files.deleteIfExists;
 import static java.nio.file.Files.newOutputStream;
 import static org.springframework.util.FileCopyUtils.copy;
 
@@ -26,6 +27,19 @@ public class LocalFotoStorageService implements FotoStorageService {
             copy(novaFoto.getInputStream(), newOutputStream(arquivoPath));
         } catch (IOException e) {
             throw new StorageException("Nao foi possivel armazenar arquivo.", e);
+        }
+    }
+
+    @Override
+    public void remover(String nomeArquivo) {
+        try {
+            // obtendo o caminho do arquivo com o nome do arquivo
+            Path arquivoPath = getArquivoPath(nomeArquivo);
+
+            // caso o arquivo ja exista excluir
+            deleteIfExists(arquivoPath);
+        } catch (IOException e) {
+            throw new StorageException("Nao foi possivel excluir arquivo.", e);
         }
     }
 
