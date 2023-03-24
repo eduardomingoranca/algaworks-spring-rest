@@ -8,10 +8,7 @@ import com.algaworks.algafood.domain.model.Produto;
 import com.algaworks.algafood.domain.service.CadastroProdutoService;
 import com.algaworks.algafood.domain.service.CatalogoFotoProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
@@ -50,6 +47,15 @@ public class RestauranteProdutoFotoController {
         FotoProduto fotoProdutoSalvar = catalogoFotoProduto.salvar(fotoProduto, arquivo.getInputStream());
 
         return fotoProdutoModelAssembler.toModel(fotoProdutoSalvar);
+    }
+
+    @GetMapping
+    public FotoProdutoModel buscarFoto(@PathVariable("restauranteId") Long id,
+                                       @PathVariable Long produtoId) {
+        Produto produto = cadastroProduto.buscarOuFalhar(id, produtoId);
+        FotoProduto fotoProduto = catalogoFotoProduto.buscarOuFalhar(produto);
+
+        return fotoProdutoModelAssembler.toModel(fotoProduto);
     }
 
 }

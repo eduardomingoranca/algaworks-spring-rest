@@ -1,6 +1,8 @@
 package com.algaworks.algafood.domain.service;
 
+import com.algaworks.algafood.domain.exception.FotoProdutoNaoEncontradaException;
 import com.algaworks.algafood.domain.model.FotoProduto;
+import com.algaworks.algafood.domain.model.Produto;
 import com.algaworks.algafood.domain.repository.ProdutoRepository;
 import com.algaworks.algafood.domain.service.storage.FotoStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +54,14 @@ public class CatalogoFotoProdutoService {
         fotoStorage.substituir(nomeArquivoExistente, novaFoto);
 
         return fotoProduto;
+    }
+
+    public FotoProduto buscarOuFalhar(Produto produto) {
+        Long restauranteId = produto.getRestaurante().getId();
+        Long produtoId = produto.getId();
+
+        return produtoRepository.findFotoProdutoById(restauranteId, produtoId)
+                .orElseThrow(() -> new FotoProdutoNaoEncontradaException(restauranteId, produtoId));
     }
 
     private Long getRestauranteId(FotoProduto fotoProduto) {
