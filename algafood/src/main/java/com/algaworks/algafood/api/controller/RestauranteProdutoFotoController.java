@@ -11,14 +11,16 @@ import com.algaworks.algafood.domain.service.CatalogoFotoProdutoService;
 import com.algaworks.algafood.domain.service.storage.FotoStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import static org.springframework.http.MediaType.*;
 import static org.springframework.http.ResponseEntity.notFound;
@@ -68,23 +70,42 @@ public class RestauranteProdutoFotoController {
         return fotoProdutoModelAssembler.toModel(fotoProduto);
     }
 
-    @GetMapping(produces = IMAGE_JPEG_VALUE)
+    @GetMapping
     public ResponseEntity<InputStreamResource> servirFoto(@PathVariable("restauranteId") Long id,
-                                                          @PathVariable Long produtoId) {
+                                                          @PathVariable Long produtoId,
+                                                          @RequestHeader(name = "accept") String acceptHeader)
+            throws HttpMediaTypeNotAcceptableException {
         try {
             Produto produto = cadastroProduto.buscarOuFalhar(id, produtoId);
             FotoProduto fotoProduto = catalogoFotoProduto.buscarOuFalhar(produto);
+
+            // media type da foto do produto salva/armazenada
+            MediaType mediaTypeFoto = parseMediaType(fotoProduto.getContentType());
+
+            // obtendo uma lista do media type informado pelo header aceitas pela API
+            List<MediaType> mediaTypesAceitas = parseMediaTypes(acceptHeader);
+
+            verificarCompatibilidadeMediType(mediaTypeFoto, mediaTypesAceitas);
 
             // buscar os dados da imagem
             InputStream inputStream = fotoStorage.recuperar(fotoProduto.getNomeArquivo());
 
             return ok()
-                    .contentType(IMAGE_JPEG)
+                    .contentType(mediaTypeFoto)
                     .body(new InputStreamResource(inputStream));
 
         } catch (EntidadeNaoEncontradaException e) {
             return notFound().build();
         }
+    }
+
+    private void verificarCompatibilidadeMediType(MediaType mediaTypeFoto,
+                 List<MediaType> mediaTypesAceitas) throws HttpMediaTypeNotAcceptableException {
+        boolean compativel = mediaTypesAceitas.stream()
+                .anyMatch(mediaTypesAceita -> mediaTypesAceita.isCompatibleWith(mediaTypeFoto));
+
+        if (!compativel)
+            throw new HttpMediaTypeNotAcceptableException(mediaTypesAceitas);
     }
 
 }
