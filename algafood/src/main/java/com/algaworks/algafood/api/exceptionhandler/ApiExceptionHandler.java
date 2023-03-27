@@ -19,6 +19,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -38,10 +39,10 @@ import static java.util.stream.Collectors.joining;
 import static org.apache.commons.lang3.exception.ExceptionUtils.getRootCause;
 import static org.springframework.context.i18n.LocaleContextHolder.getLocale;
 import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.ResponseEntity.status;
 
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
-
     public static final String MSG_ERRO_GENERICA_USUARIO_FINAL = "Ocorreu um erro interno inesperado no sistema. " +
             "Tente novamente e se o problema persistir, entre em contato com o administrador do sistema.";
 
@@ -77,42 +78,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .build();
 
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
-    }
-
-    private ResponseEntity<Object> handleInvalidFormatException(InvalidFormatException ex, HttpHeaders headers,
-                                                                HttpStatus status, WebRequest request) {
-
-        String path = ex.getPath().stream()
-//                .map(reference -> reference.getFieldName())
-                .map(JsonMappingException.Reference::getFieldName)
-                .collect(joining("."));
-
-        String detail = format("A propriedade '%s' recebeu o valor '%s', " +
-                        "que eh de um tipo invalido. Corrija e informe um valor compativel com o tipo %s.",
-                path, ex.getValue(), ex.getTargetType().getSimpleName());
-
-        Problem problem = createProblemBuilder(status, MENSAGEM_INCOMPREENSIVEL, detail,
-                MSG_ERRO_GENERICA_USUARIO_FINAL)
-                .build();
-
-        return handleExceptionInternal(ex, problem, headers, status, request);
-    }
-
-    private ResponseEntity<Object> handlePropertyBindingException(PropertyBindingException ex, HttpHeaders headers,
-                                                                  HttpStatus status, WebRequest request) {
-        // obtendo o campo informado erronemente
-        String path = ex.getPath().stream()
-                .map(JsonMappingException.Reference::getFieldName)
-                .collect(joining("."));
-
-        String detail = format("A propriedade %s nao existe. " +
-                        "Por favor corrija e informe uma propriedade valida.", path);
-
-        Problem problem = createProblemBuilder(status, MENSAGEM_INCOMPREENSIVEL, detail,
-                MSG_ERRO_GENERICA_USUARIO_FINAL)
-                .build();
-
-        return handleExceptionInternal(ex, problem, headers, status, request);
     }
 
     @Override
@@ -151,12 +116,41 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return this.handleExceptionInternal(ex, problem, headers, status, request);
     }
 
-//    metodo que captura a exception que eh lancada quando uma regra de validacao eh violada.
+    //    metodo que captura a exception que eh lancada quando uma regra de validacao eh violada.
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers, HttpStatus status,
                                                                   WebRequest request) {
         return handleValidationInternal(ex, ex.getBindingResult(), headers, status, request);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleHttpMediaTypeNotAcceptable(HttpMediaTypeNotAcceptableException ex,
+                                                                      HttpHeaders headers, HttpStatus status, WebRequest request) {
+        return status(status).headers(headers).build();
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers,
+                                                             HttpStatus status, WebRequest request) {
+
+        if (body == null) {
+            body = Problem.builder()
+                    .title(status.getReasonPhrase()) // ReasonPhrase -> descreve o status que esta sendo retornado
+                    .status(status.value())
+                    .timestamp(OffsetDateTime.now())
+                    .userMessage(MSG_ERRO_GENERICA_USUARIO_FINAL)
+                    .build();
+        } else if (body instanceof String) {
+            body = Problem.builder()
+                    .title((String) body)
+                    .status(status.value())
+                    .timestamp(OffsetDateTime.now())
+                    .userMessage(body.toString())
+                    .build();
+        }
+
+        return super.handleExceptionInternal(ex, body, headers, status, request);
     }
 
     @ExceptionHandler(ValidacaoException.class)
@@ -212,27 +206,40 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
 
-    @Override
-    protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers,
-                                                             HttpStatus status, WebRequest request) {
+    private ResponseEntity<Object> handlePropertyBindingException(PropertyBindingException ex, HttpHeaders headers,
+                                                                  HttpStatus status, WebRequest request) {
+        // obtendo o campo informado erronemente
+        String path = ex.getPath().stream()
+                .map(JsonMappingException.Reference::getFieldName)
+                .collect(joining("."));
 
-        if (body == null) {
-            body = Problem.builder()
-                    .title(status.getReasonPhrase()) // ReasonPhrase -> descreve o status que esta sendo retornado
-                    .status(status.value())
-                    .timestamp(OffsetDateTime.now())
-                    .userMessage(MSG_ERRO_GENERICA_USUARIO_FINAL)
-                    .build();
-        } else if (body instanceof String) {
-            body = Problem.builder()
-                    .title((String) body)
-                    .status(status.value())
-                    .timestamp(OffsetDateTime.now())
-                    .userMessage(body.toString())
-                    .build();
-        }
+        String detail = format("A propriedade %s nao existe. " +
+                "Por favor corrija e informe uma propriedade valida.", path);
 
-        return super.handleExceptionInternal(ex, body, headers, status, request);
+        Problem problem = createProblemBuilder(status, MENSAGEM_INCOMPREENSIVEL, detail,
+                MSG_ERRO_GENERICA_USUARIO_FINAL)
+                .build();
+
+        return handleExceptionInternal(ex, problem, headers, status, request);
+    }
+
+    private ResponseEntity<Object> handleInvalidFormatException(InvalidFormatException ex, HttpHeaders headers,
+                                                                HttpStatus status, WebRequest request) {
+
+        String path = ex.getPath().stream()
+//                .map(reference -> reference.getFieldName())
+                .map(JsonMappingException.Reference::getFieldName)
+                .collect(joining("."));
+
+        String detail = format("A propriedade '%s' recebeu o valor '%s', " +
+                        "que eh de um tipo invalido. Corrija e informe um valor compativel com o tipo %s.",
+                path, ex.getValue(), ex.getTargetType().getSimpleName());
+
+        Problem problem = createProblemBuilder(status, MENSAGEM_INCOMPREENSIVEL, detail,
+                MSG_ERRO_GENERICA_USUARIO_FINAL)
+                .build();
+
+        return handleExceptionInternal(ex, problem, headers, status, request);
     }
 
     // criando um builder
