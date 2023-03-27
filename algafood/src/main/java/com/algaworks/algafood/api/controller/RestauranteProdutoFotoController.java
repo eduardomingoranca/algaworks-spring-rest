@@ -23,8 +23,7 @@ import java.io.InputStream;
 import java.util.List;
 
 import static org.springframework.http.MediaType.*;
-import static org.springframework.http.ResponseEntity.notFound;
-import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.*;
 
 @RestController
 @RequestMapping("/restaurantes/{restauranteId}/produtos/{produtoId}/foto")
@@ -98,6 +97,14 @@ public class RestauranteProdutoFotoController {
             return notFound().build();
         }
     }
+
+    @DeleteMapping
+    public ResponseEntity<FotoProdutoModel> remover(@PathVariable("restauranteId") Long id,
+                                                    @PathVariable Long produtoId) {
+        catalogoFotoProduto.removerFoto(id, produtoId);
+        return noContent().build();
+    }
+
 
     private void verificarCompatibilidadeMediType(MediaType mediaTypeFoto,
                  List<MediaType> mediaTypesAceitas) throws HttpMediaTypeNotAcceptableException {

@@ -20,6 +20,9 @@ public class CatalogoFotoProdutoService {
     @Autowired
     private FotoStorageService fotoStorage;
 
+    @Autowired
+    private CadastroProdutoService cadastroProduto;
+
     @Transactional
     public FotoProduto salvar(FotoProduto fotoProduto, InputStream dadosArquivo) {
         Long restauranteId = getRestauranteId(fotoProduto);
@@ -56,12 +59,24 @@ public class CatalogoFotoProdutoService {
         return fotoProduto;
     }
 
+    @Transactional
     public FotoProduto buscarOuFalhar(Produto produto) {
         Long restauranteId = produto.getRestaurante().getId();
         Long produtoId = produto.getId();
 
         return produtoRepository.findFotoProdutoById(restauranteId, produtoId)
                 .orElseThrow(() -> new FotoProdutoNaoEncontradaException(restauranteId, produtoId));
+    }
+
+    @Transactional
+    public void removerFoto(Long restauranteId, Long produtoId) {
+        Produto produto = cadastroProduto.buscarOuFalhar(restauranteId, produtoId);
+        FotoProduto fotoProduto = buscarOuFalhar(produto);
+
+        produtoRepository.delete(fotoProduto);
+        produtoRepository.flush();
+
+        fotoStorage.remover(fotoProduto.getNomeArquivo());
     }
 
     private Long getRestauranteId(FotoProduto fotoProduto) {
