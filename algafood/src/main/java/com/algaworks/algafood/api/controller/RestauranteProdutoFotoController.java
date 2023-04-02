@@ -19,9 +19,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
+import static org.springframework.http.HttpHeaders.LOCATION;
+import static org.springframework.http.HttpStatus.FOUND;
 import static org.springframework.http.MediaType.*;
 import static org.springframework.http.ResponseEntity.*;
 
@@ -70,9 +71,9 @@ public class RestauranteProdutoFotoController {
     }
 
     @GetMapping
-    public ResponseEntity<InputStreamResource> servirFoto(@PathVariable("restauranteId") Long id,
-                                                          @PathVariable Long produtoId,
-                                                          @RequestHeader(name = "accept") String acceptHeader)
+    public ResponseEntity<Object> servirFoto(@PathVariable("restauranteId") Long id,
+                                             @PathVariable Long produtoId,
+                                             @RequestHeader(name = "accept") String acceptHeader)
             throws HttpMediaTypeNotAcceptableException {
         try {
             Produto produto = cadastroProduto.buscarOuFalhar(id, produtoId);
@@ -87,12 +88,17 @@ public class RestauranteProdutoFotoController {
             verificarCompatibilidadeMediType(mediaTypeFoto, mediaTypesAceitas);
 
             // buscar os dados da imagem
-            InputStream inputStream = fotoStorage.recuperar(fotoProduto.getNomeArquivo());
+            FotoStorageService.FotoRecuperada fotoRecuperada = fotoStorage.recuperar(fotoProduto.getNomeArquivo());
 
-            return ok()
-                    .contentType(mediaTypeFoto)
-                    .body(new InputStreamResource(inputStream));
-
+            if (fotoRecuperada.temUrl()) {
+                return status(FOUND)
+                        .header(LOCATION, fotoRecuperada.getUrl())
+                        .build();
+            } else {
+                return ok()
+                        .contentType(mediaTypeFoto)
+                        .body(new InputStreamResource(fotoRecuperada.getInputStream()));
+            }
         } catch (EntidadeNaoEncontradaException e) {
             return notFound().build();
         }
@@ -107,7 +113,7 @@ public class RestauranteProdutoFotoController {
 
 
     private void verificarCompatibilidadeMediType(MediaType mediaTypeFoto,
-                 List<MediaType> mediaTypesAceitas) throws HttpMediaTypeNotAcceptableException {
+                                                  List<MediaType> mediaTypesAceitas) throws HttpMediaTypeNotAcceptableException {
         boolean compativel = mediaTypesAceitas.stream()
                 .anyMatch(mediaTypesAceita -> mediaTypesAceita.isCompatibleWith(mediaTypeFoto));
 
