@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Singular;
 
+import java.util.Map;
 import java.util.Set;
 
 public interface EnvioEmailService {
@@ -21,6 +22,9 @@ public interface EnvioEmailService {
 
         @NonNull
         private String corpo;
+
+        @Singular("variavel")
+        private Map<String, Object> variaveis;
     }
 
 }

@@ -63,7 +63,7 @@ insert into permissao (id, nome, descricao) values (2, 'EDITAR_COZINHAS', 'Permi
 insert into restaurante_forma_pagamento (restaurante_id, forma_pagamento_id) values (1, 1), (1, 2), (1, 3), (2, 3), (3, 2), (3, 3), (4, 1), (4, 2), (5, 1), (5, 2), (6, 3);
 
 insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Porco com molho agridoce', 'Deliciosa carne suina ao molho especial', 78.90, 0, 1);
-insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Camarao tailandês', '16 camaroes grandes ao molho picante', 110, 1, 1);
+insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Camarao tailandes', '16 camaroes grandes ao molho picante', 110, 1, 1);
 
 insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Salada picante com carne grelhada', 'Salada de folhas com cortes finos de carne bovina grelhada e nosso molho especial de pimenta vermelha', 87.20, 1, 2);
 
@@ -87,9 +87,9 @@ insert into usuario (id, nome, email, senha, data_cadastro) values
 (2, 'Mary Johnson', 'mary.vnd@algafood.com.br', '123', utc_timestamp),
 (3, 'Joseph Smith', 'joseph.aux@algafood.com.br', '123', utc_timestamp),
 (4, 'Sebastian McDonald', 'sebastian.cad@algafood.com.br', '123', utc_timestamp),
-(5, 'Matthew Lewis', 'email.teste.aw+matthew@algafood.com', '123', utc_timestamp),
-(6, 'Deborah Miller', 'email.teste.aw+deborah@algafood.com', '123', utc_timestamp),
-(7, 'Charles Lewis', 'email.teste.aw+charles@algafood.com', '123', utc_timestamp);
+(5, 'Matthew Lewis', 'mail.test.aw+matthew@algafood.com', '123', utc_timestamp),
+(6, 'Deborah Miller', 'mail.test.aw+deborah@algafood.com', '123', utc_timestamp),
+(7, 'Charles Lewis', 'mail.test.aw+charles@algafood.com', '123', utc_timestamp);
 
 insert into usuario_grupo (usuario_id, grupo_id) values (1, 1), (1, 2), (2, 2);
 

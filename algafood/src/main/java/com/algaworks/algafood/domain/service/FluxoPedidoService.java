@@ -18,14 +18,6 @@ public class FluxoPedidoService {
     public void confirmar(String codigo) {
         Pedido pedido = emissaoPedido.buscarOuFalhar(codigo);
         pedido.confirmar();
-
-        EnvioEmailService.Mensagem mensagem = EnvioEmailService.Mensagem.builder()
-                .assunto(pedido.getRestaurante().getNome() + " - Pedido confirmado")
-                .corpo("O pedido de codigo <strong>" + pedido.getCodigo() + "</strong> foi confirmado!")
-                .destinatario(pedido.getCliente().getEmail())
-                .build();
-
-        envioEmail.enviar(mensagem);
     }
 
     @Transactional
@@ -38,6 +30,17 @@ public class FluxoPedidoService {
     public void cancelar(String codigo) {
         Pedido pedido = emissaoPedido.buscarOuFalhar(codigo);
         pedido.cancelar();
+    }
+
+    private void enviarEmail(Pedido pedido) {
+        EnvioEmailService.Mensagem mensagem = EnvioEmailService.Mensagem.builder()
+                .assunto(pedido.getRestaurante().getNome() + " - Pedido confirmado")
+                .corpo("pedido-confirmado.html")
+                .variavel("pedido", pedido)
+                .destinatario(pedido.getCliente().getEmail())
+                .build();
+
+        envioEmail.enviar(mensagem);
     }
 
 }
