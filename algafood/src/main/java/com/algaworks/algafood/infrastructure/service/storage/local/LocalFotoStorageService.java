@@ -1,11 +1,9 @@
 package com.algaworks.algafood.infrastructure.service.storage.local;
 
-import com.algaworks.algafood.core.storage.StorageProperties;
+import com.algaworks.algafood.core.storage.properties.StorageProperties;
 import com.algaworks.algafood.domain.service.storage.FotoStorageService;
 import com.algaworks.algafood.infrastructure.service.storage.exception.StorageException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
