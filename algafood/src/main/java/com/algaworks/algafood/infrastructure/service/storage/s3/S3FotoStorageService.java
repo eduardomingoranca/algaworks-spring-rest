@@ -8,14 +8,12 @@ import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.net.URL;
 
 import static com.amazonaws.services.s3.model.CannedAccessControlList.PublicRead;
 import static java.lang.String.format;
 
-//@Service
 public class S3FotoStorageService implements FotoStorageService {
     @Autowired
     private AmazonS3 amazonS3;
