@@ -50,6 +50,7 @@ public class CatalogoFotoProdutoService {
         // armazenando a foto em um diretorio/pasta local
         FotoStorageService.NovaFoto novaFoto = FotoStorageService.NovaFoto.builder()
                 .nomeArquivo(fotoProduto.getNomeArquivo())
+                .contentType(fotoProduto.getContentType())
                 .inputStream(dadosArquivo)
                 .build();
 
