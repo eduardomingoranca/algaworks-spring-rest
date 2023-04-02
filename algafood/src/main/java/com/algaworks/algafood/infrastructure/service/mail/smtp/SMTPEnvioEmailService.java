@@ -1,6 +1,6 @@
-package com.algaworks.algafood.infrastructure.service.mail;
+package com.algaworks.algafood.infrastructure.service.mail.smtp;
 
-import com.algaworks.algafood.core.mail.EmailProperties;
+import com.algaworks.algafood.core.mail.property.EmailProperties;
 import com.algaworks.algafood.domain.service.mail.EnvioEmailService;
 import com.algaworks.algafood.infrastructure.service.mail.exception.EmailException;
 import freemarker.template.Configuration;
@@ -8,13 +8,11 @@ import freemarker.template.Template;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Service;
 
 import javax.mail.internet.MimeMessage;
 
 import static org.springframework.ui.freemarker.FreeMarkerTemplateUtils.processTemplateIntoString;
 
-@Service
 public class SMTPEnvioEmailService implements EnvioEmailService {
     @Autowired
     private JavaMailSender mailSender;
@@ -47,7 +45,7 @@ public class SMTPEnvioEmailService implements EnvioEmailService {
         }
     }
 
-    private String processarTemplate(Mensagem mensagem) {
+    protected String processarTemplate(Mensagem mensagem) {
         try {
             // obtendo o nome do arquivo do template
             Template template = freemarkerConfig.getTemplate(mensagem.getCorpo());
