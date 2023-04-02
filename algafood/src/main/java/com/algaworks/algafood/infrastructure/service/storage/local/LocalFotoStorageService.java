@@ -1,4 +1,4 @@
-package com.algaworks.algafood.infrastructure.service.storage;
+package com.algaworks.algafood.infrastructure.service.storage.local;
 
 import com.algaworks.algafood.core.storage.StorageProperties;
 import com.algaworks.algafood.domain.service.storage.FotoStorageService;
@@ -14,7 +14,7 @@ import java.nio.file.Path;
 import static java.nio.file.Files.*;
 import static org.springframework.util.FileCopyUtils.copy;
 
-@Service
+//@Service
 public class LocalFotoStorageService implements FotoStorageService {
 //    @Value("${algafood.storage.local.diretorio-fotos}")
 //    private Path diretorioFotos;
