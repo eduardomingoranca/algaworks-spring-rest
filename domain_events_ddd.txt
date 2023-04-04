@@ -1,0 +1,22 @@
+Domain Events -> sao eventos de dominio que faz pardo do padrao do DDD
+
+FastFood
+
+Atendente ordena o que deve ser feito
+Atendente --> Cozinheiro (Hamburguer)
+Atendente --> Cozinheiro (Salada)
+
+Cada novo produto que eh adicionado o atendente deve ser treinado novamente, 
+todas as vezes que fazer isso corre o risco do atendente fazer errado o 
+que ele ja fazia, pois ele fica sobrecarregado.
+
+
+
+Atendente --> Dispara --> NovoPedidoGerado (Evento) --> Escuta e reage --> Cozinheiro (Hamburguer)
+Atendente --> Dispara --> NovoPedidoGerado (Evento) --> Escuta e reage --> Cozinheiro (Salada)
+
+Atendente informa que algo muito importante no negocio aconteceu e os cozinheiros
+estao atentos para quando o atendente informar eles escutam e reagem ao evento.
+
+
+
