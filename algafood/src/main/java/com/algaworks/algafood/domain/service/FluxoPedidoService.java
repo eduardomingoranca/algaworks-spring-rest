@@ -1,7 +1,7 @@
 package com.algaworks.algafood.domain.service;
 
 import com.algaworks.algafood.domain.model.Pedido;
-import com.algaworks.algafood.domain.service.mail.EnvioEmailService;
+import com.algaworks.algafood.domain.repository.PedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,21 +12,19 @@ public class FluxoPedidoService {
     private EmissaoPedidoService emissaoPedido;
 
     @Autowired
-    private EnvioEmailService envioEmail;
+    private PedidoRepository pedidoRepository;
 
     @Transactional
     public void confirmar(String codigo) {
         Pedido pedido = emissaoPedido.buscarOuFalhar(codigo);
         pedido.confirmar();
 
-        EnvioEmailService.Mensagem mensagem = EnvioEmailService.Mensagem.builder()
-                .assunto(pedido.getRestaurante().getNome() + " - Pedido confirmado")
-                .corpo("pedido-confirmado.html")
-                .variavel("pedido", pedido)
-                .destinatario(pedido.getCliente().getEmail())
-                .build();
-
-        envioEmail.enviar(mensagem);
+        // salvando o pedido no repositorio para disparar o evento
+        // quando o metodo for chamado e for feito o descarregamento
+        // para o banco de dados, os eventos que foram registrados para
+        // serem disparados serao acionados. Podendo ter um ou mais componentes
+        // escutando a chamada desse evento para executar algo
+        pedidoRepository.save(pedido);
     }
 
     @Transactional

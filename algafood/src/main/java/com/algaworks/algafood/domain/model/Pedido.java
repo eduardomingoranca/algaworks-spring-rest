@@ -1,10 +1,12 @@
 package com.algaworks.algafood.domain.model;
 
 import com.algaworks.algafood.domain.enumeration.StatusPedido;
+import com.algaworks.algafood.domain.event.PedidoConfirmadoEvent;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.domain.AbstractAggregateRoot;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -22,9 +24,11 @@ import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Data
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+// callSuper = false -> caso nao queira chamar o equals and hash code da super class
+// mas gerar um equals and hash code da classe atual
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 @Entity
-public class Pedido {
+public class Pedido extends AbstractAggregateRoot<Pedido> {
 
     @EqualsAndHashCode.Include
     @Id
@@ -79,6 +83,11 @@ public class Pedido {
     public void confirmar() {
         setStatus(CONFIRMADO);
         setDataConfirmacao(now());
+
+        // metodo que registra um evento que deve ser disparado/publicado
+        // quando o objeto pedido for salvo no repositorio
+        PedidoConfirmadoEvent pedidoConfirmadoEvent = new PedidoConfirmadoEvent(this);
+        registerEvent(pedidoConfirmadoEvent);
     }
 
     public void entregar() {
