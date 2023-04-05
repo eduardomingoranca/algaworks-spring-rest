@@ -13,17 +13,16 @@ import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
-import static org.springframework.http.HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
-import static org.springframework.http.ResponseEntity.ok;
 
+//@CrossOrigin(origins = "http://127.0.0.1:8000")
+@CrossOrigin
 @RestController
 @RequestMapping("/restaurantes")
 public class RestauranteController {
@@ -56,14 +55,9 @@ public class RestauranteController {
 
     @JsonView(RestauranteView.Resumo.class)
     @GetMapping
-    public ResponseEntity<List<RestauranteModel>> listar() {
+    public List<RestauranteModel> listar() {
         List<Restaurante> restaurantes = cadastroRestaurante.listar();
-        List<RestauranteModel> restaurantesModel = restauranteModelAssembler.toCollectionModel(restaurantes);
-
-        return ok()
-                .header(ACCESS_CONTROL_ALLOW_ORIGIN, "*")
-//                .header(ACCESS_CONTROL_ALLOW_ORIGIN, "http://127.0.0.1:8000")
-                .body(restaurantesModel);
+        return restauranteModelAssembler.toCollectionModel(restaurantes);
     }
 
 //    @JsonView(RestauranteView.ApenasNome.class)
