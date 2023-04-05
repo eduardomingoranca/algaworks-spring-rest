@@ -9,8 +9,9 @@ function consultarRestaurantes() {
         type: "get", 
 
         // em caso de sucesso na requisicao executa a funcao retornando o conteudo 
+        // transformando um objeto em string
         success: function(response) {
-            $("#conteudo").text(response);
+            $("#conteudo").text(JSON.stringify(response));
         }
     });
 }
