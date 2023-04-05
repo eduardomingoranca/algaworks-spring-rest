@@ -1,0 +1,2 @@
+Same Origin Policy -> eh um politica nos navegadores que informa que origem deve ser a mesma, protocolo, dominio e porta.
+Cross-Origin Resource Sharing -> eh um mecanismo que habilita requisicoes que origens diferentes.
