@@ -12,9 +12,6 @@ public class WebConfig implements WebMvcConfigurer {
         // habilitando o cors globalmente
         registry.addMapping("/**") // permissao de rota/caminho
                 .allowedMethods("*"); // permissao de metodos
-//                .allowedOrigins("*");
-//                .allowedMethods("GET", "HEAD", "POST")
-//                .maxAge(30);
     }
 
 }

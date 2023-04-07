@@ -29,7 +29,7 @@ public class Problem {
 
     private String userMessage;
 
-//    lista de propriedades violadas
+  //  lista de propriedades violadas
     private List<Object> objects;
 
     @Getter

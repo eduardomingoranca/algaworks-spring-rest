@@ -116,7 +116,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return this.handleExceptionInternal(ex, problem, headers, status, request);
     }
 
-    //    metodo que captura a exception que eh lancada quando uma regra de validacao eh violada.
+    // metodo que captura a exception que eh lancada quando uma regra de validacao eh violada.
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers, HttpStatus status,
@@ -226,7 +226,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                                                                 HttpStatus status, WebRequest request) {
 
         String path = ex.getPath().stream()
-//                .map(reference -> reference.getFieldName())
+                // mapeando o campo nome da cada referencia
                 .map(JsonMappingException.Reference::getFieldName)
                 .collect(joining("."));
 
@@ -259,7 +259,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         String detail = "Um ou mais campos estao invalidos. Faca o preenchimento correto e " +
                 "tente novamente.";
 
-//        construindo o response para as propriedades violadas.
+      //  construindo o response para as propriedades violadas.
         List<Problem.Object> problemObjects = bindingResult.getAllErrors()
                 .stream().map(objectError -> {
                     // obtendo a mensagem do messages.properties

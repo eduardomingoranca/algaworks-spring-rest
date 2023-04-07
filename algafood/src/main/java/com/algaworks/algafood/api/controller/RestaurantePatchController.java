@@ -29,7 +29,7 @@ public class RestaurantePatchController {
     @Autowired
     private CadastroRestauranteService cadastroRestaurante;
 
-    //    API de validacao de classe e atributos
+    // API de validacao de classe e atributos
     @Autowired
     private SmartValidator validator;
 
@@ -71,29 +71,29 @@ public class RestaurantePatchController {
         ServletServerHttpRequest serverHttpRequest  = new ServletServerHttpRequest(request);
 
         try {
-//         ObjectMapper -> class responsavel por converter objetos java em json e json em objetos java
+         // ObjectMapper -> class responsavel por converter objetos java em json e json em objetos java
             ObjectMapper objectMapper = new ObjectMapper();
-//        configurando o object mapper para quando uma propriedade for invalida
+        // configurando o object mapper para quando uma propriedade for invalida
             objectMapper.configure(FAIL_ON_IGNORED_PROPERTIES, true);
             objectMapper.configure(FAIL_ON_UNKNOWN_PROPERTIES, true);
 
             Restaurante restauranteOrigem = objectMapper.convertValue(dadosOrigem, Restaurante.class);
 
             dadosOrigem.forEach((nomePropriedade, valorPropriedade) -> {
-//             obtendo os campos de restaurante e informado no nome da propriedade informada
+             // obtendo os campos de restaurante e informado no nome da propriedade informada
                 Field field = findField(Restaurante.class, nomePropriedade);
-//             acessando um atributo/metodo private
+             // acessando um atributo/metodo private
                 assert field != null;
                 field.setAccessible(true);
 
-//             obtendo o valor da propriedade convertido
+            // obtendo o valor da propriedade convertido
                 Object novoValor = getField(field, restauranteOrigem);
 
-//             alterando o valor da variavel de instancia informada pelo valor da propriedade
+           //  alterando o valor da variavel de instancia informada pelo valor da propriedade
                 setField(field, restauranteDestino, novoValor);
             });
         } catch (IllegalArgumentException e) {
-//            capturando IllegalArgumentException e relanca a exception HttpMessageNotReadableException
+            // capturando IllegalArgumentException e relanca a exception HttpMessageNotReadableException
             Throwable rootCause = getRootCause(e);
             throw new HttpMessageNotReadableException(e.getMessage(), rootCause, serverHttpRequest);
         }

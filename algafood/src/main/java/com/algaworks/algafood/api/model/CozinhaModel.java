@@ -15,7 +15,7 @@ public class CozinhaModel {
      * Origem: cozinha, nome
      * Destino: cozinha, cozinha, nome
      */
-//    private String cozinhaNome;
+    // private String cozinhaNome;
     @JsonView(RestauranteView.Resumo.class)
     private String nome;
 
