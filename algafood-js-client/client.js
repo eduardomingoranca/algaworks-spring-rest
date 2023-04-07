@@ -54,7 +54,7 @@ function preencherTabela(formasPagamento) {
         );
 
         linha.appendTo("#tabela");
-    })
+    });
 }
 
 $("#btn-consultar").click(consultar);
