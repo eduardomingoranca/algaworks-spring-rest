@@ -16,10 +16,6 @@ public class ModelMapperConfig {
     @Bean
     public ModelMapper modelMapper() {
         var modelMapper = new ModelMapper();
-        // customizando um mapeamento de tipos
-//        modelMapper.createTypeMap(Restaurante.class, RestauranteModel.class)
-//                .addMapping(Restaurante::getTaxaFrete, RestauranteModel::setPrecoFrete);
-
         // customizando o mapeamento nao atribuindo o id da classe
         modelMapper.createTypeMap(ItemPedidoInput.class, ItemPedido.class)
                 .addMappings(mapper -> mapper.skip(ItemPedido::setId));

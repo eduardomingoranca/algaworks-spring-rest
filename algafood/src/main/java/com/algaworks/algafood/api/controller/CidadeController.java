@@ -60,7 +60,6 @@ public class CidadeController {
                                  @RequestBody @Valid CidadeInput cidadeInput) {
         try {
             Cidade cidadeAtual = cadastroCidade.buscarOuFalhar(id);
-//            copyProperties(cidade, cidadeAtual, "id");
             cidadeInputDisassembler.copyToDomainObject(cidadeInput, cidadeAtual);
 
             Cidade salvarCidade = cadastroCidade.salvar(cidadeAtual);

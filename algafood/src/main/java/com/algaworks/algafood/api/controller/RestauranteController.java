@@ -21,11 +21,6 @@ import java.util.List;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 
-//@CrossOrigin(origins = "http://127.0.0.1:8000")
-//@CrossOrigin
-// maxAge -> define qual o tempo maximo em segundos que o browser pode
-// armazenar o cache do preflight
-@CrossOrigin(maxAge = 10)
 @RestController
 @RequestMapping("/restaurantes")
 public class RestauranteController {
@@ -72,14 +67,9 @@ public class RestauranteController {
     public RestauranteModel atualizar(@PathVariable("restauranteId") Long id,
                                       @RequestBody @Valid RestauranteInput restauranteInput) {
         try {
-//            Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput);
-
             Restaurante restauranteAtual = cadastroRestaurante.buscarOuFalhar(id);
 
             restauranteInputDisassembler.copyToDomainObject(restauranteInput, restauranteAtual);
-
-//            copyProperties(restaurante, restauranteAtual, "id", "formasPagamento",
-//                    "endereco", "dataCadastro", "produtos");
 
             Restaurante salvarRestaurante = cadastroRestaurante.salvar(restauranteAtual);
 

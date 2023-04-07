@@ -20,7 +20,6 @@ import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-//@RequestMapping(value = "/cozinhas", produces = APPLICATION_JSON_VALUE)
 @RequestMapping("/cozinhas")
 public class CozinhaController {
     @Autowired
@@ -63,7 +62,6 @@ public class CozinhaController {
     public CozinhaModel atualizar(@PathVariable("cozinhaId") Long id,
                              @RequestBody @Valid CozinhaInput cozinhaInput) {
         Cozinha cozinhaAtual = cadastroCozinha.buscarOuFalhar(id);
-//        copyProperties(cozinha, cozinhaAtual, "id");
         cozinhaInputDisassembler.copyToDomainObject(cozinhaInput, cozinhaAtual);
 
         Cozinha salvarCozinha = cadastroCozinha.salvar(cozinhaAtual);
