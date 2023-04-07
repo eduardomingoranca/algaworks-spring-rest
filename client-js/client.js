@@ -16,5 +16,16 @@ function consultarRestaurantes() {
     });
 }
 
+function fecharRestaurante() {
+    $.ajax({
+        url: "http://127.0.0.1:8080/restaurantes/1/fechamento",
+        type: "put",
+
+        success: function(response) {
+            alert("Restaurante foi fechado!");
+        }
+    });
+}
+
 // ao clicar no batao executa o metodo
 $("#botao").click(consultarRestaurantes);

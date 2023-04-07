@@ -22,7 +22,10 @@ import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 
 //@CrossOrigin(origins = "http://127.0.0.1:8000")
-@CrossOrigin
+//@CrossOrigin
+// maxAge -> define qual o tempo maximo em segundos que o browser pode
+// armazenar o cache do preflight
+@CrossOrigin(maxAge = 10)
 @RestController
 @RequestMapping("/restaurantes")
 public class RestauranteController {
@@ -35,36 +38,12 @@ public class RestauranteController {
     @Autowired
     private RestauranteInputDisassembler restauranteInputDisassembler;
 
-    // MappingJacksonValue -> permite atribuir uma json view dinamicamente
-//    @GetMapping
-//    public MappingJacksonValue listar(@RequestParam(required = false) String projecao) {
-//        List<Restaurante> restaurantes = cadastroRestaurante.listar();
-//        List<RestauranteModel> restaurantesModel = restauranteModelAssembler.toCollectionModel(restaurantes);
-//
-//        MappingJacksonValue restaurantesWrapper = new MappingJacksonValue(restaurantesModel);
-//
-//        restaurantesWrapper.setSerializationView(RestauranteView.Resumo.class);
-//
-//        if ("apenas-nome".equals(projecao))
-//            restaurantesWrapper.setSerializationView(RestauranteView.ApenasNome.class);
-//        else if ("completo".equals(projecao))
-//            restaurantesWrapper.setSerializationView(null);
-//
-//        return restaurantesWrapper;
-//    }
-
     @JsonView(RestauranteView.Resumo.class)
     @GetMapping
     public List<RestauranteModel> listar() {
         List<Restaurante> restaurantes = cadastroRestaurante.listar();
         return restauranteModelAssembler.toCollectionModel(restaurantes);
     }
-
-//    @JsonView(RestauranteView.ApenasNome.class)
-//    @GetMapping(params = "projecao=apenas-nome")
-//    public List<RestauranteModel> listarApenasNome() {
-//        return listar();
-//    }
 
     @GetMapping("/{restauranteId}")
     public RestauranteModel buscar(@PathVariable("restauranteId") Long id) {

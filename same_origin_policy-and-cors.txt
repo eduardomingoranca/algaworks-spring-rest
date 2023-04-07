@@ -3,3 +3,7 @@ Cross-Origin Resource Sharing -> eh um mecanismo que habilita requisicoes que or
 
 npm command
 http-server -p 8000 
+
+Preflight -> eh uma chamada de verificacao, o browser envia uma requisicao para o servidor para
+saber se deve ou nao permitir requisicoes de origens diferentes. Neste caso o browser utiliza o
+verbo HTTP OPTIONS.
