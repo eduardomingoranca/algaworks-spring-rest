@@ -31,3 +31,6 @@ Quando nao fazer cache?
 Nao fazer cache quando os consumidores nao toleram diferencas
 entre o estado de recursos que estao no cache e o estado atual.
 Quando os dados mudam com frequencia.
+
+
+Validacoes com ETags
