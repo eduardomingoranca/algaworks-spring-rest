@@ -7,12 +7,16 @@ import com.algaworks.algafood.api.model.input.FormaPagamentoInput;
 import com.algaworks.algafood.domain.model.FormaPagamento;
 import com.algaworks.algafood.domain.service.CadastroFormaPagamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.springframework.http.CacheControl.maxAge;
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
 @RequestMapping("/formas-pagamento")
@@ -28,10 +32,15 @@ public class FormaPagamentoController {
 
 
     @GetMapping
-    public List<FormaPagamentoModel> listar() {
+    public ResponseEntity<List<FormaPagamentoModel>> listar() {
         List<FormaPagamento> formasPagamento = cadastroFormaPagamento.listar();
 
-        return formaPagamentoModelAssembler.toCollectionModel(formasPagamento);
+        List<FormaPagamentoModel> formasPagamentoModel = formaPagamentoModelAssembler.toCollectionModel(formasPagamento);
+
+        return ok()
+                // Cache-Control: max-age = 10
+                .cacheControl(maxAge(10, SECONDS))
+                .body(formasPagamentoModel);
     }
 
     @GetMapping("/{formasPagamentoId}")
