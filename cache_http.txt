@@ -34,3 +34,42 @@ Quando os dados mudam com frequencia.
 
 
 Validacoes com ETags
+
+
+Requisicao
+GET /formas-pagamento/1
+
+Resposta
+HTTP/1.1 200
+Cache-Control: max-age=10
+
+{
+   "id": 1,
+   "descricao": "Cartao de credito"
+}
+
+Cache Local
+		Fresh
+{
+   "id": 1,
+   "descricao": "Cartao de credito"
+}
+
+Fresh -> informacao no cache esta recente.
+Stale -> informacao no cache esta obsoleto.
+
+
+Validacoes e requisicoes condicionais com ETags
+
+ETag (Entity Tag) => hash de codigo unico calculado
+pelo servidor que identifica a representacao que esta
+sendo retornada na resposta.
+
+Depois que a representacao no cache for considerada
+stale e o consumidor fizer uma nova requisicao, sera
+realizado uma requisicao real no origin server (API) 
+que vai receber a requisicao. Caso os dados que estao
+no cache for igual com o retorno da requisicao o origin
+server (API) continua utilizando os dados que estao no 
+cache, caso contrario atualiza o cache e realiza novamente
+uma requisicao real no origin server (API).
