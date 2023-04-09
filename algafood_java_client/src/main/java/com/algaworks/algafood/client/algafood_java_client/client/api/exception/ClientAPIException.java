@@ -1,6 +1,6 @@
 package com.algaworks.algafood.client.algafood_java_client.client.api.exception;
 
-import com.algaworks.algafood.client.algafood_java_client.client.model.response.Problem;
+import com.algaworks.algafood.client.algafood_java_client.client.model.response.exception.Problem;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;

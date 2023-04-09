@@ -1,5 +1,6 @@
 package com.algaworks.algafood.client.algafood_java_client.client.model.response;
 
+import com.algaworks.algafood.client.algafood_java_client.client.model.response.resumo.CidadeResumoModel;
 import lombok.Data;
 
 @Data

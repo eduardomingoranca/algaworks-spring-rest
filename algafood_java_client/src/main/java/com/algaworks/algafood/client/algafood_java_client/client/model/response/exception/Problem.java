@@ -1,4 +1,4 @@
-package com.algaworks.algafood.client.algafood_java_client.client.model.response;
+package com.algaworks.algafood.client.algafood_java_client.client.model.response.exception;
 
 import lombok.Data;
 

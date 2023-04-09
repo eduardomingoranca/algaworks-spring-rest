@@ -2,7 +2,7 @@ package com.algaworks.algafood.client.algafood_java_client.client.api;
 
 import com.algaworks.algafood.client.algafood_java_client.client.api.exception.ClientAPIException;
 import com.algaworks.algafood.client.algafood_java_client.client.model.response.RestauranteModel;
-import com.algaworks.algafood.client.algafood_java_client.client.model.response.RestauranteResumoModel;
+import com.algaworks.algafood.client.algafood_java_client.client.model.response.resumo.RestauranteResumoModel;
 import com.algaworks.algafood.client.algafood_java_client.client.model.input.RestauranteInput;
 import lombok.AllArgsConstructor;
 import org.springframework.web.client.HttpClientErrorException;

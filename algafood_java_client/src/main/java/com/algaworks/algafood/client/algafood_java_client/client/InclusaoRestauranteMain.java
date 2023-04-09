@@ -2,8 +2,8 @@ package com.algaworks.algafood.client.algafood_java_client.client;
 
 import com.algaworks.algafood.client.algafood_java_client.client.api.RestauranteClient;
 import com.algaworks.algafood.client.algafood_java_client.client.api.exception.ClientAPIException;
-import com.algaworks.algafood.client.algafood_java_client.client.model.input.CidadeIDInput;
-import com.algaworks.algafood.client.algafood_java_client.client.model.input.CozinhaIDInput;
+import com.algaworks.algafood.client.algafood_java_client.client.model.input.id.CidadeIDInput;
+import com.algaworks.algafood.client.algafood_java_client.client.model.input.id.CozinhaIDInput;
 import com.algaworks.algafood.client.algafood_java_client.client.model.input.EnderecoInput;
 import com.algaworks.algafood.client.algafood_java_client.client.model.input.RestauranteInput;
 import com.algaworks.algafood.client.algafood_java_client.client.model.response.RestauranteModel;

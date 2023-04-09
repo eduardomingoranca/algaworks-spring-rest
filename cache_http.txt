@@ -1,0 +1,33 @@
+O que eh Cache de HTTP?
+Caching eh a habilidade que componentes de software tem em armazenar
+dados acessados frequentemente, evitando realizar varias requisicoes
+HTTP consumindo rede e recursos do servidor.
+
+Consumidor -- Requisicao --> API
+Consumidor <-- Resposta  --  API
+
+
+Consumidor -- Requisicao --> API
+Consumidor <-- Resposta  --  API
+
+Consumidor --> Cache local
+Consumidor <-- Cache local
+
+
+Consumidor --->  Proxy (cache compartilhado) --> API
+Consumidor --->  Proxy (cache compartilhado) <-- API
+Consumidor <---  Proxy (cache compartilhado) <-- API
+
+
+Beneficios
+
+. Reduz uso de banda
+. Reduz latencia
+. Reduz carga nos servidores
+. Esconde problemas na rede
+
+
+Quando nao fazer cache?
+Nao fazer cache quando os consumidores nao toleram diferencas
+entre o estado de recursos que estao no cache e o estado atual.
+Quando os dados mudam com frequencia.
