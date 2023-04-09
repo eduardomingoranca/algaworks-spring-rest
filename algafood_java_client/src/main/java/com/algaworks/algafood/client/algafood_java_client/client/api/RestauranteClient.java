@@ -1,8 +1,11 @@
 package com.algaworks.algafood.client.algafood_java_client.client.api;
 
 import com.algaworks.algafood.client.algafood_java_client.client.api.exception.ClientAPIException;
-import com.algaworks.algafood.client.algafood_java_client.client.model.RestauranteResumoModel;
+import com.algaworks.algafood.client.algafood_java_client.client.model.response.RestauranteModel;
+import com.algaworks.algafood.client.algafood_java_client.client.model.response.RestauranteResumoModel;
+import com.algaworks.algafood.client.algafood_java_client.client.model.input.RestauranteInput;
 import lombok.AllArgsConstructor;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
@@ -33,6 +36,16 @@ public class RestauranteClient {
             assert restaurantes != null;
             return asList(restaurantes);
         } catch (RestClientResponseException e) {
+            throw new ClientAPIException(e.getMessage(), e);
+        }
+    }
+
+    public RestauranteModel adicionar(RestauranteInput restaurante) {
+        URI resourceURI = create(url + RESOURCE_PATH);
+
+        try {
+            return restTemplate.postForObject(resourceURI, restaurante, RestauranteModel.class);
+        } catch (HttpClientErrorException e) {
             throw new ClientAPIException(e.getMessage(), e);
         }
     }
