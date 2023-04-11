@@ -38,12 +38,8 @@ public class FormaPagamentoController {
         List<FormaPagamentoModel> formasPagamentoModel = formaPagamentoModelAssembler.toCollectionModel(formasPagamento);
 
         return ok()
-                // Cache-Control: max-age = 10
-//                .cacheControl(maxAge(10, SECONDS))
-//                .cacheControl(maxAge(10, SECONDS).cachePrivate()) // resposta armazenada em cache local
-//                .cacheControl(maxAge(10, SECONDS).cachePublic()) // resposta armazenada em cache publico
-//                .cacheControl(noCache()) // se a reposta for armazenada em cache sera necessario realizar uma validacao no servidor
-                .cacheControl(noStore()) // nenhum cache pode armazenar a resposta
+                // resposta armazenada em cache publico
+                .cacheControl(maxAge(10, SECONDS).cachePublic())
                 .body(formasPagamentoModel);
     }
 
