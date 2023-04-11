@@ -14,7 +14,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
-import static org.springframework.http.CacheControl.maxAge;
+import static org.springframework.http.CacheControl.*;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.ResponseEntity.ok;
 
@@ -39,7 +39,11 @@ public class FormaPagamentoController {
 
         return ok()
                 // Cache-Control: max-age = 10
-                .cacheControl(maxAge(10, SECONDS))
+//                .cacheControl(maxAge(10, SECONDS))
+//                .cacheControl(maxAge(10, SECONDS).cachePrivate()) // resposta armazenada em cache local
+//                .cacheControl(maxAge(10, SECONDS).cachePublic()) // resposta armazenada em cache publico
+//                .cacheControl(noCache()) // se a reposta for armazenada em cache sera necessario realizar uma validacao no servidor
+                .cacheControl(noStore()) // nenhum cache pode armazenar a resposta
                 .body(formasPagamentoModel);
     }
 
