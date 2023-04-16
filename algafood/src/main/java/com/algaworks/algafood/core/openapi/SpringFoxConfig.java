@@ -2,6 +2,9 @@ package com.algaworks.algafood.core.openapi;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
 import springfox.documentation.spring.web.plugins.Docket;
 
 import static springfox.documentation.builders.PathSelectors.ant;
@@ -24,6 +27,19 @@ public class SpringFoxConfig {
                 .apis(basePackage("com.algaworks.algafood.api"))
                 .paths(any())
 //                .paths(ant("/restaurantes/*"))
+                .build()
+                .apiInfo(apiInfo());
+    }
+
+    public ApiInfo apiInfo() {
+        Contact contact = new Contact("Algaworks", "https://www.algaworks.com",
+                "contato@algaworks.com");
+
+        return new ApiInfoBuilder()
+                .title("AlgaFood API")
+                .description("API aberta para clientes e restaurantes")
+                .version("1")
+                .contact(contact)
                 .build();
     }
 
