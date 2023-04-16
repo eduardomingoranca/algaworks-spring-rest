@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Service
@@ -29,6 +30,11 @@ public class CadastroFormaPagamentoService {
     @Transactional
     public FormaPagamento salvar(FormaPagamento formaPagamento) {
         return formaPagamentoRepository.save(formaPagamento);
+    }
+
+    @Transactional
+    public OffsetDateTime dataUltimaAtualizacao() {
+        return formaPagamentoRepository.getDataUltimaAtualizacao();
     }
 
 }

@@ -9,14 +9,18 @@ import com.algaworks.algafood.domain.service.CadastroFormaPagamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.ServletWebRequest;
 
 import javax.validation.Valid;
+import java.time.OffsetDateTime;
 import java.util.List;
 
+import static java.lang.String.valueOf;
 import static java.util.concurrent.TimeUnit.SECONDS;
-import static org.springframework.http.CacheControl.*;
+import static org.springframework.http.CacheControl.maxAge;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.web.filter.ShallowEtagHeaderFilter.disableContentCaching;
 
 @RestController
 @RequestMapping("/formas-pagamento")
@@ -32,7 +36,28 @@ public class FormaPagamentoController {
 
 
     @GetMapping
-    public ResponseEntity<List<FormaPagamentoModel>> listar() {
+    public ResponseEntity<List<FormaPagamentoModel>> listar(ServletWebRequest request) {
+        /*
+            gerando um hash de um atributo especifico, desde que o atributo tenha alteracoes
+            quando a entidade eh atualizada,
+            como por exemplo uma data e hora.
+         */
+
+        // desabilitando o shallow etag
+        disableContentCaching(request.getRequest());
+
+        String eTag = "0";
+        OffsetDateTime dataUltimaAtualizacao = cadastroFormaPagamento.dataUltimaAtualizacao();
+
+        if (dataUltimaAtualizacao != null) {
+            // obtendo o etag com o numero de segundos.
+            eTag = valueOf(dataUltimaAtualizacao.toEpochSecond());
+        }
+
+        // ja tem condicao de saber se continua ou nao o processamento
+        if (request.checkNotModified(eTag))
+            return null;
+
         List<FormaPagamento> formasPagamento = cadastroFormaPagamento.listar();
 
         List<FormaPagamentoModel> formasPagamentoModel = formaPagamentoModelAssembler.toCollectionModel(formasPagamento);
@@ -40,6 +65,7 @@ public class FormaPagamentoController {
         return ok()
                 // resposta armazenada em cache publico
                 .cacheControl(maxAge(10, SECONDS).cachePublic())
+                .eTag(eTag)
                 .body(formasPagamentoModel);
     }
 

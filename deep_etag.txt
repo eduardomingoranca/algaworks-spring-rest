@@ -1,0 +1,1 @@
+Deep Etag => eh uma implementacao para evitar que todo o processamento seja feito pelo lado do servidor.
