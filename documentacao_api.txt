@@ -1,0 +1,13 @@
+Documentacao de API
+
+Swagger Editor => ferramenta que ajuda a editar arquivos de definicoes JSON ou YAML dentro do navegador
+e mostra uma documentacao em tempo real. 
+
+SpringFox => biblioteca java gratuita que escaneia o codigo, gera o arquivo de definicao em JSON e gera
+uma documentacao com o Swagger UI
+
+Swagger UI => documentacao em HTML que eh gerada dinamicamente a partir de um arquivo de definicao de API,
+ou seja, eh lido um JSON e gera um HTML com a documentacao.
+
+Swagger Codegen => gerador de codigo de clientes da API em diversas linguagens, alem de ter possibilidade
+de gerar o codigo do esqueleto da implementacao da API, ou seja, os controladores (controller).
