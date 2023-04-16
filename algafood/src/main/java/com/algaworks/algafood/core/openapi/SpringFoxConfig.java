@@ -4,7 +4,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.spring.web.plugins.Docket;
 
-import static springfox.documentation.builders.RequestHandlerSelectors.any;
+import static springfox.documentation.builders.PathSelectors.ant;
+import static springfox.documentation.builders.PathSelectors.any;
+import static springfox.documentation.builders.RequestHandlerSelectors.basePackage;
 import static springfox.documentation.spi.DocumentationType.OAS_30;
 
 @Configuration
@@ -19,7 +21,9 @@ public class SpringFoxConfig {
         // servicos que devem ser documentados.
         return new Docket(OAS_30)
                 .select()
-                .apis(any())
+                .apis(basePackage("com.algaworks.algafood.api"))
+                .paths(any())
+//                .paths(ant("/restaurantes/*"))
                 .build();
     }
 
