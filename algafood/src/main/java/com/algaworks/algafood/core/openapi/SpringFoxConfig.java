@@ -5,9 +5,9 @@ import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
+import springfox.documentation.service.Tag;
 import springfox.documentation.spring.web.plugins.Docket;
 
-import static springfox.documentation.builders.PathSelectors.ant;
 import static springfox.documentation.builders.PathSelectors.any;
 import static springfox.documentation.builders.RequestHandlerSelectors.basePackage;
 import static springfox.documentation.spi.DocumentationType.OAS_30;
@@ -22,13 +22,16 @@ public class SpringFoxConfig {
         // usando a especificacao openapi
         // eh um sumario para configurar um conjunto de
         // servicos que devem ser documentados.
+        Tag firstTag = new Tag("Cidades", "Gerencia as cidades");
+
         return new Docket(OAS_30)
                 .select()
                 .apis(basePackage("com.algaworks.algafood.api"))
                 .paths(any())
 //                .paths(ant("/restaurantes/*"))
                 .build()
-                .apiInfo(apiInfo());
+                .apiInfo(apiInfo())
+                .tags(firstTag);
     }
 
     public ApiInfo apiInfo() {
