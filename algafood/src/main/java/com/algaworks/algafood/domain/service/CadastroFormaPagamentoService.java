@@ -37,4 +37,9 @@ public class CadastroFormaPagamentoService {
         return formaPagamentoRepository.getDataUltimaAtualizacao();
     }
 
+    @Transactional
+    public OffsetDateTime dataUltimaAtualizacaoPorID(Long id) {
+        return formaPagamentoRepository.getDataAtualizacaoById(id);
+    }
+
 }
