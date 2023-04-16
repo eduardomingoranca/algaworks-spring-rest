@@ -9,6 +9,7 @@ import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.service.CadastroCidadeService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +31,7 @@ public class CidadeController {
     @Autowired
     private CidadeModelAssembler cidadeModelAssembler;
 
+    @ApiOperation("Lista as cidades")
     @GetMapping
     public List<CidadeModel> listar() {
         List<Cidade> cidades = cadastroCidade.listar();
@@ -37,6 +39,7 @@ public class CidadeController {
         return cidadeModelAssembler.toCollectionModel(cidades);
     }
 
+    @ApiOperation("Busca uma cidade por ID")
     @GetMapping("/{cidadeId}")
     public CidadeModel buscar(@PathVariable("cidadeId") Long id) {
         Cidade cidade = cadastroCidade.buscarOuFalhar(id);
@@ -44,6 +47,7 @@ public class CidadeController {
         return cidadeModelAssembler.toModel(cidade);
     }
 
+    @ApiOperation("Cadastra uma cidade")
     @PostMapping
     @ResponseStatus(CREATED)
     public CidadeModel adicionar(@RequestBody @Valid CidadeInput cidadeInput) {
@@ -57,6 +61,7 @@ public class CidadeController {
         }
     }
 
+    @ApiOperation("Atualiza uma cidade por ID")
     @PutMapping("/{cidadeId}")
     public CidadeModel atualizar(@PathVariable("cidadeId") Long id,
                                  @RequestBody @Valid CidadeInput cidadeInput) {
