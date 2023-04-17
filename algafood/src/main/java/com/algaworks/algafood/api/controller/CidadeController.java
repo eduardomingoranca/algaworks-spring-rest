@@ -10,6 +10,7 @@ import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.service.CadastroCidadeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,7 +42,7 @@ public class CidadeController {
 
     @ApiOperation("Busca uma cidade por ID")
     @GetMapping("/{cidadeId}")
-    public CidadeModel buscar(@PathVariable("cidadeId") Long id) {
+    public CidadeModel buscar(@ApiParam("ID de uma cidade") @PathVariable("cidadeId") Long id) {
         Cidade cidade = cadastroCidade.buscarOuFalhar(id);
 
         return cidadeModelAssembler.toModel(cidade);
@@ -50,7 +51,8 @@ public class CidadeController {
     @ApiOperation("Cadastra uma cidade")
     @PostMapping
     @ResponseStatus(CREATED)
-    public CidadeModel adicionar(@RequestBody @Valid CidadeInput cidadeInput) {
+    public CidadeModel adicionar(@ApiParam(name = "corpo", value = "Representacao de uma nova cidade")
+                                 @RequestBody @Valid CidadeInput cidadeInput) {
         try {
             Cidade cidade = cidadeInputDisassembler.toDomainObject(cidadeInput);
             Cidade salvarCidade = cadastroCidade.salvar(cidade);
@@ -63,7 +65,9 @@ public class CidadeController {
 
     @ApiOperation("Atualiza uma cidade por ID")
     @PutMapping("/{cidadeId}")
-    public CidadeModel atualizar(@PathVariable("cidadeId") Long id,
+    public CidadeModel atualizar(@ApiParam("ID de uma cidade")
+                                 @PathVariable("cidadeId") Long id,
+                                 @ApiParam(name = "corpo", value = "Representacao de uma cidade com os novos dados")
                                  @RequestBody @Valid CidadeInput cidadeInput) {
         try {
             Cidade cidadeAtual = cadastroCidade.buscarOuFalhar(id);
