@@ -2,6 +2,8 @@ package com.algaworks.algafood.core.openapi;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
@@ -13,6 +15,7 @@ import static springfox.documentation.builders.RequestHandlerSelectors.basePacka
 import static springfox.documentation.spi.DocumentationType.OAS_30;
 
 @Configuration
+@Import(BeanValidatorPluginsConfiguration.class)
 public class SpringFoxConfig {
 
     @Bean
