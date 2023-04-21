@@ -7,12 +7,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.http.MediaType;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.RepresentationBuilder;
 import springfox.documentation.builders.ResponseBuilder;
-import springfox.documentation.builders.ResponseMessageBuilder;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.service.Response;
@@ -51,6 +49,7 @@ public class SpringFoxConfig {
         // eh um sumario para configurar um conjunto de
         // servicos que devem ser documentados.
         Tag firstTag = new Tag("Cidades", "Gerencia as cidades");
+        Tag secondTag = new Tag("Grupos", "Gerencia os grupos de usuarios");
 
         return new Docket(OAS_30)
                 .select()
@@ -66,7 +65,7 @@ public class SpringFoxConfig {
                 // adicionando um model
                 .additionalModels(typeResolver.resolve(Problem.class))
                 .apiInfo(apiInfo())
-                .tags(firstTag);
+                .tags(firstTag, secondTag);
     }
 
     @Bean

@@ -2,6 +2,7 @@ package com.algaworks.algafood.api.controller;
 
 import com.algaworks.algafood.api.assembler.input.disassembler.GrupoInputDisassembler;
 import com.algaworks.algafood.api.assembler.model.GrupoModelAssembler;
+import com.algaworks.algafood.api.controller.openapi.GrupoControllerOpenAPI;
 import com.algaworks.algafood.api.model.GrupoModel;
 import com.algaworks.algafood.api.model.input.GrupoInput;
 import com.algaworks.algafood.domain.model.Grupo;
@@ -16,7 +17,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
 @RequestMapping("/grupos")
-public class GrupoController {
+public class GrupoController implements GrupoControllerOpenAPI {
     @Autowired
     private CadastroGrupoService cadastroGrupo;
 
@@ -26,6 +27,7 @@ public class GrupoController {
     @Autowired
     private GrupoModelAssembler grupoModelAssembler;
 
+    @Override
     @GetMapping
     public List<GrupoModel> listar() {
         List<Grupo> grupos = cadastroGrupo.listar();
@@ -33,6 +35,7 @@ public class GrupoController {
         return grupoModelAssembler.toCollectionModel(grupos);
     }
 
+    @Override
     @GetMapping("/{grupoID}")
     public GrupoModel buscar(@PathVariable("grupoID") Long id) {
         Grupo grupo = cadastroGrupo.buscarOuFalhar(id);
@@ -40,6 +43,7 @@ public class GrupoController {
         return grupoModelAssembler.toModel(grupo);
     }
 
+    @Override
     @PostMapping
     @ResponseStatus(CREATED)
     public GrupoModel adicionar(@RequestBody @Valid GrupoInput grupoInput) {
@@ -49,6 +53,7 @@ public class GrupoController {
         return grupoModelAssembler.toModel(salvarGrupo);
     }
 
+    @Override
     @PutMapping("/{grupoID}")
     public GrupoModel atualizar(@PathVariable("grupoID") Long id,
                                 @RequestBody @Valid GrupoInput grupoInput) {
