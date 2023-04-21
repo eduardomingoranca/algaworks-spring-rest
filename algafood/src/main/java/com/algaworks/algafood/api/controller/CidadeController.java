@@ -16,9 +16,10 @@ import javax.validation.Valid;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping("/cidades")
+@RequestMapping(value = "/cidades", produces = APPLICATION_JSON_VALUE)
 public class CidadeController implements CidadeControllerOpenAPI {
     @Autowired
     private CadastroCidadeService cadastroCidade;

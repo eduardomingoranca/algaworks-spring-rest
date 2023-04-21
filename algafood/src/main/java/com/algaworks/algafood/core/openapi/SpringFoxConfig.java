@@ -175,13 +175,12 @@ public class SpringFoxConfig {
 
     private Consumer<RepresentationBuilder> getProblemaModelReference() {
         return r -> r.model(m -> m.name("Problema").referenceModel(ref ->
-                ref.key(k -> k.qualifiedModelName(
-                        q -> q.name("Problema").namespace("com.algaworks.algafood.api.exceptionhandler.model")))));
+                ref.key(k -> k.qualifiedModelName(q -> q.name("Problema")
+                        .namespace("com.algaworks.algafood.api.exceptionhandler.model")))));
     }
 
     private ApiInfo apiInfo() {
-        Contact contact = new Contact("Algaworks", "https://www.algaworks.com",
-                "contato@algaworks.com");
+        Contact contact = new Contact("Algaworks", "https://www.algaworks.com", "contato@algaworks.com");
 
         return new ApiInfoBuilder()
                 .title("AlgaFood API")

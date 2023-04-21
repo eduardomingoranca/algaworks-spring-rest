@@ -14,9 +14,10 @@ import javax.validation.Valid;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping("/grupos")
+@RequestMapping(value = "/grupos", produces = APPLICATION_JSON_VALUE)
 public class GrupoController implements GrupoControllerOpenAPI {
     @Autowired
     private CadastroGrupoService cadastroGrupo;
