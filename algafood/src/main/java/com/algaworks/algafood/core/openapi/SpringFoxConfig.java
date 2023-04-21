@@ -55,6 +55,7 @@ public class SpringFoxConfig {
         // servicos que devem ser documentados.
         Tag firstTag = new Tag("Cidades", "Gerencia as cidades");
         Tag secondTag = new Tag("Grupos", "Gerencia os grupos de usuarios");
+        Tag thirdTag = new Tag("Cozinhas", "Gerencia as cozinhas");
         TypeResolver typeResolver = new TypeResolver();
 
         return new Docket(OAS_30)
@@ -75,7 +76,7 @@ public class SpringFoxConfig {
                 .alternateTypeRules(newRule(typeResolver.resolve(Page.class, CozinhaModel.class),
                         CozinhasModelOpenAPI.class))
                 .apiInfo(apiInfo())
-                .tags(firstTag, secondTag);
+                .tags(firstTag, secondTag, thirdTag);
     }
 
     @Bean
