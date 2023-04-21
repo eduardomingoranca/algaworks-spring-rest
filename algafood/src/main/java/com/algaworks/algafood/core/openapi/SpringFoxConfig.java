@@ -7,9 +7,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.RepresentationBuilder;
 import springfox.documentation.builders.ResponseBuilder;
+import springfox.documentation.builders.ResponseMessageBuilder;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.service.Response;
@@ -18,11 +21,13 @@ import springfox.documentation.spring.web.json.JacksonModuleRegistrar;
 import springfox.documentation.spring.web.plugins.Docket;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import static java.lang.String.valueOf;
 import static java.util.Arrays.asList;
 import static org.springframework.http.HttpMethod.*;
 import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static springfox.documentation.builders.PathSelectors.any;
 import static springfox.documentation.builders.RequestHandlerSelectors.basePackage;
 import static springfox.documentation.spi.DocumentationType.OAS_30;
@@ -57,6 +62,7 @@ public class SpringFoxConfig {
                 .globalResponses(GET, globalGetResponseMessages())
                 .globalResponses(POST, globalPostResponseMessages())
                 .globalResponses(PUT, globalPutResponseMessages())
+                .globalResponses(DELETE, globalDeleteResponseMessages())
                 // adicionando um model
                 .additionalModels(typeResolver.resolve(Problem.class))
                 .apiInfo(apiInfo())
@@ -69,16 +75,40 @@ public class SpringFoxConfig {
         return objectMapper -> objectMapper.registerModule(javaTimeModule);
     }
 
-    // codigo de status padrao para o metodo PUT
-    private List<Response> globalPutResponseMessages() {
+    // codigo de status padrao para o metodo DELETE
+    private List<Response> globalDeleteResponseMessages() {
         Response badRequest = new ResponseBuilder()
                 .code(valueOf(BAD_REQUEST.value()))
                 .description(REQUISICAO_INVALIDA)
+                .representation(APPLICATION_JSON)
+                .apply(getProblemaModelReference())
                 .build();
 
         Response internalServerError = new ResponseBuilder()
                 .code(valueOf(INTERNAL_SERVER_ERROR.value()))
                 .description(ERRO_INTERNO_DO_SERVIDOR)
+                .representation(APPLICATION_JSON)
+                .apply(getProblemaModelReference())
+                .build();
+
+        return asList(badRequest, internalServerError);
+    }
+
+
+    // codigo de status padrao para o metodo PUT
+    private List<Response> globalPutResponseMessages() {
+        Response badRequest = new ResponseBuilder()
+                .code(valueOf(BAD_REQUEST.value()))
+                .description(REQUISICAO_INVALIDA)
+                .representation(APPLICATION_JSON)
+                .apply(getProblemaModelReference())
+                .build();
+
+        Response internalServerError = new ResponseBuilder()
+                .code(valueOf(INTERNAL_SERVER_ERROR.value()))
+                .description(ERRO_INTERNO_DO_SERVIDOR)
+                .representation(APPLICATION_JSON)
+                .apply(getProblemaModelReference())
                 .build();
 
         Response notAcceptable = new ResponseBuilder()
@@ -89,6 +119,8 @@ public class SpringFoxConfig {
         Response unsupportedMediaType = new ResponseBuilder()
                 .code(valueOf(UNSUPPORTED_MEDIA_TYPE.value()))
                 .description(FORMATO_NAO_SUPORTADO)
+                .representation(APPLICATION_JSON)
+                .apply(getProblemaModelReference())
                 .build();
 
         return asList(badRequest, internalServerError, notAcceptable, unsupportedMediaType);
@@ -99,11 +131,15 @@ public class SpringFoxConfig {
         Response badRequest = new ResponseBuilder()
                 .code(valueOf(BAD_REQUEST.value()))
                 .description(REQUISICAO_INVALIDA)
+                .representation(APPLICATION_JSON)
+                .apply(getProblemaModelReference())
                 .build();
 
         Response internalServerError = new ResponseBuilder()
                 .code(valueOf(INTERNAL_SERVER_ERROR.value()))
                 .description(ERRO_INTERNO_DO_SERVIDOR)
+                .representation(APPLICATION_JSON)
+                .apply(getProblemaModelReference())
                 .build();
 
         Response notAcceptable = new ResponseBuilder()
@@ -114,6 +150,8 @@ public class SpringFoxConfig {
         Response unsupportedMediaType = new ResponseBuilder()
                 .code(valueOf(UNSUPPORTED_MEDIA_TYPE.value()))
                 .description(FORMATO_NAO_SUPORTADO)
+                .representation(APPLICATION_JSON)
+                .apply(getProblemaModelReference())
                 .build();
 
         return asList(badRequest, internalServerError, notAcceptable, unsupportedMediaType);
@@ -121,16 +159,25 @@ public class SpringFoxConfig {
 
     // codigo de status padrao para o metodo GET
     private List<Response> globalGetResponseMessages() {
-        return asList(
-                new ResponseBuilder()
-                        .code(valueOf(INTERNAL_SERVER_ERROR.value()))
-                        .description(ERRO_INTERNO_DO_SERVIDOR)
-                        .build(),
-                new ResponseBuilder()
-                        .code(valueOf(NOT_ACCEPTABLE.value()))
-                        .description(REPRESENTACAO_INVALIDA)
-                        .build()
-        );
+        Response internalServerError = new ResponseBuilder()
+                .code(valueOf(INTERNAL_SERVER_ERROR.value()))
+                .description(ERRO_INTERNO_DO_SERVIDOR)
+                .representation(APPLICATION_JSON)
+                .apply(getProblemaModelReference())
+                .build();
+
+        Response notAcceptable = new ResponseBuilder()
+                .code(valueOf(NOT_ACCEPTABLE.value()))
+                .description(REPRESENTACAO_INVALIDA)
+                .build();
+
+        return asList(internalServerError, notAcceptable);
+    }
+
+    private Consumer<RepresentationBuilder> getProblemaModelReference() {
+        return r -> r.model(m -> m.name("Problema").referenceModel(ref ->
+                ref.key(k -> k.qualifiedModelName(
+                        q -> q.name("Problema").namespace("com.algaworks.algafood.api.exceptionhandler.model")))));
     }
 
     private ApiInfo apiInfo() {
