@@ -1,5 +1,9 @@
 package com.algaworks.algafood.core.openapi;
 
+import com.algaworks.algafood.api.exceptionhandler.model.Problem;
+import com.fasterxml.classmate.TypeResolver;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -10,6 +14,7 @@ import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.service.Response;
 import springfox.documentation.service.Tag;
+import springfox.documentation.spring.web.json.JacksonModuleRegistrar;
 import springfox.documentation.spring.web.plugins.Docket;
 
 import java.util.List;
@@ -24,7 +29,14 @@ import static springfox.documentation.spi.DocumentationType.OAS_30;
 
 @Configuration
 @Import(BeanValidatorPluginsConfiguration.class)
+@RequiredArgsConstructor
 public class SpringFoxConfig {
+    public static final String REQUISICAO_INVALIDA = "Requisicao invalida (erro de cliente).";
+    public static final String ERRO_INTERNO_DO_SERVIDOR = "Erro interno do servidor.";
+    public static final String REPRESENTACAO_INVALIDA = "Recurso nao possui representacao que poderia ser aceita pelo consumidor.";
+    public static final String FORMATO_NAO_SUPORTADO = "Requisicao recusada porque o corpo esta em um formato nao suportado.";
+
+    private final TypeResolver typeResolver;
 
     @Bean
     public Docket apiDocket() {
@@ -45,30 +57,38 @@ public class SpringFoxConfig {
                 .globalResponses(GET, globalGetResponseMessages())
                 .globalResponses(POST, globalPostResponseMessages())
                 .globalResponses(PUT, globalPutResponseMessages())
+                // adicionando um model
+                .additionalModels(typeResolver.resolve(Problem.class))
                 .apiInfo(apiInfo())
                 .tags(firstTag);
+    }
+
+    @Bean
+    public JacksonModuleRegistrar springFoxJacksonConfig() {
+        JavaTimeModule javaTimeModule = new JavaTimeModule();
+        return objectMapper -> objectMapper.registerModule(javaTimeModule);
     }
 
     // codigo de status padrao para o metodo PUT
     private List<Response> globalPutResponseMessages() {
         Response badRequest = new ResponseBuilder()
                 .code(valueOf(BAD_REQUEST.value()))
-                .description("Erro na requisicao realizada.")
+                .description(REQUISICAO_INVALIDA)
                 .build();
 
         Response internalServerError = new ResponseBuilder()
                 .code(valueOf(INTERNAL_SERVER_ERROR.value()))
-                .description("Erro interno do Servidor.")
+                .description(ERRO_INTERNO_DO_SERVIDOR)
                 .build();
 
         Response notAcceptable = new ResponseBuilder()
                 .code(valueOf(NOT_ACCEPTABLE.value()))
-                .description("Recurso nao aceito.")
+                .description(REPRESENTACAO_INVALIDA)
                 .build();
 
         Response unsupportedMediaType = new ResponseBuilder()
                 .code(valueOf(UNSUPPORTED_MEDIA_TYPE.value()))
-                .description("Formato de midia dos dados nao suportado.")
+                .description(FORMATO_NAO_SUPORTADO)
                 .build();
 
         return asList(badRequest, internalServerError, notAcceptable, unsupportedMediaType);
@@ -78,22 +98,22 @@ public class SpringFoxConfig {
     private List<Response> globalPostResponseMessages() {
         Response badRequest = new ResponseBuilder()
                 .code(valueOf(BAD_REQUEST.value()))
-                .description("Erro na requisicao realizada.")
+                .description(REQUISICAO_INVALIDA)
                 .build();
 
         Response internalServerError = new ResponseBuilder()
                 .code(valueOf(INTERNAL_SERVER_ERROR.value()))
-                .description("Erro interno do Servidor.")
+                .description(ERRO_INTERNO_DO_SERVIDOR)
                 .build();
 
         Response notAcceptable = new ResponseBuilder()
                 .code(valueOf(NOT_ACCEPTABLE.value()))
-                .description("Recurso nao aceito.")
+                .description(REPRESENTACAO_INVALIDA)
                 .build();
 
         Response unsupportedMediaType = new ResponseBuilder()
                 .code(valueOf(UNSUPPORTED_MEDIA_TYPE.value()))
-                .description("Formato de midia dos dados nao suportado.")
+                .description(FORMATO_NAO_SUPORTADO)
                 .build();
 
         return asList(badRequest, internalServerError, notAcceptable, unsupportedMediaType);
@@ -104,11 +124,11 @@ public class SpringFoxConfig {
         return asList(
                 new ResponseBuilder()
                         .code(valueOf(INTERNAL_SERVER_ERROR.value()))
-                        .description("Erro interno do Servidor")
+                        .description(ERRO_INTERNO_DO_SERVIDOR)
                         .build(),
                 new ResponseBuilder()
                         .code(valueOf(NOT_ACCEPTABLE.value()))
-                        .description("Recurso nao possui representacao que pode ser aceita pelo consumidor")
+                        .description(REPRESENTACAO_INVALIDA)
                         .build()
         );
     }
