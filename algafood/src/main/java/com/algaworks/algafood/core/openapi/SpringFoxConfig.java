@@ -1,12 +1,14 @@
 package com.algaworks.algafood.core.openapi;
 
 import com.algaworks.algafood.api.exceptionhandler.model.Problem;
+import com.algaworks.algafood.core.openapi.model.PageableModelOpenAPI;
 import com.fasterxml.classmate.TypeResolver;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Pageable;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.RepresentationBuilder;
@@ -64,6 +66,8 @@ public class SpringFoxConfig {
                 .globalResponses(DELETE, globalDeleteResponseMessages())
                 // adicionando um model
                 .additionalModels(typeResolver.resolve(Problem.class))
+                // substituindo o model
+                .directModelSubstitute(Pageable.class, PageableModelOpenAPI.class)
                 .apiInfo(apiInfo())
                 .tags(firstTag, secondTag);
     }
