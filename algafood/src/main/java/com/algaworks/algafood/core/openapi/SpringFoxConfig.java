@@ -1,13 +1,16 @@
 package com.algaworks.algafood.core.openapi;
 
 import com.algaworks.algafood.api.exceptionhandler.model.Problem;
-import com.algaworks.algafood.core.openapi.model.PageableModelOpenAPI;
+import com.algaworks.algafood.api.model.CozinhaModel;
+import com.algaworks.algafood.api.openapi.model.CozinhasModelOpenAPI;
+import com.algaworks.algafood.api.openapi.model.PageableModelOpenAPI;
 import com.fasterxml.classmate.TypeResolver;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -30,6 +33,7 @@ import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static springfox.documentation.builders.PathSelectors.any;
 import static springfox.documentation.builders.RequestHandlerSelectors.basePackage;
+import static springfox.documentation.schema.AlternateTypeRules.newRule;
 import static springfox.documentation.spi.DocumentationType.OAS_30;
 
 @Configuration
@@ -41,7 +45,6 @@ public class SpringFoxConfig {
     public static final String REPRESENTACAO_INVALIDA = "Recurso nao possui representacao que poderia ser aceita pelo consumidor.";
     public static final String FORMATO_NAO_SUPORTADO = "Requisicao recusada porque o corpo esta em um formato nao suportado.";
 
-    private final TypeResolver typeResolver;
 
     @Bean
     public Docket apiDocket() {
@@ -52,6 +55,7 @@ public class SpringFoxConfig {
         // servicos que devem ser documentados.
         Tag firstTag = new Tag("Cidades", "Gerencia as cidades");
         Tag secondTag = new Tag("Grupos", "Gerencia os grupos de usuarios");
+        TypeResolver typeResolver = new TypeResolver();
 
         return new Docket(OAS_30)
                 .select()
@@ -68,6 +72,8 @@ public class SpringFoxConfig {
                 .additionalModels(typeResolver.resolve(Problem.class))
                 // substituindo o model
                 .directModelSubstitute(Pageable.class, PageableModelOpenAPI.class)
+                .alternateTypeRules(newRule(typeResolver.resolve(Page.class, CozinhaModel.class),
+                        CozinhasModelOpenAPI.class))
                 .apiInfo(apiInfo())
                 .tags(firstTag, secondTag);
     }
