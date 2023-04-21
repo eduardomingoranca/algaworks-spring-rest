@@ -16,9 +16,8 @@ import java.util.List;
 
 import static java.lang.String.valueOf;
 import static java.util.Arrays.asList;
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.NOT_ACCEPTABLE;
+import static org.springframework.http.HttpMethod.*;
+import static org.springframework.http.HttpStatus.*;
 import static springfox.documentation.builders.PathSelectors.any;
 import static springfox.documentation.builders.RequestHandlerSelectors.basePackage;
 import static springfox.documentation.spi.DocumentationType.OAS_30;
@@ -44,8 +43,60 @@ public class SpringFoxConfig {
                 .build()
                 .useDefaultResponseMessages(false) // deixa apenas o status de sucesso
                 .globalResponses(GET, globalGetResponseMessages())
+                .globalResponses(POST, globalPostResponseMessages())
+                .globalResponses(PUT, globalPutResponseMessages())
                 .apiInfo(apiInfo())
                 .tags(firstTag);
+    }
+
+    // codigo de status padrao para o metodo PUT
+    private List<Response> globalPutResponseMessages() {
+        Response badRequest = new ResponseBuilder()
+                .code(valueOf(BAD_REQUEST.value()))
+                .description("Erro na requisicao realizada.")
+                .build();
+
+        Response internalServerError = new ResponseBuilder()
+                .code(valueOf(INTERNAL_SERVER_ERROR.value()))
+                .description("Erro interno do Servidor.")
+                .build();
+
+        Response notAcceptable = new ResponseBuilder()
+                .code(valueOf(NOT_ACCEPTABLE.value()))
+                .description("Recurso nao aceito.")
+                .build();
+
+        Response unsupportedMediaType = new ResponseBuilder()
+                .code(valueOf(UNSUPPORTED_MEDIA_TYPE.value()))
+                .description("Formato de midia dos dados nao suportado.")
+                .build();
+
+        return asList(badRequest, internalServerError, notAcceptable, unsupportedMediaType);
+    }
+
+    // codigo de status padrao para o metodo POST
+    private List<Response> globalPostResponseMessages() {
+        Response badRequest = new ResponseBuilder()
+                .code(valueOf(BAD_REQUEST.value()))
+                .description("Erro na requisicao realizada.")
+                .build();
+
+        Response internalServerError = new ResponseBuilder()
+                .code(valueOf(INTERNAL_SERVER_ERROR.value()))
+                .description("Erro interno do Servidor.")
+                .build();
+
+        Response notAcceptable = new ResponseBuilder()
+                .code(valueOf(NOT_ACCEPTABLE.value()))
+                .description("Recurso nao aceito.")
+                .build();
+
+        Response unsupportedMediaType = new ResponseBuilder()
+                .code(valueOf(UNSUPPORTED_MEDIA_TYPE.value()))
+                .description("Formato de midia dos dados nao suportado.")
+                .build();
+
+        return asList(badRequest, internalServerError, notAcceptable, unsupportedMediaType);
     }
 
     // codigo de status padrao para o metodo GET
