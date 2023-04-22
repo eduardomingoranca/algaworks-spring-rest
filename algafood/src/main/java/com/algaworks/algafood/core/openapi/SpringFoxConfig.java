@@ -61,14 +61,6 @@ public class SpringFoxConfig {
         Tag fourthTag = new Tag("Formas de Pagamento", "Gerencia as formas de pagamento");
         TypeResolver typeResolver = new TypeResolver();
 
-        RequestParameter requestParameter = new RequestParameterBuilder()
-                .name("campos")
-                .description("Nomes das propriedades para filtrar na resposta, separados por virgula")
-                .in(QUERY)
-                .required(true)
-                .query(q -> q.model(m -> m.scalarModel(STRING)))
-                .build();
-
         return new Docket(OAS_30)
                 .select()
                 .apis(basePackage("com.algaworks.algafood.api"))
@@ -80,7 +72,6 @@ public class SpringFoxConfig {
                 .globalResponses(POST, globalPostResponseMessages())
                 .globalResponses(PUT, globalPutResponseMessages())
                 .globalResponses(DELETE, globalDeleteResponseMessages())
-                .globalRequestParameters(singletonList(requestParameter))
                 // adicionando um model
                 .additionalModels(typeResolver.resolve(Problem.class))
                 // ignorando parametros de um tipo especifico
