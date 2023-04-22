@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.context.request.ServletWebRequest;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.RepresentationBuilder;
@@ -71,6 +72,8 @@ public class SpringFoxConfig {
                 .globalResponses(DELETE, globalDeleteResponseMessages())
                 // adicionando um model
                 .additionalModels(typeResolver.resolve(Problem.class))
+                // ignorando parametros de um tipo especifico
+                .ignoredParameterTypes(ServletWebRequest.class)
                 // substituindo o model
                 .directModelSubstitute(Pageable.class, PageableModelOpenAPI.class)
                 .alternateTypeRules(newRule(typeResolver.resolve(Page.class, CozinhaModel.class),
