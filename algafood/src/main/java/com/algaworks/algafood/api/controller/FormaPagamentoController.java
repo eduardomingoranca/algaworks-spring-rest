@@ -4,6 +4,7 @@ import com.algaworks.algafood.api.assembler.input.disassembler.FormaPagamentoInp
 import com.algaworks.algafood.api.assembler.model.FormaPagamentoModelAssembler;
 import com.algaworks.algafood.api.model.FormaPagamentoModel;
 import com.algaworks.algafood.api.model.input.FormaPagamentoInput;
+import com.algaworks.algafood.api.openapi.controller.FormaPagamentoControllerOpenAPI;
 import com.algaworks.algafood.domain.model.FormaPagamento;
 import com.algaworks.algafood.domain.service.CadastroFormaPagamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +20,13 @@ import static java.lang.String.valueOf;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.springframework.http.CacheControl.maxAge;
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.web.filter.ShallowEtagHeaderFilter.disableContentCaching;
 
 @RestController
-@RequestMapping("/formas-pagamento")
-public class FormaPagamentoController {
+@RequestMapping(value = "/formas-pagamento", produces = APPLICATION_JSON_VALUE)
+public class FormaPagamentoController implements FormaPagamentoControllerOpenAPI {
     @Autowired
     private CadastroFormaPagamentoService cadastroFormaPagamento;
 
@@ -34,7 +36,7 @@ public class FormaPagamentoController {
     @Autowired
     private FormaPagamentoModelAssembler formaPagamentoModelAssembler;
 
-
+    @Override
     @GetMapping
     public ResponseEntity<List<FormaPagamentoModel>> listar(ServletWebRequest request) {
         /*
@@ -69,6 +71,7 @@ public class FormaPagamentoController {
                 .body(formasPagamentoModel);
     }
 
+    @Override
     @GetMapping("/{formasPagamentoId}")
     public ResponseEntity<FormaPagamentoModel> buscar(@PathVariable("formasPagamentoId") Long id,
                                                       ServletWebRequest request) {
@@ -93,6 +96,7 @@ public class FormaPagamentoController {
                 .body(formaPagamentoModel);
     }
 
+    @Override
     @PostMapping
     @ResponseStatus(CREATED)
     public FormaPagamentoModel adicionar(@RequestBody @Valid FormaPagamentoInput formaPagamentoInput) {
@@ -102,6 +106,7 @@ public class FormaPagamentoController {
         return formaPagamentoModelAssembler.toModel(salvarFormaPagamento);
     }
 
+    @Override
     @PutMapping("/{formasPagamentoId}")
     public FormaPagamentoModel atualizar(@PathVariable("formasPagamentoId") Long id,
                                          @RequestBody @Valid FormaPagamentoInput formaPagamentoInput) {
