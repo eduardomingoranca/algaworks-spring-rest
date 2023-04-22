@@ -16,11 +16,9 @@ import org.springframework.web.context.request.ServletWebRequest;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.RepresentationBuilder;
+import springfox.documentation.builders.RequestParameterBuilder;
 import springfox.documentation.builders.ResponseBuilder;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
-import springfox.documentation.service.Response;
-import springfox.documentation.service.Tag;
+import springfox.documentation.service.*;
 import springfox.documentation.spring.web.json.JacksonModuleRegistrar;
 import springfox.documentation.spring.web.plugins.Docket;
 
@@ -29,12 +27,15 @@ import java.util.function.Consumer;
 
 import static java.lang.String.valueOf;
 import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static org.springframework.http.HttpMethod.*;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static springfox.documentation.builders.PathSelectors.any;
 import static springfox.documentation.builders.RequestHandlerSelectors.basePackage;
 import static springfox.documentation.schema.AlternateTypeRules.newRule;
+import static springfox.documentation.schema.ScalarType.STRING;
+import static springfox.documentation.service.ParameterType.QUERY;
 import static springfox.documentation.spi.DocumentationType.OAS_30;
 
 @Configuration
@@ -60,6 +61,14 @@ public class SpringFoxConfig {
         Tag fourthTag = new Tag("Formas de Pagamento", "Gerencia as formas de pagamento");
         TypeResolver typeResolver = new TypeResolver();
 
+        RequestParameter requestParameter = new RequestParameterBuilder()
+                .name("campos")
+                .description("Nomes das propriedades para filtrar na resposta, separados por virgula")
+                .in(QUERY)
+                .required(true)
+                .query(q -> q.model(m -> m.scalarModel(STRING)))
+                .build();
+
         return new Docket(OAS_30)
                 .select()
                 .apis(basePackage("com.algaworks.algafood.api"))
@@ -71,6 +80,7 @@ public class SpringFoxConfig {
                 .globalResponses(POST, globalPostResponseMessages())
                 .globalResponses(PUT, globalPutResponseMessages())
                 .globalResponses(DELETE, globalDeleteResponseMessages())
+                .globalRequestParameters(singletonList(requestParameter))
                 // adicionando um model
                 .additionalModels(typeResolver.resolve(Problem.class))
                 // ignorando parametros de um tipo especifico
