@@ -4,6 +4,7 @@ import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.exception.PedidoNaoEncontradoException;
 import com.algaworks.algafood.domain.model.*;
 import com.algaworks.algafood.domain.repository.PedidoRepository;
+import com.google.common.collect.ImmutableMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
+import static com.algaworks.algafood.core.data.PageableTranslator.translate;
 import static java.lang.String.format;
 import static java.math.BigDecimal.ZERO;
 
@@ -85,6 +87,17 @@ public class EmissaoPedidoService {
         calcularValorTotal(pedido);
 
         return pedidoRepository.save(pedido);
+    }
+
+    public Pageable traduzirPageable(Pageable pageable) {
+        // tambem poderia usar Map.of()
+        ImmutableMap<String, String> mapeamento = ImmutableMap.of(
+                "codigo", "codigo",
+                "restaurante.nome", "restaurante.nome",
+                "nomeCliente", "cliente.nome",
+                "valorTotal", "valorTotal");
+
+        return translate(pageable, mapeamento);
     }
 
     private void calcularValorTotal(Pedido pedido) {

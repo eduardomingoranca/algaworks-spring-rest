@@ -2,8 +2,10 @@ package com.algaworks.algafood.core.openapi;
 
 import com.algaworks.algafood.api.exceptionhandler.model.Problem;
 import com.algaworks.algafood.api.model.CozinhaModel;
+import com.algaworks.algafood.api.model.PedidoResumoModel;
 import com.algaworks.algafood.api.openapi.model.CozinhasModelOpenAPI;
 import com.algaworks.algafood.api.openapi.model.PageableModelOpenAPI;
+import com.algaworks.algafood.api.openapi.model.PedidoResumoModelOpenAPI;
 import com.fasterxml.classmate.TypeResolver;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
@@ -59,6 +61,7 @@ public class SpringFoxConfig {
         Tag secondTag = new Tag("Grupos", "Gerencia os grupos de usuarios");
         Tag thirdTag = new Tag("Cozinhas", "Gerencia as cozinhas");
         Tag fourthTag = new Tag("Formas de Pagamento", "Gerencia as formas de pagamento");
+        Tag fifthTag = new Tag("Pedidos", "Gerencia os pedidos");
         TypeResolver typeResolver = new TypeResolver();
 
         return new Docket(OAS_30)
@@ -80,8 +83,10 @@ public class SpringFoxConfig {
                 .directModelSubstitute(Pageable.class, PageableModelOpenAPI.class)
                 .alternateTypeRules(newRule(typeResolver.resolve(Page.class, CozinhaModel.class),
                         CozinhasModelOpenAPI.class))
+                .alternateTypeRules(newRule(typeResolver.resolve(Page.class, PedidoResumoModel.class),
+                        PedidoResumoModelOpenAPI.class))
                 .apiInfo(apiInfo())
-                .tags(firstTag, secondTag, thirdTag, fourthTag);
+                .tags(firstTag, secondTag, thirdTag, fourthTag, fifthTag);
     }
 
     @Bean

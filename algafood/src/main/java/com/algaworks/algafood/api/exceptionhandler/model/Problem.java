@@ -1,5 +1,6 @@
 package com.algaworks.algafood.api.exceptionhandler.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -20,7 +21,8 @@ public class Problem {
     // status -> o codigo de status HTTP.
     private Integer status;
 
-    @ApiModelProperty(example = "2023-01-01T18:09:02.70844Z", position = 5)
+    @ApiModelProperty(example = "2023-01-01 18:09:02.70844", position = 5)
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private OffsetDateTime timestamp;
 
     @ApiModelProperty(example = "https://algafood.com.br/dados-invalidos", position = 10)
