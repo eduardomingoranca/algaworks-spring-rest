@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 @Setter
 @Getter
 public class CidadeIDInput {
-    @ApiModelProperty(example = "1")
+    @ApiModelProperty(example = "1", required = true)
     @NotNull
     private Long id;
 

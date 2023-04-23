@@ -28,12 +28,14 @@ public interface FormaPagamentoControllerOpenAPI {
             @ApiResponse(responseCode = "404", description = "Forma de pagamento nao encontrada", content =
             @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))
     })
-    ResponseEntity<FormaPagamentoModel> buscar(@ApiParam("ID de uma forma de pagamento") Long id, ServletWebRequest request);
+    ResponseEntity<FormaPagamentoModel> buscar(@ApiParam(value = "ID de uma forma de pagamento", required = true) Long id,
+                                               ServletWebRequest request);
 
 
     @ApiOperation("Cadastra uma forma de pagamento")
     @ApiResponses(@ApiResponse(responseCode = "201", description = "Forma de pagamento cadastrada"))
-    FormaPagamentoModel adicionar(@ApiParam(name = "corpo", value = "Representacao de uma nova forma de pagamento")
+    FormaPagamentoModel adicionar(@ApiParam(name = "corpo", value = "Representacao de uma nova forma de pagamento",
+            required = true)
                                   FormaPagamentoInput formaPagamentoInput);
 
     @ApiOperation("Atualiza uma forma de pagamento por ID")
@@ -42,8 +44,9 @@ public interface FormaPagamentoControllerOpenAPI {
             @ApiResponse(responseCode = "404", description = "Forma de pagamento nao encontrada", content =
             @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))
     })
-    FormaPagamentoModel atualizar(@ApiParam("ID de uma forma de pagamento") Long id,
-                                  @ApiParam(name = "corpo", value = "Representacao de uma nova forma de pagamento")
+    FormaPagamentoModel atualizar(@ApiParam(value = "ID de uma forma de pagamento", required = true) Long id,
+                                  @ApiParam(name = "corpo", value = "Representacao de uma nova forma de pagamento",
+                                          required = true)
                                   FormaPagamentoInput formaPagamentoInput);
 
 }

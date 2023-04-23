@@ -25,11 +25,12 @@ public interface GrupoControllerOpenAPI {
             @ApiResponse(responseCode = "404", description = "Grupo nao encontrado.", content =
             @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))
     })
-    GrupoModel buscar(@ApiParam("ID de um grupo") Long id);
+    GrupoModel buscar(@ApiParam(value = "ID de um grupo", required = true) Long id);
 
     @ApiOperation("Cadastra um grupo")
     @ApiResponses(@ApiResponse(responseCode = "201", description = "Grupo cadastrado."))
-    GrupoModel adicionar(@ApiParam(name = "corpo", value = "Representacao de um novo grupo.") GrupoInput grupoInput);
+    GrupoModel adicionar(@ApiParam(name = "corpo", value = "Representacao de um novo grupo.", required = true)
+                         GrupoInput grupoInput);
 
     @ApiOperation("Atualiza um grupo por ID")
     @ApiResponses({
@@ -37,8 +38,9 @@ public interface GrupoControllerOpenAPI {
             @ApiResponse(responseCode = "404", description = "Grupo nao encontrado.", content =
             @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))
     })
-    GrupoModel atualizar(@ApiParam("ID de um grupo") Long id,
-                         @ApiParam(name = "corpo", value = "Representacao de um grupo com os novos dados")
+    GrupoModel atualizar(@ApiParam(value = "ID de um grupo", required = true) Long id,
+                         @ApiParam(name = "corpo", value = "Representacao de um grupo com os novos dados",
+                                 required = true)
                          GrupoInput grupoInput);
 
 }

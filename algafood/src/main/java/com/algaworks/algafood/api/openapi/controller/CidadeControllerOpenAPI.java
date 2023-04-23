@@ -27,11 +27,11 @@ public interface CidadeControllerOpenAPI {
             @ApiResponse(responseCode = "404", description = "Cidade nao encontrada", content =
             @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))
     })
-    CidadeModel buscar(@ApiParam("ID de uma cidade") Long id);
+    CidadeModel buscar(@ApiParam(value = "ID de uma cidade", required = true) Long id);
 
     @ApiOperation("Cadastra uma cidade")
     @ApiResponses(@ApiResponse(responseCode = "201", description = "Cidade cadastrada"))
-    CidadeModel adicionar(@ApiParam(name = "corpo", value = "Representacao de uma nova cidade")
+    CidadeModel adicionar(@ApiParam(name = "corpo", value = "Representacao de uma nova cidade", required = true)
                           CidadeInput cidadeInput);
 
     @ApiOperation("Atualiza uma cidade por ID")
@@ -40,7 +40,7 @@ public interface CidadeControllerOpenAPI {
             @ApiResponse(responseCode = "404", description = "Cidade nao encontrada", content =
             @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))
     })
-    CidadeModel atualizar(@ApiParam("ID de uma cidade")
-                          Long id, @ApiParam(name = "corpo", value = "Representacao de uma cidade com os novos dados")
+    CidadeModel atualizar(@ApiParam(value = "ID de uma cidade", required = true)
+                          Long id, @ApiParam(name = "corpo", value = "Representacao de uma cidade com os novos dados", required = true)
                           CidadeInput cidadeInput);
 }

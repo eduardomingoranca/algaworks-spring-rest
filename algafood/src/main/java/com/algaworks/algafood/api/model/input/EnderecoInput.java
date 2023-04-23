@@ -12,22 +12,22 @@ import javax.validation.constraints.NotNull;
 @Getter
 public class EnderecoInput {
 
-    @ApiModelProperty(example = "38400-000")
+    @ApiModelProperty(example = "38400-000", required = true)
     @NotBlank
     private String cep;
 
-    @ApiModelProperty(example = "Rua Floriano Peixoto")
+    @ApiModelProperty(example = "Rua Floriano Peixoto", required = true)
     @NotBlank
     private String logradouro;
 
-    @ApiModelProperty(example = "600")
+    @ApiModelProperty(example = "600", required = true)
     @NotBlank
     private String numero;
 
     @ApiModelProperty(example = "Apto 704")
     private String complemento;
 
-    @ApiModelProperty(example = "Brasil")
+    @ApiModelProperty(example = "Brasil", required = true)
     @NotBlank
     private String bairro;
 

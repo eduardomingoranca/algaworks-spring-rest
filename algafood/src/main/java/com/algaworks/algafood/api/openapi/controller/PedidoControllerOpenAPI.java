@@ -28,11 +28,11 @@ public interface PedidoControllerOpenAPI {
             @ApiResponse(responseCode = "404", description = "Pedido nao encontrado", content =
             @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))
     })
-    PedidoModel buscar(@ApiParam("Codigo de um pedido") String codigo);
+    PedidoModel buscar(@ApiParam(value = "Codigo de um pedido", required = true) String codigo);
 
     @ApiOperation("Cadastra um pedido")
     @ApiResponses(@ApiResponse(responseCode = "201", description = "Pedido cadastrado"))
-    PedidoModel adicionar(@ApiParam(name = "corpo", value = "Representacao de um novo pedido")
+    PedidoModel adicionar(@ApiParam(name = "corpo", value = "Representacao de um novo pedido", required = true)
                           PedidoInput pedidoInput);
 
 

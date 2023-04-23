@@ -18,9 +18,11 @@ import org.springframework.web.context.request.ServletWebRequest;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.RepresentationBuilder;
-import springfox.documentation.builders.RequestParameterBuilder;
 import springfox.documentation.builders.ResponseBuilder;
-import springfox.documentation.service.*;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
+import springfox.documentation.service.Response;
+import springfox.documentation.service.Tag;
 import springfox.documentation.spring.web.json.JacksonModuleRegistrar;
 import springfox.documentation.spring.web.plugins.Docket;
 
@@ -29,15 +31,12 @@ import java.util.function.Consumer;
 
 import static java.lang.String.valueOf;
 import static java.util.Arrays.asList;
-import static java.util.Collections.singletonList;
 import static org.springframework.http.HttpMethod.*;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static springfox.documentation.builders.PathSelectors.any;
 import static springfox.documentation.builders.RequestHandlerSelectors.basePackage;
 import static springfox.documentation.schema.AlternateTypeRules.newRule;
-import static springfox.documentation.schema.ScalarType.STRING;
-import static springfox.documentation.service.ParameterType.QUERY;
 import static springfox.documentation.spi.DocumentationType.OAS_30;
 
 @Configuration
@@ -62,6 +61,7 @@ public class SpringFoxConfig {
         Tag thirdTag = new Tag("Cozinhas", "Gerencia as cozinhas");
         Tag fourthTag = new Tag("Formas de Pagamento", "Gerencia as formas de pagamento");
         Tag fifthTag = new Tag("Pedidos", "Gerencia os pedidos");
+        Tag sixthTag = new Tag("Restaurantes", "Gerencia os restaurantes");
         TypeResolver typeResolver = new TypeResolver();
 
         return new Docket(OAS_30)
@@ -86,7 +86,7 @@ public class SpringFoxConfig {
                 .alternateTypeRules(newRule(typeResolver.resolve(Page.class, PedidoResumoModel.class),
                         PedidoResumoModelOpenAPI.class))
                 .apiInfo(apiInfo())
-                .tags(firstTag, secondTag, thirdTag, fourthTag, fifthTag);
+                .tags(firstTag, secondTag, thirdTag, fourthTag, fifthTag, sixthTag);
     }
 
     @Bean
