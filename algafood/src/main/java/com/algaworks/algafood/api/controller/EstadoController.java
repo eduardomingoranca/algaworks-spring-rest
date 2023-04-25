@@ -4,6 +4,7 @@ import com.algaworks.algafood.api.assembler.input.disassembler.EstadoInputAssemb
 import com.algaworks.algafood.api.assembler.model.EstadoModelAssembler;
 import com.algaworks.algafood.api.model.EstadoModel;
 import com.algaworks.algafood.api.model.input.EstadoInput;
+import com.algaworks.algafood.api.openapi.controller.EstadoControllerOpenAPI;
 import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.service.CadastroEstadoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +14,11 @@ import javax.validation.Valid;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping("/estados")
-public class EstadoController {
+@RequestMapping(value = "/estados", produces = APPLICATION_JSON_VALUE)
+public class EstadoController implements EstadoControllerOpenAPI {
     @Autowired
     private CadastroEstadoService cadastroEstado;
 
@@ -26,6 +28,7 @@ public class EstadoController {
     @Autowired
     private EstadoInputAssembler estadoInputAssembler;
 
+    @Override
     @GetMapping
     public List<EstadoModel> listar() {
         List<Estado> estados = cadastroEstado.listar();
@@ -33,6 +36,7 @@ public class EstadoController {
         return estadoModelAssembler.toCollectionModel(estados);
     }
 
+    @Override
     @PostMapping
     @ResponseStatus(CREATED)
     public EstadoModel adicionar(@RequestBody @Valid EstadoInput estadoInput) {
@@ -42,6 +46,7 @@ public class EstadoController {
         return estadoModelAssembler.toModel(salvarEstado);
     }
 
+    @Override
     @PutMapping("/{estadoID}")
     public EstadoModel atualizar(@PathVariable("estadoID") Long id,
                                  @RequestBody @Valid EstadoInput estadoInput) {
