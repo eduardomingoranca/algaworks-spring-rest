@@ -63,6 +63,7 @@ public class SpringFoxConfig {
         Tag fifthTag = new Tag("Pedidos", "Gerencia os pedidos");
         Tag sixthTag = new Tag("Restaurantes", "Gerencia os restaurantes");
         Tag seventhTag = new Tag("Estados", "Gerencia os estados");
+        Tag eighthTag = new Tag("Produtos", "Gerencia os produtos");
         TypeResolver typeResolver = new TypeResolver();
 
         return new Docket(OAS_30)
@@ -87,7 +88,7 @@ public class SpringFoxConfig {
                 .alternateTypeRules(newRule(typeResolver.resolve(Page.class, PedidoResumoModel.class),
                         PedidoResumoModelOpenAPI.class))
                 .apiInfo(apiInfo())
-                .tags(firstTag, secondTag, thirdTag, fourthTag, fifthTag, sixthTag, seventhTag);
+                .tags(firstTag, secondTag, thirdTag, fourthTag, fifthTag, sixthTag, seventhTag, eighthTag);
     }
 
     @Bean
