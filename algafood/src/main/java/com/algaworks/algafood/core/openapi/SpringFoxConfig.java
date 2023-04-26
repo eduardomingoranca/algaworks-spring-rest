@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -26,6 +27,11 @@ import springfox.documentation.service.Tag;
 import springfox.documentation.spring.web.json.JacksonModuleRegistrar;
 import springfox.documentation.spring.web.plugins.Docket;
 
+import java.io.File;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLStreamHandler;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -79,7 +85,8 @@ public class SpringFoxConfig {
                 // adicionando um model
                 .additionalModels(typeResolver.resolve(Problem.class))
                 // ignorando parametros de um tipo especifico
-                .ignoredParameterTypes(ServletWebRequest.class)
+                .ignoredParameterTypes(ServletWebRequest.class, URL.class, URI.class, URLStreamHandler.class,
+                        Resource.class, File.class, InputStream.class)
                 // substituindo o model
                 .directModelSubstitute(Pageable.class, PageableModelOpenAPI.class)
                 .alternateTypeRules(newRule(typeResolver.resolve(Page.class, CozinhaModel.class),

@@ -6,6 +6,7 @@ import com.algaworks.algafood.api.model.input.FotoProdutoInput;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
@@ -19,7 +20,9 @@ public interface RestauranteProdutoFotoControllerOpenAPI {
     })
     FotoProdutoModel atualizarFoto(@ApiParam(value = "ID do restaurante", required = true) Long id,
                                    @ApiParam(value = "ID do produto", required = true) Long produtoId,
-                                   FotoProdutoInput fotoProdutoInput) throws IOException;
+                                   FotoProdutoInput fotoProdutoInput,
+                                   @ApiParam(value = "Arquivo da foto do produto (maximo 500KB, apenas JPG e PNG)",
+                                           required = true) MultipartFile arquivo) throws IOException;
 
 
     @ApiOperation(value = "Busca a foto do produto de um restaurante",

@@ -16,7 +16,7 @@ import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;
 @Getter
 @Setter
 public class FotoProdutoInput {
-    @ApiModelProperty(example = "Arquivo da foto do produto (maximo 500KB, apenas JPG e PNG)", required = true)
+    @ApiModelProperty(hidden = true)
     @NotNull
     @FileSize(max = "500KB")
     @FileContentType(allowed = { IMAGE_JPEG_VALUE, IMAGE_PNG_VALUE })
