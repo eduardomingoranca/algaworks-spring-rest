@@ -70,7 +70,6 @@ public class SpringFoxConfig {
                 .select()
                 .apis(basePackage("com.algaworks.algafood.api"))
                 .paths(any())
-//                .paths(ant("/restaurantes/*"))
                 .build()
                 .useDefaultResponseMessages(false) // deixa apenas o status de sucesso
                 .globalResponses(GET, globalGetResponseMessages())

@@ -6,10 +6,13 @@ import com.algaworks.algafood.domain.model.Produto;
 import com.algaworks.algafood.domain.repository.ProdutoRepository;
 import com.algaworks.algafood.domain.service.storage.FotoStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.HttpMediaTypeNotAcceptableException;
 
 import java.io.InputStream;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -85,6 +88,16 @@ public class CatalogoFotoProdutoService {
             return fotoProduto.getProduto().getRestaurante().getId();
 
         return null;
+    }
+
+    public void verificarCompatibilidadeMediaType(MediaType mediaTypeFoto,
+                                                  List<MediaType> mediaTypesAceitas)
+            throws HttpMediaTypeNotAcceptableException {
+        boolean compativel = mediaTypesAceitas.stream()
+                .anyMatch(mediaTypesAceita -> mediaTypesAceita.isCompatibleWith(mediaTypeFoto));
+
+        if (!compativel)
+            throw new HttpMediaTypeNotAcceptableException(mediaTypesAceitas);
     }
 
 }

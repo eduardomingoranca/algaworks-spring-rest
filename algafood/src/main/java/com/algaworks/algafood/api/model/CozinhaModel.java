@@ -16,11 +16,6 @@ public class CozinhaModel {
     @JsonView(RestauranteView.Resumo.class)
     private Long id;
 
-    /*
-     * Origem: cozinha, nome
-     * Destino: cozinha, cozinha, nome
-     */
-    // private String cozinhaNome;
     @ApiModelProperty(example = "Tailandesa")
     @JsonView(RestauranteView.Resumo.class)
     private String nome;
