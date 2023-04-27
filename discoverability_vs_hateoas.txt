@@ -1,0 +1,7 @@
+Discoverability vs Hateoas
+
+Discoverability eh a capacidade que a API fornece aos consumidores
+de navegar em seus recursos sem conhecer previamente as suas URIs.
+
+Hateoas eh um componente do REST que fornece aos consumidores (Hypermedia) 
+links que indica como navegar atraves dos  recursos da API.
