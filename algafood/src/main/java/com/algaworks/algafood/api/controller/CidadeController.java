@@ -2,9 +2,9 @@ package com.algaworks.algafood.api.controller;
 
 import com.algaworks.algafood.api.assembler.input.disassembler.CidadeInputDisassembler;
 import com.algaworks.algafood.api.assembler.model.CidadeModelAssembler;
-import com.algaworks.algafood.api.openapi.controller.CidadeControllerOpenAPI;
 import com.algaworks.algafood.api.model.CidadeModel;
 import com.algaworks.algafood.api.model.input.CidadeInput;
+import com.algaworks.algafood.api.openapi.controller.CidadeControllerOpenAPI;
 import com.algaworks.algafood.domain.exception.EstadoNaoEncontradoException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Cidade;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+import static com.algaworks.algafood.api.utils.ResourceURIHelper.addURIInResponseHeader;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -54,7 +55,10 @@ public class CidadeController implements CidadeControllerOpenAPI {
             Cidade cidade = cidadeInputDisassembler.toDomainObject(cidadeInput);
             Cidade salvarCidade = cadastroCidade.salvar(cidade);
 
-            return cidadeModelAssembler.toModel(salvarCidade);
+            CidadeModel cidadeModel = cidadeModelAssembler.toModel(salvarCidade);
+            addURIInResponseHeader(cidadeModel.getId());
+
+            return cidadeModel;
         } catch (EstadoNaoEncontradoException e) {
             throw new NegocioException(e.getMessage(), e);
         }
