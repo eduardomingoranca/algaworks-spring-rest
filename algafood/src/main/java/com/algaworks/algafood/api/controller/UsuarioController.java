@@ -6,6 +6,7 @@ import com.algaworks.algafood.api.model.UsuarioModel;
 import com.algaworks.algafood.api.model.input.UsuarioInput;
 import com.algaworks.algafood.api.model.input.UsuarioPasswordInput;
 import com.algaworks.algafood.api.model.input.UsuarioUpdateInput;
+import com.algaworks.algafood.api.openapi.controller.UsuarioControllerOpenAPI;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.service.CadastroUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,11 @@ import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping("/usuarios")
-public class UsuarioController {
+@RequestMapping(value = "/usuarios", produces = APPLICATION_JSON_VALUE)
+public class UsuarioController implements UsuarioControllerOpenAPI {
     @Autowired
     private CadastroUsuarioService cadastroUsuario;
 
@@ -29,6 +31,7 @@ public class UsuarioController {
     @Autowired
     private UsuarioInputDisassembler usuarioInputDisassembler;
 
+    @Override
     @GetMapping
     public List<UsuarioModel> listar() {
         List<Usuario> usuarios = cadastroUsuario.listar();
@@ -36,6 +39,7 @@ public class UsuarioController {
         return usuarioModelAssembler.toCollectionModel(usuarios);
     }
 
+    @Override
     @GetMapping("/{usuarioID}")
     public UsuarioModel buscar(@PathVariable("usuarioID") Long id) {
         Usuario usuario = cadastroUsuario.buscarOuFalhar(id);
@@ -43,6 +47,7 @@ public class UsuarioController {
         return usuarioModelAssembler.toModel(usuario);
     }
 
+    @Override
     @PostMapping
     @ResponseStatus(CREATED)
     public UsuarioModel adicionar(@RequestBody @Valid UsuarioInput usuarioInput) {
@@ -52,6 +57,7 @@ public class UsuarioController {
         return usuarioModelAssembler.toModel(salvarUsuario);
     }
 
+    @Override
     @PutMapping("/{usuarioID}")
     public UsuarioModel atualizar(@PathVariable("usuarioID") Long id,
                                   @RequestBody @Valid UsuarioUpdateInput usuarioUpdateInput) {
@@ -64,6 +70,7 @@ public class UsuarioController {
         return usuarioModelAssembler.toModel(salvarUsuario);
     }
 
+    @Override
     @PutMapping("/{usuarioID}/senha")
     @ResponseStatus(NO_CONTENT)
     public void alterarSenha(@PathVariable("usuarioID") Long id,
