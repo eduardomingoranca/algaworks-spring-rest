@@ -1,5 +1,6 @@
 package com.algaworks.algafood.api.controller;
 
+import com.algaworks.algafood.api.openapi.controller.EstatisticasControllerOpenAPI;
 import com.algaworks.algafood.domain.filter.VendaDiariaFilter;
 import com.algaworks.algafood.domain.model.dto.VendaDiaria;
 import com.algaworks.algafood.domain.service.query.VendaQueryService;
@@ -20,19 +21,21 @@ import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
 @RequestMapping(path = "/estatisticas")
-public class EstatisticasController {
+public class EstatisticasController implements EstatisticasControllerOpenAPI {
     @Autowired
     private VendaQueryService vendaQueryService;
 
     @Autowired
     private VendaReportService vendaReportService;
 
+    @Override
     @GetMapping(value = "/vendas-diarias", produces = APPLICATION_JSON_VALUE)
     public List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter filtro,
                                                     @RequestParam(required = false, defaultValue = "+00:00") String timeOffset) {
         return vendaQueryService.consultarVendasDiarias(filtro, timeOffset);
     }
 
+    @Override
     @GetMapping(value = "/vendas-diarias", produces = APPLICATION_PDF_VALUE)
     public ResponseEntity<byte[]> consultarVendasDiariasPDF(VendaDiariaFilter filtro,
                                                             @RequestParam(required = false, defaultValue = "+00:00") String timeOffset) {
