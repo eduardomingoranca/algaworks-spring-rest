@@ -37,6 +37,14 @@ public class EstadoController implements EstadoControllerOpenAPI {
     }
 
     @Override
+    @GetMapping("/{estadoID}")
+    public EstadoModel buscar(@PathVariable("estadoID") Long id) {
+        Estado estado = cadastroEstado.buscarOuFalhar(id);
+
+        return estadoModelAssembler.toModel(estado);
+    }
+
+    @Override
     @PostMapping
     @ResponseStatus(CREATED)
     public EstadoModel adicionar(@RequestBody @Valid EstadoInput estadoInput) {

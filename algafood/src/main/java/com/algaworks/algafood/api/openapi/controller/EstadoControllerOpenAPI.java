@@ -19,6 +19,15 @@ public interface EstadoControllerOpenAPI {
     @ApiOperation("Lista os estados")
     List<EstadoModel> listar();
 
+    @ApiOperation("Busca um estado")
+    @ApiResponses({
+            @ApiResponse(responseCode = "400", description = "Codigo do estado invalido", content =
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))),
+            @ApiResponse(responseCode = "404", description = "Estado nao encontrado", content =
+            @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))
+    })
+    EstadoModel buscar(@ApiParam(value = "Codigo de um estado", required = true) Long id);
+
     @ApiOperation("Cadastra um estado")
     @ApiResponses(@ApiResponse(responseCode = "201", description = "Estado cadastrado"))
     EstadoModel adicionar(@ApiParam(name = "corpo", value = "Representacao de um novo estado", required = true)

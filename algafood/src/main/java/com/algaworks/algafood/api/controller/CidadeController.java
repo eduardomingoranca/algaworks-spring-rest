@@ -10,6 +10,7 @@ import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.service.CadastroCidadeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -44,7 +45,17 @@ public class CidadeController implements CidadeControllerOpenAPI {
     public CidadeModel buscar(@PathVariable("cidadeId") Long id) {
         Cidade cidade = cadastroCidade.buscarOuFalhar(id);
 
-        return cidadeModelAssembler.toModel(cidade);
+        CidadeModel cidadeModel = cidadeModelAssembler.toModel(cidade);
+
+        cidadeModel.add(Link.of("http://127.0.0.1:8080/cidades/1"));
+//        cidadeModel.add(Link.of("http://127.0.0.1:8080/cidades/1", SELF));
+
+        cidadeModel.add(Link.of("http://127.0.0.1:8080/cidades", "cidades"));
+//        cidadeModel.add(Link.of("http://127.0.0.1:8080/cidades", COLLECTION));
+
+        cidadeModel.getEstado().add(Link.of("http://127.0.0.1:8080/estados/1"));
+
+        return cidadeModel;
     }
 
     @Override
