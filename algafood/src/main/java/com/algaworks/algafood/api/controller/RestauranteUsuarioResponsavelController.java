@@ -6,9 +6,8 @@ import com.algaworks.algafood.api.openapi.controller.RestauranteUsuarioResponsav
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -24,7 +23,7 @@ public class RestauranteUsuarioResponsavelController implements RestauranteUsuar
 
     @Override
     @GetMapping
-    public List<UsuarioModel> listar(@PathVariable("restauranteID") Long id) {
+    public CollectionModel<UsuarioModel> listar(@PathVariable("restauranteID") Long id) {
         Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(id);
 
         return usuarioModelAssembler.toCollectionModel(restaurante.getUsuarios());

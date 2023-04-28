@@ -10,6 +10,7 @@ import com.algaworks.algafood.api.openapi.controller.UsuarioControllerOpenAPI;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.service.CadastroUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -33,7 +34,7 @@ public class UsuarioController implements UsuarioControllerOpenAPI {
 
     @Override
     @GetMapping
-    public List<UsuarioModel> listar() {
+    public CollectionModel<UsuarioModel> listar() {
         List<Usuario> usuarios = cadastroUsuario.listar();
 
         return usuarioModelAssembler.toCollectionModel(usuarios);
