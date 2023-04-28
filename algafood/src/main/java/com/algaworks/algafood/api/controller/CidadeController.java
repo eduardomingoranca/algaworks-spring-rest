@@ -11,15 +11,12 @@ import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.service.CadastroCidadeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.Link;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
 import static com.algaworks.algafood.api.utils.ResourceURIHelper.addURIInResponseHeader;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -40,29 +37,7 @@ public class CidadeController implements CidadeControllerOpenAPI {
     public CollectionModel<CidadeModel> listar() {
         List<Cidade> cidades = cadastroCidade.listar();
 
-        List<CidadeModel> cidadesModel = cidadeModelAssembler.toCollectionModel(cidades);
-
-        cidadesModel.forEach(cidadeModel -> {
-            cidadeModel.add(linkTo(methodOn(CidadeController.class)
-                    .buscar(cidadeModel.getId()))
-                    .withSelfRel());
-
-            cidadeModel.add(linkTo(methodOn(CidadeController.class)
-                    .listar()).withRel("cidades"));
-
-            cidadeModel.getEstado().add(linkTo(methodOn(EstadoController.class)
-                    .buscar(cidadeModel.getEstado().getId()))
-                    .withSelfRel());
-        });
-
-        CollectionModel<CidadeModel> cidadesCollectionModel = CollectionModel.of(cidadesModel);
-
-        Link cidadeListarURL = linkTo(CidadeController.class)
-                .withSelfRel();
-
-        cidadesCollectionModel.add(cidadeListarURL);
-
-        return cidadesCollectionModel;
+        return cidadeModelAssembler.toCollectionModel(cidades);
     }
 
     @Override
@@ -70,29 +45,7 @@ public class CidadeController implements CidadeControllerOpenAPI {
     public CidadeModel buscar(@PathVariable("cidadeId") Long id) {
         Cidade cidade = cadastroCidade.buscarOuFalhar(id);
 
-        CidadeModel cidadeModel = cidadeModelAssembler.toModel(cidade);
-
-        // criando um proxy para interceptar uma chamada.
-        // gerando a URL dinamicamente
-        Link buscarCidadeURL = linkTo(methodOn(CidadeController.class)
-                .buscar(cidadeModel.getId()))
-                .withSelfRel();
-
-        cidadeModel.add(buscarCidadeURL);
-
-        Link listarCidadeURL = linkTo(methodOn(CidadeController.class)
-                .listar())
-                .withRel("cidades");
-
-        cidadeModel.add(listarCidadeURL);
-
-        Link buscarEstadoURL = linkTo(methodOn(EstadoController.class)
-                .buscar(cidadeModel.getEstado().getId()))
-                .withSelfRel();
-
-        cidadeModel.getEstado().add(buscarEstadoURL);
-
-        return cidadeModel;
+        return cidadeModelAssembler.toModel(cidade);
     }
 
     @Override
