@@ -17,6 +17,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 import static com.algaworks.algafood.api.utils.ResourceURIHelper.addURIInResponseHeader;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -47,13 +48,20 @@ public class CidadeController implements CidadeControllerOpenAPI {
 
         CidadeModel cidadeModel = cidadeModelAssembler.toModel(cidade);
 
-        cidadeModel.add(Link.of("http://127.0.0.1:8080/cidades/1"));
-//        cidadeModel.add(Link.of("http://127.0.0.1:8080/cidades/1", SELF));
+        cidadeModel.add(linkTo(CidadeController.class)
+                .slash(cidadeModel.getId()).withSelfRel());
 
-        cidadeModel.add(Link.of("http://127.0.0.1:8080/cidades", "cidades"));
-//        cidadeModel.add(Link.of("http://127.0.0.1:8080/cidades", COLLECTION));
+//        cidadeModel.add(Link.of("http://127.0.0.1:8080/cidades/1"));
 
-        cidadeModel.getEstado().add(Link.of("http://127.0.0.1:8080/estados/1"));
+        cidadeModel.add(linkTo(CidadeController.class)
+                .withRel("cidades"));
+
+//        cidadeModel.add(Link.of("http://127.0.0.1:8080/cidades", "cidades"));
+
+        cidadeModel.getEstado().add(linkTo(EstadoController.class)
+                .slash(cidadeModel.getEstado().getId()).withSelfRel());
+
+//        cidadeModel.getEstado().add(Link.of("http://127.0.0.1:8080/estados/1"));
 
         return cidadeModel;
     }
