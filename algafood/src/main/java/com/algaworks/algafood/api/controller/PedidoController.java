@@ -15,13 +15,13 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 import static com.algaworks.algafood.infrastructure.repository.spec.PedidoSpecs.usandoFiltro;
 import static org.springframework.http.HttpStatus.CREATED;
@@ -42,21 +42,21 @@ public class PedidoController implements PedidoControllerOpenAPI {
     @Autowired
     private PedidoInputDisassembler pedidoInputDisassembler;
 
+    @Autowired
+    private PagedResourcesAssembler<Pedido> pagedResourcesAssembler;
+
     @Override
     @ApiImplicitParams(@ApiImplicitParam(value = "Nomes das propriedades para filtrar na resposta, separados por virgula",
             name = "campos", paramType = "query", type = "string"))
     @GetMapping
-    public Page<PedidoResumoModel> pesquisar(PedidoFilter filtro,
-                                             @PageableDefault(size = 10) Pageable pageable) {
+    public PagedModel<PedidoResumoModel> pesquisar(PedidoFilter filtro,
+                                                   @PageableDefault(size = 10) Pageable pageable) {
         // converter para um novo pageable com propriedades da classe de dominio/entidade
         pageable = emissaoPedido.traduzirPageable(pageable);
 
         Page<Pedido> pedidosPage = emissaoPedido.listar(usandoFiltro(filtro), pageable);
 
-        List<PedidoResumoModel> pedidosResumoModel = pedidoResumoModelAssembler
-                .toCollectionModel(pedidosPage.getContent());
-
-        return new PageImpl<>(pedidosResumoModel, pageable, pedidosPage.getTotalElements());
+        return pagedResourcesAssembler.toModel(pedidosPage, pedidoResumoModelAssembler);
     }
 
     @Override

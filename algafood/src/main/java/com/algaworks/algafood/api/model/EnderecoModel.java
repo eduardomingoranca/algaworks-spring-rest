@@ -3,10 +3,13 @@ package com.algaworks.algafood.api.model;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 
+@Relation(collectionRelation = "enderecos")
 @Setter
 @Getter
-public class EnderecoModel {
+public class EnderecoModel extends RepresentationModel<EnderecoModel> {
     @ApiModelProperty(example = "38400-222")
     private String cep;
 
