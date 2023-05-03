@@ -9,13 +9,13 @@ import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.service.CadastroCozinhaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -32,16 +32,17 @@ public class CozinhaController implements CozinhaControllerOpenAPI {
     @Autowired
     private CozinhaModelAssembler cozinhaModelAssembler;
 
+    @Autowired
+    private PagedResourcesAssembler<Cozinha> pagedResourcesAssembler;
+
     @Override
     @ResponseStatus(OK)
     @GetMapping(produces = APPLICATION_JSON_VALUE)
-    public Page<CozinhaModel> listar(@PageableDefault(size = 2) Pageable pageable) {
+    public PagedModel<CozinhaModel> listar(@PageableDefault(size = 2) Pageable pageable) {
         Page<Cozinha> cozinhasPage = cadastroCozinha.listar(pageable);
 
-        // content -> obtendo o conteudo/elementos
-        List<CozinhaModel> cozinhasModel = cozinhaModelAssembler.toCollectionModel(cozinhasPage.getContent());
-
-        return new PageImpl<>(cozinhasModel, pageable, cozinhasPage.getTotalElements());
+        // convertendo o page de cozinha para um paged model de cozinha model.
+        return pagedResourcesAssembler.toModel(cozinhasPage, cozinhaModelAssembler);
     }
 
     @Override
