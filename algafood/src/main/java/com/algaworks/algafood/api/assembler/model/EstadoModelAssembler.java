@@ -1,6 +1,7 @@
 package com.algaworks.algafood.api.assembler.model;
 
 import com.algaworks.algafood.api.controller.EstadoController;
+import com.algaworks.algafood.api.links.AlgaLinks;
 import com.algaworks.algafood.api.model.EstadoModel;
 import com.algaworks.algafood.domain.model.Estado;
 import org.modelmapper.ModelMapper;
@@ -10,12 +11,14 @@ import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSuppor
 import org.springframework.stereotype.Component;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
 public class EstadoModelAssembler extends RepresentationModelAssemblerSupport<Estado, EstadoModel> {
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private AlgaLinks algaLinks;
 
     public EstadoModelAssembler() {
         super(EstadoController.class, EstadoModel.class);
@@ -28,9 +31,7 @@ public class EstadoModelAssembler extends RepresentationModelAssemblerSupport<Es
 
         // criando um proxy para interceptar uma chamada.
         // gerando a URL dinamicamente
-        estadoModel.add(linkTo(methodOn(EstadoController.class)
-                .listar())
-                .withRel("estados"));
+        estadoModel.add(algaLinks.linkToEstados("estados"));
 
         return estadoModel;
     }
