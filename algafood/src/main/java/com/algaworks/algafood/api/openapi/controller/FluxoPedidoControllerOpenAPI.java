@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.http.ResponseEntity;
 
 @Api(tags = "Pedidos")
 public interface FluxoPedidoControllerOpenAPI {
@@ -18,7 +19,7 @@ public interface FluxoPedidoControllerOpenAPI {
             @ApiResponse(responseCode = "404", description = "Pedido nao encontrado", content =
             @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))
     })
-    void confirmar(@ApiParam(value = "Codigo de um pedido", required = true) String codigo);
+    ResponseEntity<Void> confirmar(@ApiParam(value = "Codigo de um pedido", required = true) String codigo);
 
     @ApiOperation("Registrar entrega de pedido")
     @ApiResponses({
@@ -27,7 +28,7 @@ public interface FluxoPedidoControllerOpenAPI {
             @ApiResponse(responseCode = "404", description = "Pedido nao encontrado", content =
             @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))
     })
-    void entregar(String codigo);
+    ResponseEntity<Void> entregar(String codigo);
 
     @ApiOperation("Cancelamento de pedido")
     @ApiResponses({
@@ -36,6 +37,6 @@ public interface FluxoPedidoControllerOpenAPI {
             @ApiResponse(responseCode = "404", description = "Pedido nao encontrado", content =
             @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))
     })
-    void cancelar(String codigo);
+    ResponseEntity<Void> cancelar(String codigo);
 
 }
