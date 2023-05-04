@@ -1,4 +1,4 @@
-package com.algaworks.algafood.core.data;
+package com.algaworks.algafood.core.data.translator;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

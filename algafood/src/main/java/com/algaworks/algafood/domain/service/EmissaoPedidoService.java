@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
-import static com.algaworks.algafood.core.data.PageableTranslator.translate;
+import static com.algaworks.algafood.core.data.translator.PageableTranslator.translate;
 import static java.lang.String.format;
 import static java.math.BigDecimal.ZERO;
 
