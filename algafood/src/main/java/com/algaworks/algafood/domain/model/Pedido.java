@@ -1,9 +1,6 @@
 package com.algaworks.algafood.domain.model;
 
 import com.algaworks.algafood.domain.enumeration.StatusPedido;
-import com.algaworks.algafood.domain.event.PedidoCanceladoEvent;
-import com.algaworks.algafood.domain.event.PedidoConfirmadoEvent;
-import com.algaworks.algafood.domain.exception.NegocioException;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
@@ -15,9 +12,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.algaworks.algafood.domain.enumeration.StatusPedido.*;
-import static java.lang.String.format;
-import static java.time.OffsetDateTime.now;
+import static com.algaworks.algafood.domain.enumeration.StatusPedido.CRIADO;
 import static java.util.UUID.randomUUID;
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.EnumType.STRING;
@@ -80,38 +75,6 @@ public class Pedido extends AbstractAggregateRoot<Pedido> {
 
     @OneToMany(mappedBy = "pedido", cascade = ALL)
     private List<ItemPedido> itens = new ArrayList<>();
-
-    public void confirmar() {
-        setStatus(CONFIRMADO);
-        setDataConfirmacao(now());
-
-        // metodo que registra um evento que deve ser disparado/publicado
-        // quando o objeto pedido for salvo no repositorio
-        PedidoConfirmadoEvent pedidoConfirmadoEvent = new PedidoConfirmadoEvent(this);
-        registerEvent(pedidoConfirmadoEvent);
-    }
-
-    public void entregar() {
-        setStatus(ENTREGUE);
-        setDataEntrega(now());
-    }
-
-    public void cancelar() {
-        setStatus(CANCELADO);
-        setDataCancelamento(now());
-
-        PedidoCanceladoEvent pedidoCanceladoEvent = new PedidoCanceladoEvent(this);
-        registerEvent(pedidoCanceladoEvent);
-    }
-
-    private void setStatus(StatusPedido novoStatus) {
-        if (getStatus().naoPodeAlterarPara(novoStatus)) {
-            throw new NegocioException(format("O status do pedido %s nao pode ser alterado de %s para %s",
-                    getCodigo(), getStatus().getDescricao(), novoStatus.getDescricao()));
-        }
-
-        this.status = novoStatus;
-    }
 
     // antes de persistir a entidade execute o metodo
     @PrePersist

@@ -3,11 +3,14 @@ package com.algaworks.algafood.api.assembler.model;
 import com.algaworks.algafood.api.controller.PedidoController;
 import com.algaworks.algafood.api.links.AlgaLinks;
 import com.algaworks.algafood.api.model.PedidoModel;
+import com.algaworks.algafood.domain.enumeration.StatusPedido;
 import com.algaworks.algafood.domain.model.Pedido;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
+
+import static com.algaworks.algafood.domain.enumeration.StatusPedido.*;
 
 @Component
 public class PedidoModelAssembler extends RepresentationModelAssemblerSupport<Pedido, PedidoModel> {
@@ -28,9 +31,14 @@ public class PedidoModelAssembler extends RepresentationModelAssemblerSupport<Pe
 
         pedidoModel.add(algaLinks.linkToPedidos());
 
-        pedidoModel.add(algaLinks.linkToConfirmacaoPedido(pedidoModel.getCodigo(), "confirmar"));
-        pedidoModel.add(algaLinks.linkToCancelamentoPedido(pedidoModel.getCodigo(), "cancelar"));
-        pedidoModel.add(algaLinks.linkToEntregaPedido(pedidoModel.getCodigo(), "entregar"));
+        if (podeSerConfirmado(pedido))
+            pedidoModel.add(algaLinks.linkToConfirmacaoPedido(pedidoModel.getCodigo(), "confirmar"));
+
+        if (podeSerCancelado(pedido))
+            pedidoModel.add(algaLinks.linkToCancelamentoPedido(pedidoModel.getCodigo(), "cancelar"));
+
+        if (podeSerEntregue(pedido))
+            pedidoModel.add(algaLinks.linkToEntregaPedido(pedidoModel.getCodigo(), "entregar"));
 
         pedidoModel.getRestaurante().add(algaLinks.linkToRestaurante(pedido.getRestaurante().getId()));
 
@@ -47,6 +55,18 @@ public class PedidoModelAssembler extends RepresentationModelAssemblerSupport<Pe
                 item.getProdutoId(), "produto")));
 
         return pedidoModel;
+    }
+
+    private boolean podeSerConfirmado(Pedido pedido) {
+        return pedido.getStatus().podeAlterarPara(CONFIRMADO);
+    }
+
+    private boolean podeSerEntregue(Pedido pedido) {
+        return pedido.getStatus().podeAlterarPara(ENTREGUE);
+    }
+
+    private boolean podeSerCancelado(Pedido pedido) {
+        return pedido.getStatus().podeAlterarPara(CANCELADO);
     }
 
 }
