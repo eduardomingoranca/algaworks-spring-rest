@@ -243,4 +243,13 @@ public class AlgaLinks {
                 .desassociar(restauranteID, usuarioID)).withRel(rel);
     }
 
+    public Link linkToFotoProduto(Long restauranteID, Long produtoID, String rel) {
+        return linkTo(methodOn(RestauranteProdutoFotoController.class)
+                .buscarFoto(restauranteID, produtoID)).withRel(rel);
+    }
+
+    public Link linkToFotoProduto(Long restauranteID, Long produtoID) {
+        return linkToFotoProduto(restauranteID, produtoID, SELF.value());
+    }
+
 }

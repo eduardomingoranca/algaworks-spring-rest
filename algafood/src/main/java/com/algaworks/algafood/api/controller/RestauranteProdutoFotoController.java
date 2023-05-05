@@ -63,7 +63,7 @@ public class RestauranteProdutoFotoController implements RestauranteProdutoFotoC
     }
 
     @Override
-    @GetMapping
+    @GetMapping(produces = APPLICATION_JSON_VALUE)
     public FotoProdutoModel buscarFoto(@PathVariable("restauranteId") Long id,
                                        @PathVariable Long produtoId) {
         Produto produto = cadastroProduto.buscarOuFalhar(id, produtoId);
