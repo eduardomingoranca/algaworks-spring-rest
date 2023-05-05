@@ -8,6 +8,7 @@ import com.algaworks.algafood.api.model.input.GrupoInput;
 import com.algaworks.algafood.domain.model.Grupo;
 import com.algaworks.algafood.domain.service.CadastroGrupoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -30,7 +31,7 @@ public class GrupoController implements GrupoControllerOpenAPI {
 
     @Override
     @GetMapping
-    public List<GrupoModel> listar() {
+    public CollectionModel<GrupoModel> listar() {
         List<Grupo> grupos = cadastroGrupo.listar();
 
         return grupoModelAssembler.toCollectionModel(grupos);

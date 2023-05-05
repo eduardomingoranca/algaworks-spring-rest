@@ -252,4 +252,17 @@ public class AlgaLinks {
         return linkToFotoProduto(restauranteID, produtoID, SELF.value());
     }
 
+    public Link linkToGrupos(String rel) {
+        return linkTo(methodOn(GrupoController.class)
+                .listar()).withRel(rel);
+    }
+
+    public Link linkToPermissoesGrupos(Long grupoID, String rel) {
+        return linkTo(methodOn(GrupoPermissaoController.class)
+                .listar(grupoID)).withRel(rel);
+    }
+
+    public Link linkToPermissoesGrupos(Long grupoID) {
+        return linkToPermissoesGrupos(grupoID, SELF.value());
+    }
 }
