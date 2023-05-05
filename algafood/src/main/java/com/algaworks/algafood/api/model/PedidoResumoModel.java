@@ -33,7 +33,7 @@ public class PedidoResumoModel extends RepresentationModel<PedidoResumoModel> {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private OffsetDateTime dataCriacao;
 
-    private RestauranteResumoModel restaurante;
+    private RestauranteApenasNomeModel restaurante;
 
     @ApiModelProperty(example = "Fergus Tipton")
     private String nomeCliente;

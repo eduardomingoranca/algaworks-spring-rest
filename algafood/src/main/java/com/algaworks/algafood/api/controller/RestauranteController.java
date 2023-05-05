@@ -1,7 +1,11 @@
 package com.algaworks.algafood.api.controller;
 
 import com.algaworks.algafood.api.assembler.input.disassembler.RestauranteInputDisassembler;
+import com.algaworks.algafood.api.assembler.model.RestauranteApenasNomeAssembler;
+import com.algaworks.algafood.api.assembler.model.RestauranteBasicoModelAssembler;
 import com.algaworks.algafood.api.assembler.model.RestauranteModelAssembler;
+import com.algaworks.algafood.api.model.RestauranteApenasNomeModel;
+import com.algaworks.algafood.api.model.RestauranteBasicoModel;
 import com.algaworks.algafood.api.model.RestauranteModel;
 import com.algaworks.algafood.api.model.input.RestauranteInput;
 import com.algaworks.algafood.api.openapi.controller.RestauranteControllerOpenAPI;
@@ -12,6 +16,8 @@ import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradoException
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,6 +26,7 @@ import java.util.List;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.ResponseEntity.noContent;
 
 @RestController
 @RequestMapping(value = "/restaurantes", produces = APPLICATION_JSON_VALUE)
@@ -33,17 +40,24 @@ public class RestauranteController implements RestauranteControllerOpenAPI {
     @Autowired
     private RestauranteInputDisassembler restauranteInputDisassembler;
 
+    @Autowired
+    private RestauranteBasicoModelAssembler restauranteBasicoModelAssembler;
+
+    @Autowired
+    private RestauranteApenasNomeAssembler restauranteApenasNomeAssembler;
+
     @Override
     @GetMapping
-    public List<RestauranteModel> listar() {
-        List<Restaurante> restaurantes = cadastroRestaurante.listar();
-        return restauranteModelAssembler.toCollectionModel(restaurantes);
+    public CollectionModel<RestauranteBasicoModel> listar() {
+        return restauranteBasicoModelAssembler
+                .toCollectionModel(cadastroRestaurante.listar());
     }
 
     @Override
     @GetMapping(params = "projecao=apenas-nome")
-    public List<RestauranteModel> listarApenasNomes() {
-        return listar();
+    public CollectionModel<RestauranteApenasNomeModel> listarApenasNomes() {
+        return restauranteApenasNomeAssembler
+                .toCollectionModel(cadastroRestaurante.listar());
     }
 
     @Override
@@ -92,24 +106,30 @@ public class RestauranteController implements RestauranteControllerOpenAPI {
     // PUT /restaurantes/{id}/ativo
     @PutMapping("/{restauranteId}/ativo")
     @ResponseStatus(NO_CONTENT)
-    public void ativar(@PathVariable("restauranteId") Long id) {
+    public ResponseEntity<Void> ativar(@PathVariable("restauranteId") Long id) {
         cadastroRestaurante.ativar(id);
+
+        return noContent().build();
     }
 
     @Override
     @DeleteMapping("/{restauranteId}/ativo")
     @ResponseStatus(NO_CONTENT)
-    public void inativar(@PathVariable("restauranteId") Long id) {
+    public ResponseEntity<Void> inativar(@PathVariable("restauranteId") Long id) {
         cadastroRestaurante.inativar(id);
+
+        return noContent().build();
     }
 
     @Override
     // PUT /restaurantes/ativacoes
     @PutMapping("/ativacoes")
     @ResponseStatus(NO_CONTENT)
-    public void ativarMultiplos(@RequestBody List<Long> restauranteIDs) {
+    public ResponseEntity<Void> ativarMultiplos(@RequestBody List<Long> restauranteIDs) {
         try {
             cadastroRestaurante.ativar(restauranteIDs);
+
+            return noContent().build();
         } catch (RestauranteNaoEncontradoException e) {
             throw new NegocioException(e.getMessage(), e);
         }
@@ -119,9 +139,11 @@ public class RestauranteController implements RestauranteControllerOpenAPI {
     // DELETE /restaurantes/ativacoes
     @DeleteMapping("/ativacoes")
     @ResponseStatus(NO_CONTENT)
-    public void inativarMultiplos(@RequestBody List<Long> restauranteIDs) {
+    public ResponseEntity<Void> inativarMultiplos(@RequestBody List<Long> restauranteIDs) {
         try {
             cadastroRestaurante.inativar(restauranteIDs);
+
+            return noContent().build();
         } catch (RestauranteNaoEncontradoException e) {
             throw new NegocioException(e.getMessage(), e);
         }
@@ -130,15 +152,19 @@ public class RestauranteController implements RestauranteControllerOpenAPI {
     @Override
     @PutMapping("/{restauranteId}/fechamento")
     @ResponseStatus(NO_CONTENT)
-    public void fechar(@PathVariable("restauranteId") Long id) {
+    public ResponseEntity<Void> fechar(@PathVariable("restauranteId") Long id) {
         cadastroRestaurante.fechar(id);
+
+        return noContent().build();
     }
 
     @Override
     @PutMapping("/{restauranteId}/abertura")
     @ResponseStatus(NO_CONTENT)
-    public void abrir(@PathVariable("restauranteId") Long id) {
+    public ResponseEntity<Void> abrir(@PathVariable("restauranteId") Long id) {
         cadastroRestaurante.abrir(id);
+
+        return noContent().build();
     }
 
 }
