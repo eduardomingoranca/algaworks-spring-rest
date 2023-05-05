@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
 
 @Api(tags = "Restaurantes")
 public interface RestauranteUsuarioResponsavelControllerOpenAPI {
@@ -31,8 +32,8 @@ public interface RestauranteUsuarioResponsavelControllerOpenAPI {
             @ApiResponse(responseCode = "404", description = "Restaurante nao encontrado", content =
             @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))
     })
-    void associar(@ApiParam(value = "Codigo de um restaurante", required = true) Long id,
-                  @ApiParam(value = "Codigo do usuario responsavel", required = true) Long usuarioID);
+    ResponseEntity<Void> associar(@ApiParam(value = "Codigo de um restaurante", required = true) Long id,
+                                  @ApiParam(value = "Codigo do usuario responsavel", required = true) Long usuarioID);
 
 
     @ApiOperation("Desassociacao de restaurante com usuario responsavel")
@@ -42,7 +43,7 @@ public interface RestauranteUsuarioResponsavelControllerOpenAPI {
             @ApiResponse(responseCode = "404", description = "Restaurante nao encontrado", content =
             @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))
     })
-    void desassociar(@ApiParam(value = "Codigo de um restaurante", required = true) Long id,
-                     @ApiParam(value = "Codigo do usuario responsavel", required = true) Long usuarioID);
+    ResponseEntity<Void> desassociar(@ApiParam(value = "Codigo de um restaurante", required = true) Long id,
+                                     @ApiParam(value = "Codigo do usuario responsavel", required = true) Long usuarioID);
 
 }
