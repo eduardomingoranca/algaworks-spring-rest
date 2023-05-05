@@ -10,8 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.hateoas.CollectionModel;
-
-import java.util.List;
+import org.springframework.http.ResponseEntity;
 
 @Api(tags = "Restaurantes")
 public interface RestauranteFormaPagamentoControllerOpenAPI {
@@ -32,8 +31,8 @@ public interface RestauranteFormaPagamentoControllerOpenAPI {
             @ApiResponse(responseCode = "404", description = "Restaurante nao encontrado", content =
             @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))
     })
-    void desassociar(@ApiParam(value = "Codigo de um restaurante", required = true) Long id,
-                     @ApiParam(value = "Codigo da forma de pagamento", required = true) Long formaPagamentoID);
+    ResponseEntity<Void> desassociar(@ApiParam(value = "Codigo de um restaurante", required = true) Long id,
+                                     @ApiParam(value = "Codigo da forma de pagamento", required = true) Long formaPagamentoID);
 
     @ApiOperation("Associacao de restaurante com forma de pagamento")
     @ApiResponses({
