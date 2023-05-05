@@ -10,8 +10,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-
-import java.util.List;
+import org.springframework.hateoas.CollectionModel;
 
 @Api(tags = "Produtos")
 public interface RestauranteProdutoControllerOpenAPI {
@@ -23,8 +22,8 @@ public interface RestauranteProdutoControllerOpenAPI {
             @ApiResponse(responseCode = "404", description = "Restaurante nao encontrado", content =
             @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))
     })
-    List<ProdutoModel> listar(@ApiParam(value = "Codigo de um restaurante", required = true) Long id,
-                              @ApiParam(value = "Incluir inativos") boolean incluirInativos);
+    CollectionModel<ProdutoModel> listar(@ApiParam(value = "Codigo de um restaurante", required = true) Long id,
+                                         @ApiParam(value = "Incluir inativos") Boolean incluirInativos);
 
     @ApiOperation("Busca um produto de um restaurante")
     @ApiResponses({

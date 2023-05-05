@@ -98,6 +98,16 @@ public class AlgaLinks {
         return linkToProduto(itemID, restauranteID, SELF.value());
     }
 
+    public Link linkToProdutos(Long restauranteId, String rel) {
+        return linkTo(methodOn(RestauranteProdutoController.class)
+                .listar(restauranteId, null)).withRel(rel);
+    }
+
+    public Link linkToProdutos(Long restauranteId) {
+        return linkToProdutos(restauranteId, SELF.value());
+    }
+
+
     public Link linkToEstado(Long estadoID, String rel) {
         return linkTo(methodOn(EstadoController.class)
                 .buscar(estadoID)).withRel(rel);

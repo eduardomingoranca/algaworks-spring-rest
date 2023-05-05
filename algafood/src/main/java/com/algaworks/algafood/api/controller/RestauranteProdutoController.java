@@ -2,6 +2,7 @@ package com.algaworks.algafood.api.controller;
 
 import com.algaworks.algafood.api.assembler.input.disassembler.ProdutoInputDisassembler;
 import com.algaworks.algafood.api.assembler.model.ProdutoModelAssembler;
+import com.algaworks.algafood.api.links.AlgaLinks;
 import com.algaworks.algafood.api.model.ProdutoModel;
 import com.algaworks.algafood.api.model.input.ProdutoInput;
 import com.algaworks.algafood.api.openapi.controller.RestauranteProdutoControllerOpenAPI;
@@ -10,6 +11,7 @@ import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.service.CadastroProdutoService;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -33,23 +35,27 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
     @Autowired
     private ProdutoInputDisassembler produtoInputDisassembler;
 
+    @Autowired
+    private AlgaLinks algaLinks;
+
     @Override
     @GetMapping
-    public List<ProdutoModel> listar(@PathVariable("restauranteID") Long id,
-                                     @RequestParam(required = false) boolean incluirInativos) {
+    public CollectionModel<ProdutoModel> listar(@PathVariable("restauranteID") Long id,
+                                                @RequestParam(required = false,
+                                                        defaultValue = "false") Boolean incluirInativos) {
         Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(id);
 
         List<Produto> todosProdutos;
 
-        if (incluirInativos) {
+        if (incluirInativos)
             // chamar consulta
             todosProdutos = cadastroProduto.buscarTodosOsProdutosPorRestaurante(restaurante);
-        } else {
+        else
             // buscando produtos ativos
             todosProdutos = cadastroProduto.buscarTodosOsProdutosAtivosPorRestaurante(restaurante);
-        }
 
-        return produtoModelAssembler.toCollectionModel(todosProdutos);
+        return produtoModelAssembler.toCollectionModel(todosProdutos)
+                .add(algaLinks.linkToProdutos(id));
     }
 
     @Override
