@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
+
 @Component
 public class RestauranteModelAssembler extends RepresentationModelAssemblerSupport<Restaurante, RestauranteModel> {
     @Autowired
@@ -29,13 +32,41 @@ public class RestauranteModelAssembler extends RepresentationModelAssemblerSuppo
 
         restauranteModel.add(algaLinks.linkToRestaurantes("restaurantes"));
 
-        restauranteModel.add(algaLinks.linkToFormaPagamentoRestaurante(restauranteModel.getId(), "formas-pagamento"));
-        restauranteModel.add(algaLinks.linkToResponsaveisRestaurante(restauranteModel.getId(), "responsaveis"));
-
         restauranteModel.getCozinha().add(algaLinks.linkToCozinha(restauranteModel.getId()));
         restauranteModel.getEndereco().getCidade().add(algaLinks.linkToCidade(restauranteModel.getId()));
 
+        restauranteModel.add(algaLinks.linkToFormaPagamentoRestaurante(restauranteModel.getId(), "formas-pagamento"));
+        restauranteModel.add(algaLinks.linkToResponsaveisRestaurante(restauranteModel.getId(), "responsaveis"));
+
+        if (podeSerAtivado(restaurante))
+            restauranteModel.add(algaLinks.linkToAtivacaoRestaurante(restaurante.getId(), "ativar"));
+
+        if (podeSerInativado(restaurante))
+            restauranteModel.add(algaLinks.linkToInativacaoRestaurante(restaurante.getId(), "inativar"));
+
+        if (podeSerAberto(restaurante))
+            restauranteModel.add(algaLinks.linkToAberturaRestaurante(restaurante.getId(), "abrir"));
+
+        if (podeSerFechado(restaurante))
+            restauranteModel.add(algaLinks.linkToFechamentoRestaurante(restaurante.getId(), "fechar"));
+
         return restauranteModel;
+    }
+
+    private boolean podeSerFechado(Restaurante restaurante) {
+        return restaurante.getAberto().equals(TRUE);
+    }
+
+    private boolean podeSerAberto(Restaurante restaurante) {
+        return restaurante.getAberto().equals(FALSE);
+    }
+
+    private boolean podeSerInativado(Restaurante restaurante) {
+        return restaurante.getAtivo().equals(TRUE);
+    }
+
+    private boolean podeSerAtivado(Restaurante restaurante) {
+        return restaurante.getAtivo().equals(FALSE);
     }
 
 }
