@@ -6,6 +6,7 @@ import com.algaworks.algafood.api.openapi.controller.RestauranteFormaPagamentoCo
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
 
     @Override
     @GetMapping
-    public List<FormaPagamentoModel> listar(@PathVariable("restauranteID") Long id) {
+    public CollectionModel<FormaPagamentoModel> listar(@PathVariable("restauranteID") Long id) {
         Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(id);
 
         return formaPagamentoModelAssembler.toCollectionModel(restaurante.getFormasPagamento());

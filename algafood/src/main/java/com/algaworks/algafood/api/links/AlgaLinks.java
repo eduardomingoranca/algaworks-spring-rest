@@ -204,4 +204,12 @@ public class AlgaLinks {
                 .withRel(rel);
     }
 
+    public Link linkToFormasPagamento(String rel) {
+        return linkTo(FormaPagamentoController.class).withRel(rel);
+    }
+
+    public Link linkToFormasPagamento() {
+        return linkTo(FormaPagamentoController.class).withSelfRel();
+    }
+
 }

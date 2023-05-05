@@ -8,6 +8,7 @@ import com.algaworks.algafood.api.openapi.controller.FormaPagamentoControllerOpe
 import com.algaworks.algafood.domain.model.FormaPagamento;
 import com.algaworks.algafood.domain.service.CadastroFormaPagamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -38,12 +39,10 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenAPI
 
     @Override
     @GetMapping
-    public ResponseEntity<List<FormaPagamentoModel>> listar(ServletWebRequest request) {
-        /*
-            gerando um hash de um atributo especifico, desde que o atributo tenha alteracoes
-            quando a entidade eh atualizada,
-            como por exemplo uma data e hora.
-         */
+    public ResponseEntity<CollectionModel<FormaPagamentoModel>> listar(ServletWebRequest request) {
+//      gerando um hash de um atributo especifico, desde que o atributo tenha alteracoes
+//      quando a entidade eh atualizada,
+//      como por exemplo uma data e hora.
 
         // desabilitando o shallow etag
         disableContentCaching(request.getRequest());
@@ -62,7 +61,8 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenAPI
 
         List<FormaPagamento> formasPagamento = cadastroFormaPagamento.listar();
 
-        List<FormaPagamentoModel> formasPagamentoModel = formaPagamentoModelAssembler.toCollectionModel(formasPagamento);
+        CollectionModel<FormaPagamentoModel> formasPagamentoModel = formaPagamentoModelAssembler
+                .toCollectionModel(formasPagamento);
 
         return ok()
                 // resposta armazenada em cache publico
