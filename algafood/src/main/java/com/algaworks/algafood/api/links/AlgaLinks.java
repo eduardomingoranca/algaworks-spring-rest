@@ -7,6 +7,7 @@ import org.springframework.hateoas.TemplateVariables;
 import org.springframework.hateoas.UriTemplate;
 import org.springframework.stereotype.Component;
 
+import static java.lang.String.valueOf;
 import static org.springframework.hateoas.IanaLinkRelations.SELF;
 import static org.springframework.hateoas.TemplateVariable.VariableType.REQUEST_PARAM;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -19,7 +20,7 @@ public class AlgaLinks {
             new TemplateVariable("size", REQUEST_PARAM),
             new TemplateVariable("sort", REQUEST_PARAM));
 
-    public Link linkToPedidos() {
+    public Link linkToPedidos(String rel) {
         TemplateVariable clienteId = new TemplateVariable("clienteId", REQUEST_PARAM);
         TemplateVariable restauranteId = new TemplateVariable("restauranteId", REQUEST_PARAM);
         TemplateVariable dataCriacaoInicio = new TemplateVariable("dataCriacaoInicio", REQUEST_PARAM);
@@ -30,7 +31,7 @@ public class AlgaLinks {
 
         String pedidosURL = linkTo(PedidoController.class).toUri().toString();
 
-        return Link.of(UriTemplate.of(pedidosURL, PAGINACAO_VARIABLES.concat(filtroVariables)), "pedidos");
+        return Link.of(UriTemplate.of(pedidosURL, PAGINACAO_VARIABLES.concat(filtroVariables)), rel);
     }
 
     public Link linkToConfirmacaoPedido(String codigoPedido, String rel) {
@@ -142,9 +143,21 @@ public class AlgaLinks {
     }
 
     public Link linkToRestaurantes(String rel) {
-        return linkTo(methodOn(RestauranteController.class)
-                .listar())
-                .withRel(rel);
+        TemplateVariable projecao = new TemplateVariable("projecao", REQUEST_PARAM);
+        TemplateVariables filtroVariables = new TemplateVariables(projecao);
+
+        String restaurantesURL = linkTo(RestauranteController.class).toUri().toString();
+
+        return Link.of(UriTemplate.of(restaurantesURL, filtroVariables), rel);
+    }
+
+    public Link linkToRestaurantes() {
+        TemplateVariable projecao = new TemplateVariable("projecao", REQUEST_PARAM);
+        TemplateVariables filtroVariables = new TemplateVariables(projecao);
+
+        String restaurantesURL = linkTo(RestauranteController.class).toUri().toString();
+
+        return Link.of(valueOf(UriTemplate.of(restaurantesURL, filtroVariables)));
     }
 
     public Link linkToCozinha(Long cozinhaID, String rel) {
