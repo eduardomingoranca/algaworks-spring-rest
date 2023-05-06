@@ -142,6 +142,8 @@ public class AlgaLinks {
         return linkToResponsaveisRestaurante(restauranteID, SELF.value());
     }
 
+
+
     public Link linkToEstados(String rel) {
         return linkTo(methodOn(EstadoController.class)
                 .listar())
@@ -271,12 +273,6 @@ public class AlgaLinks {
                 .listar()).withRel(rel);
     }
 
-//    public Link linkToRestauranteUsuarioResponsavelDesassociar(Long restauranteID, Long usuarioID,
-//                                                               String rel) {
-//        return linkTo(methodOn(RestauranteUsuarioResponsavelController.class)
-//                .desassociar(restauranteID, usuarioID)).withRel(rel);
-//    }
-
     public Link linkToGruposPermissaoAssociacao(Long grupoID, String rel) {
         return linkTo(methodOn(GrupoPermissaoController.class)
                 .associar(grupoID, null)).withRel(rel);
@@ -286,6 +282,16 @@ public class AlgaLinks {
                                                  String rel) {
         return linkTo(methodOn(GrupoPermissaoController.class)
                 .desassociar(grupoID, permissaoID)).withRel(rel);
+    }
+
+    public Link linkToUsuarioGrupoAssociacao(Long usuarioID, String rel) {
+        return linkTo(methodOn(UsuarioGrupoController.class)
+                .associar(usuarioID, null)).withRel(rel);
+    }
+
+    public Link linkToUsuarioGrupoDesassociacao(Long usuarioID, Long grupoID, String rel) {
+        return linkTo(methodOn(UsuarioGrupoController.class)
+                .desassociar(usuarioID, grupoID)).withRel(rel);
     }
 
 }
