@@ -294,4 +294,23 @@ public class AlgaLinks {
                 .desassociar(usuarioID, grupoID)).withRel(rel);
     }
 
+    public Link linkToEstatisticas(String rel) {
+        return linkTo(EstatisticasController.class).withRel(rel);
+    }
+
+    public Link linkToEstatisticasVendasDiarias(String rel) {
+        TemplateVariable restauranteID = new TemplateVariable("restauranteID", REQUEST_PARAM);
+        TemplateVariable dataCriacaoInicio = new TemplateVariable("dataCriacaoInicio", REQUEST_PARAM);
+        TemplateVariable dataCriacaoFim = new TemplateVariable("dataCriacaoFim", REQUEST_PARAM);
+        TemplateVariable timeOffset = new TemplateVariable("timeOffset", REQUEST_PARAM);
+
+        TemplateVariables templateVariables = new TemplateVariables(restauranteID, dataCriacaoInicio,
+                dataCriacaoFim, timeOffset);
+
+        String estatisticasURL = linkTo(methodOn(EstatisticasController.class)
+                .consultarVendasDiarias(null, null)).toUri().toString();
+
+        return Link.of(UriTemplate.of(estatisticasURL, templateVariables), rel);
+    }
+
 }

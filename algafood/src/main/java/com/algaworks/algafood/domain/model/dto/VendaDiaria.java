@@ -1,5 +1,6 @@
 package com.algaworks.algafood.domain.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,6 +14,7 @@ import java.util.Date;
 @Getter
 public class VendaDiaria {
     @ApiModelProperty(example = "2023-04-27")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date data;
     @ApiModelProperty(example = "1")
     private Long totalVendas;

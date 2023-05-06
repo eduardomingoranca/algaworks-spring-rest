@@ -1,11 +1,13 @@
 package com.algaworks.algafood.api.controller;
 
+import com.algaworks.algafood.api.links.AlgaLinks;
 import com.algaworks.algafood.api.openapi.controller.EstatisticasControllerOpenAPI;
 import com.algaworks.algafood.domain.filter.VendaDiariaFilter;
 import com.algaworks.algafood.domain.model.dto.VendaDiaria;
 import com.algaworks.algafood.domain.service.query.VendaQueryService;
 import com.algaworks.algafood.domain.service.report.VendaReportService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +29,19 @@ public class EstatisticasController implements EstatisticasControllerOpenAPI {
 
     @Autowired
     private VendaReportService vendaReportService;
+
+    @Autowired
+    private AlgaLinks algaLinks;
+
+    @Override
+    @GetMapping(produces = APPLICATION_JSON_VALUE)
+    public EstatisticasModel estatisticas() {
+        EstatisticasModel estatisticasModel = new EstatisticasModel();
+
+        estatisticasModel.add(algaLinks.linkToEstatisticasVendasDiarias("vendas-diarias"));
+
+        return estatisticasModel;
+    }
 
     @Override
     @GetMapping(value = "/vendas-diarias", produces = APPLICATION_JSON_VALUE)
@@ -50,6 +65,9 @@ public class EstatisticasController implements EstatisticasControllerOpenAPI {
                 .contentType(APPLICATION_PDF)
                 .headers(headers)
                 .body(bytesPDF);
+    }
+
+    public static class EstatisticasModel extends RepresentationModel<EstatisticasModel> {
     }
 
 }
