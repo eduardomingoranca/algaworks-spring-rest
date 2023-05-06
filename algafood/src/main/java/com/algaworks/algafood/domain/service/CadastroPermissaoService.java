@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class CadastroPermissaoService {
     @Autowired
@@ -16,6 +18,11 @@ public class CadastroPermissaoService {
     public Permissao buscarOuFalhar(Long id) {
         return permissaoRepository.findById(id)
                 .orElseThrow(() -> new PermissaoNaoEncontradaException(id));
+    }
+
+    @Transactional
+    public List<Permissao> listar() {
+        return permissaoRepository.findAll();
     }
 
 }

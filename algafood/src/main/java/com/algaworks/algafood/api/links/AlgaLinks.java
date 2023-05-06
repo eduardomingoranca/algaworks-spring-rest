@@ -265,4 +265,27 @@ public class AlgaLinks {
     public Link linkToPermissoesGrupos(Long grupoID) {
         return linkToPermissoesGrupos(grupoID, SELF.value());
     }
+
+    public Link linkToPermissoes(String rel) {
+        return linkTo(methodOn(PermissaoController.class)
+                .listar()).withRel(rel);
+    }
+
+//    public Link linkToRestauranteUsuarioResponsavelDesassociar(Long restauranteID, Long usuarioID,
+//                                                               String rel) {
+//        return linkTo(methodOn(RestauranteUsuarioResponsavelController.class)
+//                .desassociar(restauranteID, usuarioID)).withRel(rel);
+//    }
+
+    public Link linkToGruposPermissaoAssociacao(Long grupoID, String rel) {
+        return linkTo(methodOn(GrupoPermissaoController.class)
+                .associar(grupoID, null)).withRel(rel);
+    }
+
+    public Link linkToGruposPermissaoDesassociar(Long grupoID, Long permissaoID,
+                                                 String rel) {
+        return linkTo(methodOn(GrupoPermissaoController.class)
+                .desassociar(grupoID, permissaoID)).withRel(rel);
+    }
+
 }

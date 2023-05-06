@@ -1,17 +1,19 @@
 package com.algaworks.algafood.api.controller;
 
 import com.algaworks.algafood.api.assembler.model.PermissaoModelAssembler;
+import com.algaworks.algafood.api.links.AlgaLinks;
 import com.algaworks.algafood.api.model.PermissaoModel;
 import com.algaworks.algafood.api.openapi.controller.GrupoPermissaoControllerOpenAPI;
 import com.algaworks.algafood.domain.model.Grupo;
 import com.algaworks.algafood.domain.service.CadastroGrupoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.ResponseEntity.noContent;
 
 @RestController
 @RequestMapping(value = "/grupos/{grupoID}/permissoes", produces = APPLICATION_JSON_VALUE)
@@ -22,28 +24,44 @@ public class GrupoPermissaoController implements GrupoPermissaoControllerOpenAPI
     @Autowired
     private PermissaoModelAssembler permissaoModelAssembler;
 
+    @Autowired
+    private AlgaLinks algaLinks;
+
     @Override
     @GetMapping
-    public List<PermissaoModel> listar(@PathVariable("grupoID") Long id) {
+    public CollectionModel<PermissaoModel> listar(@PathVariable("grupoID") Long id) {
         Grupo grupo = cadastroGrupo.buscarOuFalhar(id);
 
-        return permissaoModelAssembler.toCollectionModel(grupo.getPermissoes());
+        CollectionModel<PermissaoModel> permissoesModel = permissaoModelAssembler.toCollectionModel(grupo.getPermissoes())
+                .removeLinks()
+                .add(algaLinks.linkToPermissoes("permissoes"))
+                .add(algaLinks.linkToGruposPermissaoAssociacao(id, "associar"));
+
+        permissoesModel.getContent().forEach(permissaoModel ->
+                permissaoModel.add(algaLinks.linkToGruposPermissaoDesassociar(id, permissaoModel.getId(),
+                        "desassociar")));
+
+        return permissoesModel;
     }
 
     @Override
     @PutMapping("/{permissaoID}")
     @ResponseStatus(NO_CONTENT)
-    public void associar(@PathVariable("grupoID") Long id,
-                         @PathVariable Long permissaoID) {
+    public ResponseEntity<Void> associar(@PathVariable("grupoID") Long id,
+                                         @PathVariable Long permissaoID) {
         cadastroGrupo.associarPermissao(id, permissaoID);
+
+        return noContent().build();
     }
 
     @Override
     @DeleteMapping("/{permissaoID}")
     @ResponseStatus(NO_CONTENT)
-    public void desassociar(@PathVariable("grupoID") Long id,
-                         @PathVariable Long permissaoID) {
+    public ResponseEntity<Void> desassociar(@PathVariable("grupoID") Long id,
+                                            @PathVariable Long permissaoID) {
         cadastroGrupo.desassociarPermissao(id, permissaoID);
+
+        return noContent().build();
     }
 
 }
