@@ -1,12 +1,10 @@
 package com.algaworks.algafood.core.openapi;
 
 import com.algaworks.algafood.api.exceptionhandler.model.Problem;
+import com.algaworks.algafood.api.model.CidadeModel;
 import com.algaworks.algafood.api.model.CozinhaModel;
 import com.algaworks.algafood.api.model.PedidoResumoModel;
-import com.algaworks.algafood.api.openapi.model.CozinhasModelOpenAPI;
-import com.algaworks.algafood.api.openapi.model.LinksModelOpenAPI;
-import com.algaworks.algafood.api.openapi.model.PageableModelOpenAPI;
-import com.algaworks.algafood.api.openapi.model.PedidoResumoModelOpenAPI;
+import com.algaworks.algafood.api.openapi.model.*;
 import com.fasterxml.classmate.TypeResolver;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +14,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Links;
 import org.springframework.web.context.request.ServletWebRequest;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
@@ -98,6 +97,8 @@ public class SpringFoxConfig {
                         CozinhasModelOpenAPI.class))
                 .alternateTypeRules(newRule(typeResolver.resolve(Page.class, PedidoResumoModel.class),
                         PedidoResumoModelOpenAPI.class))
+                .alternateTypeRules(newRule(typeResolver.resolve(CollectionModel.class, CidadeModel.class),
+                        CidadesModelOpenAPI.class))
                 .apiInfo(apiInfo())
                 .tags(firstTag, secondTag, thirdTag, fourthTag, fifthTag, sixthTag, seventhTag, eighthTag,
                         ninethTag, tenthTag);
