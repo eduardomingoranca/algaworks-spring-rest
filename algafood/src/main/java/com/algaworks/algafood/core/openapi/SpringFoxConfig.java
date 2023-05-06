@@ -105,6 +105,8 @@ public class SpringFoxConfig {
                         GruposModelOpenAPI.class))
                 .alternateTypeRules(newRule(typeResolver.resolve(CollectionModel.class, PermissaoModel.class),
                         PermissaoModelOpenAPI.class))
+                .alternateTypeRules(newRule(typeResolver.resolve(CollectionModel.class, ProdutoModel.class),
+                        ProdutoModelOpenAPI.class))
                 .apiInfo(apiInfo())
                 .tags(firstTag, secondTag, thirdTag, fourthTag, fifthTag, sixthTag, seventhTag, eighthTag,
                         ninethTag, tenthTag);
