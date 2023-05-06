@@ -107,6 +107,10 @@ public class SpringFoxConfig {
                         PermissaoModelOpenAPI.class))
                 .alternateTypeRules(newRule(typeResolver.resolve(CollectionModel.class, ProdutoModel.class),
                         ProdutoModelOpenAPI.class))
+                .alternateTypeRules(newRule(typeResolver.resolve(CollectionModel.class, RestauranteBasicoModel.class),
+                        RestaurantesBasicoModelOpenAPI.class))
+                .alternateTypeRules(newRule(typeResolver.resolve(CollectionModel.class, UsuarioModel.class),
+                        UsuariosModelOpenAPI.class))
                 .apiInfo(apiInfo())
                 .tags(firstTag, secondTag, thirdTag, fourthTag, fifthTag, sixthTag, seventhTag, eighthTag,
                         ninethTag, tenthTag);
