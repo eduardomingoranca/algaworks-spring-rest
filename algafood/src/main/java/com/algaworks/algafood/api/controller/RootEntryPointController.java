@@ -6,9 +6,11 @@ import org.springframework.hateoas.RepresentationModel;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+@ApiIgnore
 @RestController
 @RequestMapping(produces = APPLICATION_JSON_VALUE)
 public class RootEntryPointController {

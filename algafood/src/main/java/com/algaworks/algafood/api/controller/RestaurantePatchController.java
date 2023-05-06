@@ -12,6 +12,7 @@ import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.SmartValidator;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
@@ -23,6 +24,7 @@ import static org.apache.commons.lang3.exception.ExceptionUtils.getRootCause;
 import static org.springframework.beans.BeanUtils.copyProperties;
 import static org.springframework.util.ReflectionUtils.*;
 
+@ApiIgnore
 @RestController
 @RequestMapping("/restaurantes")
 public class RestaurantePatchController {
