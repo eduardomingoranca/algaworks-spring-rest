@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Links;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.web.context.request.ServletWebRequest;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -93,7 +94,7 @@ public class SpringFoxConfig {
                 // substituindo o model
                 .directModelSubstitute(Pageable.class, PageableModelOpenAPI.class)
                 .directModelSubstitute(Links.class, LinksModelOpenAPI.class)
-                .alternateTypeRules(newRule(typeResolver.resolve(Page.class, CozinhaModel.class),
+                .alternateTypeRules(newRule(typeResolver.resolve(PagedModel.class, CozinhaModel.class),
                         CozinhasModelOpenAPI.class))
                 .alternateTypeRules(newRule(typeResolver.resolve(Page.class, PedidoResumoModel.class),
                         PedidoResumoModelOpenAPI.class))
