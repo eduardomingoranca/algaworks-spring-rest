@@ -1,10 +1,7 @@
 package com.algaworks.algafood.core.openapi;
 
 import com.algaworks.algafood.api.exceptionhandler.model.Problem;
-import com.algaworks.algafood.api.model.CidadeModel;
-import com.algaworks.algafood.api.model.CozinhaModel;
-import com.algaworks.algafood.api.model.EstadoModel;
-import com.algaworks.algafood.api.model.PedidoResumoModel;
+import com.algaworks.algafood.api.model.*;
 import com.algaworks.algafood.api.openapi.model.*;
 import com.fasterxml.classmate.TypeResolver;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -103,6 +100,8 @@ public class SpringFoxConfig {
                         CidadesModelOpenAPI.class))
                 .alternateTypeRules(newRule(typeResolver.resolve(CollectionModel.class, EstadoModel.class),
                         EstadosModelOpenAPI.class))
+                .alternateTypeRules(newRule(typeResolver.resolve(CollectionModel.class, FormaPagamentoModel.class),
+                        FormasPagamentoModelOpenAPI.class))
                 .apiInfo(apiInfo())
                 .tags(firstTag, secondTag, thirdTag, fourthTag, fifthTag, sixthTag, seventhTag, eighthTag,
                         ninethTag, tenthTag);
