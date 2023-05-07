@@ -21,7 +21,7 @@ import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping(value = "/cozinhas", produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/gastronomias", produces = APPLICATION_JSON_VALUE)
 public class CozinhaController implements CozinhaControllerOpenAPI {
     @Autowired
     private CadastroCozinhaService cadastroCozinha;
