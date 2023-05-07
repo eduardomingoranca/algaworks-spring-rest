@@ -2,6 +2,8 @@ package com.algaworks.algafood.core.modelmapper;
 
 import com.algaworks.algafood.api.v1.model.EnderecoModel;
 import com.algaworks.algafood.api.v1.model.input.ItemPedidoInput;
+import com.algaworks.algafood.api.v2.model.input.CidadeInputVersionTwo;
+import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.model.Endereco;
 import com.algaworks.algafood.domain.model.ItemPedido;
 import org.modelmapper.ModelMapper;
@@ -27,6 +29,9 @@ public class ModelMapperConfig {
         // customizando um mapeamento entre atributos origem e destino
         enderecoToEnderecoModelTypeMap.<String>addMapping(enderecoSrc -> enderecoSrc.getCidade().getEstado().getNome(),
                 (enderecoModelDest, value) -> enderecoModelDest.getCidade().setEstado(value));
+
+        modelMapper.createTypeMap(CidadeInputVersionTwo.class, Cidade.class)
+                .addMappings(mapper -> mapper.skip(Cidade::setId));
 
         return modelMapper;
     }
