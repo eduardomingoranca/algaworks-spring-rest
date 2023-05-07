@@ -1,6 +1,6 @@
 package com.algaworks.algafood.core.jackson;
 
-import com.algaworks.algafood.api.model.mixin.*;
+import com.algaworks.algafood.api.v1.model.mixin.*;
 import com.algaworks.algafood.domain.model.*;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.springframework.stereotype.Component;
