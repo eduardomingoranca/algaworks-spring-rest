@@ -39,7 +39,7 @@ import static java.util.Arrays.asList;
 import static org.springframework.http.HttpMethod.*;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static springfox.documentation.builders.PathSelectors.any;
+import static springfox.documentation.builders.PathSelectors.ant;
 import static springfox.documentation.builders.RequestHandlerSelectors.basePackage;
 import static springfox.documentation.schema.AlternateTypeRules.newRule;
 import static springfox.documentation.spi.DocumentationType.OAS_30;
@@ -74,9 +74,10 @@ public class SpringFoxConfig {
         TypeResolver typeResolver = new TypeResolver();
 
         return new Docket(OAS_30)
+                .groupName("V1")
                 .select()
                 .apis(basePackage("com.algaworks.algafood.api"))
-                .paths(any())
+                .paths(ant("/v1/**"))
                 .build()
                 .useDefaultResponseMessages(false) // deixa apenas o status de sucesso
                 .globalResponses(GET, globalGetResponseMessages())
@@ -114,6 +115,31 @@ public class SpringFoxConfig {
                 .apiInfo(apiInfo())
                 .tags(firstTag, secondTag, thirdTag, fourthTag, fifthTag, sixthTag, seventhTag, eighthTag,
                         ninethTag, tenthTag);
+    }
+
+    @Bean
+    public Docket apiDocketVersionTwo() {
+        var typeResolver = new TypeResolver();
+
+        return new Docket(OAS_30)
+                .groupName("V2")
+                .select()
+                .apis(basePackage("com.algaworks.algafood.api"))
+                .paths(ant("/v2/**"))
+                .build()
+                .useDefaultResponseMessages(false)
+                .globalResponses(GET, globalGetResponseMessages())
+                .globalResponses(POST, globalPostResponseMessages())
+                .globalResponses(PUT, globalPutResponseMessages())
+                .globalResponses(DELETE, globalDeleteResponseMessages())
+                .additionalModels(typeResolver.resolve(Problem.class))
+                .ignoredParameterTypes(ServletWebRequest.class,
+                        URL.class, URI.class, URLStreamHandler.class, Resource.class,
+                        File.class, InputStream.class)
+                .directModelSubstitute(Pageable.class, PageableModelOpenAPI.class)
+                .directModelSubstitute(Links.class, LinksModelOpenAPI.class)
+
+                .apiInfo(apiInfoVersionTwo());
     }
 
     @Bean
@@ -234,6 +260,17 @@ public class SpringFoxConfig {
                 .title("AlgaFood API")
                 .description("API aberta para clientes e restaurantes")
                 .version("1")
+                .contact(contact)
+                .build();
+    }
+
+    private ApiInfo apiInfoVersionTwo() {
+        Contact contact = new Contact("Algaworks", "https://www.algaworks.com", "contato@algaworks.com");
+
+        return new ApiInfoBuilder()
+                .title("AlgaFood API")
+                .description("API aberta para clientes e restaurantes")
+                .version("2")
                 .contact(contact)
                 .build();
     }
