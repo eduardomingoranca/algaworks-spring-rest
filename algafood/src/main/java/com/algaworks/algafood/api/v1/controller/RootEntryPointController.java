@@ -12,7 +12,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @ApiIgnore
 @RestController
-@RequestMapping(produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/v1", produces = APPLICATION_JSON_VALUE)
 public class RootEntryPointController {
     @Autowired
     private AlgaLinks algaLinks;
@@ -22,7 +22,6 @@ public class RootEntryPointController {
         RootEntryPointModel rootEntryPointModel = new RootEntryPointModel();
 
         rootEntryPointModel.add(algaLinks.linkToCozinhas("cozinhas"));
-        rootEntryPointModel.add(algaLinks.linkToCozinhas("gastronomias"));
         rootEntryPointModel.add(algaLinks.linkToPedidos("pedidos"));
         rootEntryPointModel.add(algaLinks.linkToRestaurantes("restaurantes"));
         rootEntryPointModel.add(algaLinks.linkToGrupos("grupos"));

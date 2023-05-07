@@ -22,7 +22,7 @@ import static org.springframework.http.MediaType.*;
 import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
-@RequestMapping(path = "/estatisticas")
+@RequestMapping(path = "/v1/estatisticas")
 public class EstatisticasController implements EstatisticasControllerOpenAPI {
     @Autowired
     private VendaQueryService vendaQueryService;

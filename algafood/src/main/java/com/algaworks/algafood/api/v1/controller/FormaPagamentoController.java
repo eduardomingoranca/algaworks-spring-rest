@@ -26,7 +26,7 @@ import static org.springframework.http.ResponseEntity.ok;
 import static org.springframework.web.filter.ShallowEtagHeaderFilter.disableContentCaching;
 
 @RestController
-@RequestMapping(value = "/formas-pagamento", produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/v1/formas-pagamento", produces = APPLICATION_JSON_VALUE)
 public class FormaPagamentoController implements FormaPagamentoControllerOpenAPI {
     @Autowired
     private CadastroFormaPagamentoService cadastroFormaPagamento;

@@ -16,7 +16,7 @@ import java.util.List;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping(path = "/permissoes", produces = APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/v1/permissoes", produces = APPLICATION_JSON_VALUE)
 public class PermissaoController implements PermissaoControllerOpenAPI {
     @Autowired
     private CadastroPermissaoService permissaoService;

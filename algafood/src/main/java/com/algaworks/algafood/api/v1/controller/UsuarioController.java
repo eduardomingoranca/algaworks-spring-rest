@@ -21,7 +21,7 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping(value = "/usuarios", produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/v1/usuarios", produces = APPLICATION_JSON_VALUE)
 public class UsuarioController implements UsuarioControllerOpenAPI {
     @Autowired
     private CadastroUsuarioService cadastroUsuario;

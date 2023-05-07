@@ -18,7 +18,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping(value = "/estados", produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/v1/estados", produces = APPLICATION_JSON_VALUE)
 public class EstadoController implements EstadoControllerOpenAPI {
     @Autowired
     private CadastroEstadoService cadastroEstado;

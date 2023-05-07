@@ -29,7 +29,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.ResponseEntity.noContent;
 
 @RestController
-@RequestMapping(value = "/restaurantes", produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/v1/restaurantes", produces = APPLICATION_JSON_VALUE)
 public class RestauranteController implements RestauranteControllerOpenAPI {
     @Autowired
     private CadastroRestauranteService cadastroRestaurante;

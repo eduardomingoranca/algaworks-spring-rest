@@ -18,7 +18,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping(value = "/grupos", produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/v1/grupos", produces = APPLICATION_JSON_VALUE)
 public class GrupoController implements GrupoControllerOpenAPI {
     @Autowired
     private CadastroGrupoService cadastroGrupo;

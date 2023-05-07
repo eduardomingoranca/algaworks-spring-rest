@@ -29,7 +29,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping(value = "/pedidos", produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/v1/pedidos", produces = APPLICATION_JSON_VALUE)
 public class PedidoController implements PedidoControllerOpenAPI {
     @Autowired
     private EmissaoPedidoService emissaoPedido;
