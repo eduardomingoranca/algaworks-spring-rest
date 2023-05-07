@@ -16,11 +16,11 @@ import javax.validation.Valid;
 import java.util.List;
 
 import static com.algaworks.algafood.api.utils.ResourceURIHelper.addURIInResponseHeader;
-import static com.algaworks.algafood.core.web.AlgaMediaTypes.V2_APPLICATION_JSON_VALUE;
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping(value = "/cidades")
+@RequestMapping(value = "/v2/cidades", produces = APPLICATION_JSON_VALUE)
 public class CidadeControllerVersionTwo {
     @Autowired
     private CadastroCidadeService cadastroCidade;
@@ -32,7 +32,7 @@ public class CidadeControllerVersionTwo {
     private CidadeModelAssemblerVersionTwo cidadeModelAssemblerVersionTwo;
 
 
-    @GetMapping(produces = V2_APPLICATION_JSON_VALUE)
+    @GetMapping
     public CollectionModel<CidadeModelVersionTwo> listar() {
         List<Cidade> cidades = cadastroCidade.listar();
 
@@ -40,7 +40,7 @@ public class CidadeControllerVersionTwo {
     }
 
 
-    @GetMapping(value = "/{cidadeId}", produces = V2_APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{cidadeId}")
     public CidadeModelVersionTwo buscar(@PathVariable("cidadeId") Long id) {
         Cidade cidade = cadastroCidade.buscarOuFalhar(id);
 
@@ -48,7 +48,7 @@ public class CidadeControllerVersionTwo {
     }
 
 
-    @PostMapping(produces = V2_APPLICATION_JSON_VALUE)
+    @PostMapping
     @ResponseStatus(CREATED)
     public CidadeModelVersionTwo adicionar(@RequestBody @Valid CidadeInputVersionTwo cidadeInputVersionTwo) {
         try {
@@ -65,7 +65,7 @@ public class CidadeControllerVersionTwo {
     }
 
 
-    @PutMapping(value = "/{cidadeId}", produces = V2_APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{cidadeId}")
     public CidadeModelVersionTwo atualizar(@PathVariable("cidadeId") Long id,
                                            @RequestBody @Valid CidadeInputVersionTwo cidadeInputVersionTwo) {
         try {

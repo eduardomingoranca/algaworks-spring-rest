@@ -17,11 +17,11 @@ import javax.validation.Valid;
 import java.util.List;
 
 import static com.algaworks.algafood.api.utils.ResourceURIHelper.addURIInResponseHeader;
-import static com.algaworks.algafood.core.web.AlgaMediaTypes.V1_APPLICATION_JSON_VALUE;
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping(value = "/cidades")
+@RequestMapping(value = "/v1/cidades", produces = APPLICATION_JSON_VALUE)
 public class CidadeController implements CidadeControllerOpenAPI {
     @Autowired
     private CadastroCidadeService cadastroCidade;
@@ -33,7 +33,7 @@ public class CidadeController implements CidadeControllerOpenAPI {
     private CidadeModelAssembler cidadeModelAssembler;
 
     @Override
-    @GetMapping(produces = V1_APPLICATION_JSON_VALUE)
+    @GetMapping
     public CollectionModel<CidadeModel> listar() {
         List<Cidade> cidades = cadastroCidade.listar();
 
@@ -41,7 +41,7 @@ public class CidadeController implements CidadeControllerOpenAPI {
     }
 
     @Override
-    @GetMapping(value = "/{cidadeId}", produces = V1_APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{cidadeId}")
     public CidadeModel buscar(@PathVariable("cidadeId") Long id) {
         Cidade cidade = cadastroCidade.buscarOuFalhar(id);
 
@@ -49,7 +49,7 @@ public class CidadeController implements CidadeControllerOpenAPI {
     }
 
     @Override
-    @PostMapping(produces = V1_APPLICATION_JSON_VALUE)
+    @PostMapping
     @ResponseStatus(CREATED)
     public CidadeModel adicionar(@RequestBody @Valid CidadeInput cidadeInput) {
         try {
@@ -66,7 +66,7 @@ public class CidadeController implements CidadeControllerOpenAPI {
     }
 
     @Override
-    @PutMapping(value = "/{cidadeId}", produces = V1_APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{cidadeId}")
     public CidadeModel atualizar(@PathVariable("cidadeId") Long id,
                                  @RequestBody @Valid CidadeInput cidadeInput) {
         try {
