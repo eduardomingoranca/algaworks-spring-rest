@@ -21,7 +21,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping(value = "/restaurantes/{restauranteID}/produtos", produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/v1/restaurantes/{restauranteID}/produtos", produces = APPLICATION_JSON_VALUE)
 public class RestauranteProdutoController implements RestauranteProdutoControllerOpenAPI {
     @Autowired
     private CadastroRestauranteService cadastroRestaurante;

@@ -26,7 +26,7 @@ import static org.springframework.util.ReflectionUtils.*;
 
 @ApiIgnore
 @RestController
-@RequestMapping("/restaurantes")
+@RequestMapping("/v1/restaurantes")
 public class RestaurantePatchController {
     @Autowired
     private CadastroRestauranteService cadastroRestaurante;

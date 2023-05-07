@@ -16,7 +16,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.ResponseEntity.noContent;
 
 @RestController
-@RequestMapping(value = "/restaurantes/{restauranteID}/formas-pagamento", produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/v1/restaurantes/{restauranteID}/formas-pagamento", produces = APPLICATION_JSON_VALUE)
 public class RestauranteFormaPagamentoController implements RestauranteFormaPagamentoControllerOpenAPI {
     @Autowired
     private CadastroRestauranteService cadastroRestaurante;

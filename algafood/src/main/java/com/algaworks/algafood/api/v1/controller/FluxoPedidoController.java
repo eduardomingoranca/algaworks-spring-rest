@@ -10,7 +10,7 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.ResponseEntity.noContent;
 
 @RestController
-@RequestMapping("/pedidos/{codigoPedido}")
+@RequestMapping("/v1/pedidos/{codigoPedido}")
 public class FluxoPedidoController implements FluxoPedidoControllerOpenAPI {
     @Autowired
     private FluxoPedidoService fluxoPedido;

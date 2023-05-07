@@ -28,7 +28,7 @@ import static org.springframework.http.MediaType.*;
 import static org.springframework.http.ResponseEntity.*;
 
 @RestController
-@RequestMapping(value = "/restaurantes/{restauranteId}/produtos/{produtoId}/foto", produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/v1/restaurantes/{restauranteId}/produtos/{produtoId}/foto", produces = APPLICATION_JSON_VALUE)
 public class RestauranteProdutoFotoController implements RestauranteProdutoFotoControllerOpenAPI {
     @Autowired
     private CadastroProdutoService cadastroProduto;
