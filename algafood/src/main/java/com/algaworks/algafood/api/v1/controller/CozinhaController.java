@@ -7,6 +7,7 @@ import com.algaworks.algafood.api.v1.model.input.CozinhaInput;
 import com.algaworks.algafood.api.v1.openapi.controller.CozinhaControllerOpenAPI;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.service.CadastroCozinhaService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +21,10 @@ import javax.validation.Valid;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+// SLF4J => eh uma biblioteca que abstrai o codigos de varios frameworks
+// de logging essa biliboteca funciona como uma fachada, repassando as
+// operacoes para o framework de logging.
+@Slf4j
 @RestController
 @RequestMapping(value = "/v1/cozinhas", produces = APPLICATION_JSON_VALUE)
 public class CozinhaController implements CozinhaControllerOpenAPI {
@@ -39,6 +44,8 @@ public class CozinhaController implements CozinhaControllerOpenAPI {
     @ResponseStatus(OK)
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     public PagedModel<CozinhaModel> listar(@PageableDefault(size = 2) Pageable pageable) {
+        log.info("Consultando cozinhas com paginas de {} registros...", pageable.getPageSize());
+
         Page<Cozinha> cozinhasPage = cadastroCozinha.listar(pageable);
 
         // convertendo o page de cozinha para um paged model de cozinha model.
