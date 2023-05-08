@@ -9,6 +9,7 @@ import com.algaworks.algafood.domain.exception.NegocioException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -41,6 +42,7 @@ import static org.springframework.context.i18n.LocaleContextHolder.getLocale;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.ResponseEntity.status;
 
+@Slf4j
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     public static final String MSG_ERRO_GENERICA_USUARIO_FINAL = "Ocorreu um erro interno inesperado no sistema. " +
@@ -52,6 +54,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleBindException(BindException ex, HttpHeaders headers, HttpStatus status,
                                                          WebRequest request) {
+        log.error(ex.getMessage(), ex);
         return handleValidationInternal(ex, ex.getBindingResult(), headers, status, request);
     }
 
@@ -77,6 +80,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 MSG_ERRO_GENERICA_USUARIO_FINAL)
                 .build();
 
+        log.error(ex.getMessage(), ex);
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
 
@@ -95,6 +99,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                     MSG_ERRO_GENERICA_USUARIO_FINAL)
                     .build();
 
+            log.error(ex.getMessage(), ex);
             return handleExceptionInternal(ex, problem, headers, status, request);
         }
 
@@ -113,6 +118,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 MSG_ERRO_GENERICA_USUARIO_FINAL)
                 .build();
 
+        log.error(ex.getMessage(), ex);
         return this.handleExceptionInternal(ex, problem, headers, status, request);
     }
 
@@ -121,12 +127,15 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers, HttpStatus status,
                                                                   WebRequest request) {
+        log.error(ex.getMessage(), ex);
         return handleValidationInternal(ex, ex.getBindingResult(), headers, status, request);
     }
 
     @Override
     protected ResponseEntity<Object> handleHttpMediaTypeNotAcceptable(HttpMediaTypeNotAcceptableException ex,
-                                                                      HttpHeaders headers, HttpStatus status, WebRequest request) {
+                                                                      HttpHeaders headers, HttpStatus status,
+                                                                      WebRequest request) {
+        log.error(ex.getMessage(), ex);
         return status(status).headers(headers).build();
     }
 
@@ -150,12 +159,14 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                     .build();
         }
 
+        log.error(ex.getMessage(), ex);
         return super.handleExceptionInternal(ex, body, headers, status, request);
     }
 
     @ExceptionHandler(ValidacaoException.class)
     public ResponseEntity<Object> handleValidacaoException(ValidacaoException ex,
                                                            WebRequest request) {
+        log.error(ex.getMessage(), ex);
         return handleValidationInternal(ex, ex.getBindingResult(), new HttpHeaders(), BAD_REQUEST, request);
     }
 
@@ -168,6 +179,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         Problem problem = createProblemBuilder(status, RECURSO_NAO_ENCONTRADO, detail, detail)
                 .build();
 
+        log.error(e.getMessage(), e);
         return handleExceptionInternal(e, problem, new HttpHeaders(), status, request);
     }
 
@@ -180,6 +192,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 MSG_ERRO_GENERICA_USUARIO_FINAL)
                 .build();
 
+        log.error(e.getMessage(), e);
         return handleExceptionInternal(e, problem, new HttpHeaders(), status, request);
     }
 
@@ -191,6 +204,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         Problem problem = createProblemBuilder(status, ENTIDADE_EM_USO, detail, detail)
                 .build();
 
+        log.error(e.getMessage(), e);
         return handleExceptionInternal(e, problem, new HttpHeaders(), status, request);
     }
 
@@ -202,6 +216,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 MSG_ERRO_GENERICA_USUARIO_FINAL)
                 .build();
 
+        log.error(ex.getMessage(), ex);
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
 
@@ -219,6 +234,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 MSG_ERRO_GENERICA_USUARIO_FINAL)
                 .build();
 
+        log.error(ex.getMessage(), ex);
         return handleExceptionInternal(ex, problem, headers, status, request);
     }
 
@@ -238,6 +254,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 MSG_ERRO_GENERICA_USUARIO_FINAL)
                 .build();
 
+        log.error(ex.getMessage(), ex);
         return handleExceptionInternal(ex, problem, headers, status, request);
     }
 
@@ -259,7 +276,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         String detail = "Um ou mais campos estao invalidos. Faca o preenchimento correto e " +
                 "tente novamente.";
 
-      //  construindo o response para as propriedades violadas.
+        //  construindo o response para as propriedades violadas.
         List<Problem.Object> problemObjects = bindingResult.getAllErrors()
                 .stream().map(objectError -> {
                     // obtendo a mensagem do messages.properties
@@ -277,10 +294,10 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 }).collect(Collectors.toList());
 
         Problem problem = createProblemBuilder(status, DADOS_INVALIDOS, detail, detail)
-
                 .objects(problemObjects)
                 .build();
 
+        log.error(ex.getMessage(), ex);
         return this.handleExceptionInternal(ex, problem, headers, status, request);
     }
 
