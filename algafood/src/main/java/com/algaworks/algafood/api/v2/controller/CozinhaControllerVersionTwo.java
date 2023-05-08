@@ -4,6 +4,7 @@ import com.algaworks.algafood.api.v2.assembler.input.disassembler.CozinhaInputDi
 import com.algaworks.algafood.api.v2.assembler.model.CozinhaModelAssemblerVersionTwo;
 import com.algaworks.algafood.api.v2.model.CozinhaModelVersionTwo;
 import com.algaworks.algafood.api.v2.model.input.CozinhaInputVersionTwo;
+import com.algaworks.algafood.api.v2.openapi.controller.CozinhaControllerVersionTwoOpenAPI;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.service.CadastroCozinhaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequestMapping(value = "/v2/cozinhas", produces = APPLICATION_JSON_VALUE)
-public class CozinhaControllerVersionTwo {
+public class CozinhaControllerVersionTwo implements CozinhaControllerVersionTwoOpenAPI {
     @Autowired
     private CadastroCozinhaService cadastroCozinha;
 
@@ -34,6 +35,7 @@ public class CozinhaControllerVersionTwo {
     @Autowired
     private PagedResourcesAssembler<Cozinha> pagedResourcesAssembler;
 
+    @Override
     @ResponseStatus(OK)
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     public PagedModel<CozinhaModelVersionTwo> listar(@PageableDefault(size = 2) Pageable pageable) {
@@ -44,6 +46,7 @@ public class CozinhaControllerVersionTwo {
     }
 
 
+    @Override
     @GetMapping("/{cozinhaId}")
     public CozinhaModelVersionTwo buscar(@PathVariable("cozinhaId") Long id) {
         Cozinha cozinha = cadastroCozinha.buscarOuFalhar(id);
@@ -52,6 +55,7 @@ public class CozinhaControllerVersionTwo {
     }
 
 
+    @Override
     @PostMapping
     @ResponseStatus(CREATED)
     public CozinhaModelVersionTwo adicionar(@RequestBody @Valid CozinhaInputVersionTwo cozinhaInputVersionTwo) {
@@ -62,6 +66,7 @@ public class CozinhaControllerVersionTwo {
     }
 
 
+    @Override
     @PutMapping("/{cozinhaId}")
     public CozinhaModelVersionTwo atualizar(@PathVariable("cozinhaId") Long id,
                                   @RequestBody @Valid CozinhaInputVersionTwo cozinhaInputVersionTwo) {
@@ -74,6 +79,7 @@ public class CozinhaControllerVersionTwo {
     }
 
 
+    @Override
     @DeleteMapping("/{cozinhaId}")
     @ResponseStatus(NO_CONTENT)
     public void remover(@PathVariable("cozinhaId") Long id) {

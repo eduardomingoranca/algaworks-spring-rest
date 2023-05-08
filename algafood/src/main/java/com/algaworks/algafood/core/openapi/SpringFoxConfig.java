@@ -3,6 +3,10 @@ package com.algaworks.algafood.core.openapi;
 import com.algaworks.algafood.api.exceptionhandler.model.Problem;
 import com.algaworks.algafood.api.v1.model.*;
 import com.algaworks.algafood.api.v1.openapi.model.*;
+import com.algaworks.algafood.api.v2.model.CidadeModelVersionTwo;
+import com.algaworks.algafood.api.v2.model.CozinhaModelVersionTwo;
+import com.algaworks.algafood.api.v2.openapi.model.CidadesModelVersionTwoOpenAPI;
+import com.algaworks.algafood.api.v2.openapi.model.CozinhasModelVersionTwoOpenAPI;
 import com.fasterxml.classmate.TypeResolver;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
@@ -119,7 +123,9 @@ public class SpringFoxConfig {
 
     @Bean
     public Docket apiDocketVersionTwo() {
-        var typeResolver = new TypeResolver();
+        Tag firstTag = new Tag("Cidades", "Gerencia as cidades");
+        Tag secondTag = new Tag("Cozinhas", "Gerencia as cozinhas");
+        TypeResolver typeResolver = new TypeResolver();
 
         return new Docket(OAS_30)
                 .groupName("V2")
@@ -138,8 +144,12 @@ public class SpringFoxConfig {
                         File.class, InputStream.class)
                 .directModelSubstitute(Pageable.class, PageableModelOpenAPI.class)
                 .directModelSubstitute(Links.class, LinksModelOpenAPI.class)
-
-                .apiInfo(apiInfoVersionTwo());
+                .alternateTypeRules(newRule(typeResolver.resolve(CollectionModel.class, CidadeModelVersionTwo.class),
+                        CidadesModelVersionTwoOpenAPI.class))
+                .alternateTypeRules(newRule(typeResolver.resolve(PagedModel.class, CozinhaModelVersionTwo.class),
+                        CozinhasModelVersionTwoOpenAPI.class))
+                .apiInfo(apiInfoVersionTwo())
+                .tags(firstTag, secondTag);
     }
 
     @Bean

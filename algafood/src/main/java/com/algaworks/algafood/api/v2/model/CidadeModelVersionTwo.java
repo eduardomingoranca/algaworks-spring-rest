@@ -8,7 +8,7 @@ import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
 @Relation(collectionRelation = "cidades")
-@ApiModel(description = "Representa uma cidade")
+@ApiModel(value = "CidadeModel", description = "Representa uma cidade")
 @Setter
 @Getter
 public class CidadeModelVersionTwo extends RepresentationModel<CidadeModelVersionTwo> {

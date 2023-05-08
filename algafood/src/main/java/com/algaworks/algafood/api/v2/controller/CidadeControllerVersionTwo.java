@@ -4,6 +4,7 @@ import com.algaworks.algafood.api.v2.assembler.input.disassembler.CidadeInputDis
 import com.algaworks.algafood.api.v2.assembler.model.CidadeModelAssemblerVersionTwo;
 import com.algaworks.algafood.api.v2.model.CidadeModelVersionTwo;
 import com.algaworks.algafood.api.v2.model.input.CidadeInputVersionTwo;
+import com.algaworks.algafood.api.v2.openapi.controller.CidadeControllerVersionTwoOpenAPI;
 import com.algaworks.algafood.domain.exception.EstadoNaoEncontradoException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Cidade;
@@ -21,7 +22,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequestMapping(value = "/v2/cidades", produces = APPLICATION_JSON_VALUE)
-public class CidadeControllerVersionTwo {
+public class CidadeControllerVersionTwo implements CidadeControllerVersionTwoOpenAPI {
     @Autowired
     private CadastroCidadeService cadastroCidade;
 
@@ -32,6 +33,7 @@ public class CidadeControllerVersionTwo {
     private CidadeModelAssemblerVersionTwo cidadeModelAssemblerVersionTwo;
 
 
+    @Override
     @GetMapping
     public CollectionModel<CidadeModelVersionTwo> listar() {
         List<Cidade> cidades = cadastroCidade.listar();
@@ -40,6 +42,7 @@ public class CidadeControllerVersionTwo {
     }
 
 
+    @Override
     @GetMapping(value = "/{cidadeId}")
     public CidadeModelVersionTwo buscar(@PathVariable("cidadeId") Long id) {
         Cidade cidade = cadastroCidade.buscarOuFalhar(id);
@@ -47,7 +50,7 @@ public class CidadeControllerVersionTwo {
         return cidadeModelAssemblerVersionTwo.toModel(cidade);
     }
 
-
+    @Override
     @PostMapping
     @ResponseStatus(CREATED)
     public CidadeModelVersionTwo adicionar(@RequestBody @Valid CidadeInputVersionTwo cidadeInputVersionTwo) {
@@ -64,7 +67,7 @@ public class CidadeControllerVersionTwo {
         }
     }
 
-
+    @Override
     @PutMapping(value = "/{cidadeId}")
     public CidadeModelVersionTwo atualizar(@PathVariable("cidadeId") Long id,
                                            @RequestBody @Valid CidadeInputVersionTwo cidadeInputVersionTwo) {
