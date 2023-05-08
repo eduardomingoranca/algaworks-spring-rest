@@ -58,7 +58,6 @@ public class SpringFoxConfig {
     public static final String FORMATO_NAO_SUPORTADO = "Requisicao recusada porque o corpo esta em um formato nao suportado.";
 
 
-    @Bean
     public Docket apiDocket() {
         // Docket => classe do springfox que representa
         // a configuracao da api para gerar a definicao
