@@ -267,8 +267,10 @@ public class SpringFoxConfig {
         Contact contact = new Contact("Algaworks", "https://www.algaworks.com", "contato@algaworks.com");
 
         return new ApiInfoBuilder()
-                .title("AlgaFood API")
-                .description("API aberta para clientes e restaurantes")
+                .title("AlgaFood API (Depreciada)")
+                .description("API aberta para clientes e restaurantes.<br>"
+                        + "<strong>Essa versao da API esta depreciada e deixara de existir a partir de 01/06/2023. "
+                        + "Use a versao mais atual da API.")
                 .version("1")
                 .contact(contact)
                 .build();

@@ -1,9 +1,11 @@
 package com.algaworks.algafood.core.web;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.filter.ShallowEtagHeaderFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.servlet.Filter;
@@ -11,11 +13,19 @@ import javax.servlet.Filter;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
+    @Autowired
+    private APIDeprecationHandler apiDeprecationHandler;
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         // habilitando o cors globalmente
         registry.addMapping("/**") // permissao de rota/caminho
                 .allowedMethods("*"); // permissao de metodos
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(apiDeprecationHandler);
     }
 
     @Bean
