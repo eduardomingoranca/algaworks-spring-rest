@@ -46,8 +46,6 @@ public class CozinhaController implements CozinhaControllerOpenAPI {
     public PagedModel<CozinhaModel> listar(@PageableDefault(size = 2) Pageable pageable) {
         log.info("Consultando cozinhas com paginas de {} registros...", pageable.getPageSize());
 
-        if (true) throw new RuntimeException("Teste de exception");
-
         Page<Cozinha> cozinhasPage = cadastroCozinha.listar(pageable);
 
         // convertendo o page de cozinha para um paged model de cozinha model.
