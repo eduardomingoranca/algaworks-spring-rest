@@ -1,0 +1,10 @@
+OAuth2
+
+O cliente solicita a autorização informando usuario e senha
+ao servidor de autorização, e recebe o retorno uma string/token
+de acesso. Com isso o cliente tem permissao a acessar os recursos
+da API. 
+Quando o tempo do token for expirado perde a validade o cliente
+nao acessa mais nenhum recurso da API. O token pode dar acesso
+especifico.
+
