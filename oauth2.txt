@@ -1,10 +1,43 @@
-OAuth2
+Modelo Tradicional de Autorizacao.
 
-O cliente solicita a autorização informando usuario e senha
-ao servidor de autorização, e recebe o retorno uma string/token
+Usuario final fornece credenciais a aplicacao cliente, e a 
+aplicacao cliente autoriza acesso passando usuario e senha 
+para API.
+
+O que eh OAuth2?
+OAuth2 eh um framework de autorizacao para permitir que aplicacoes
+terceiras obtenham acesso limitado a servicos ou seja API utilizando
+o protocolo HTTP.
+
+Exemplo: O cliente solicita a autorizacao informando usuario e senha
+ao servidor de autorizacao, e recebe o retorno uma string/token
 de acesso. Com isso o cliente tem permissao a acessar os recursos
 da API. 
 Quando o tempo do token for expirado perde a validade o cliente
 nao acessa mais nenhum recurso da API. O token pode dar acesso
 especifico.
+
+O OAuth2 define quatro papeis (roles) envolvidos em uma comunicacao
+que usa o protocolo.
+1ª Role (Resource Server): Servidor que hospeda os recursos protegidos. (REST API)
+2ª Role (Resource Owner): Representa o usuario final, o dono dos recursos. (Usuario Final)
+3ª Role (Client): Cliente que acessa os recursos protegidos. (Aplicacao Web, Mobile, etc)
+4ª Role (Authorization Server): Servidor de autenticacao do usuario final e garante a 
+autorizacao de acesso a um determinado cliente acessar um recurso protegido em nome do
+usuario final.
+
+Fluxo do OAuth2
+
+Resource Owner acessa a aplicacao Client.
+Client solicita autorizacao (redirect) para o Authorization Server.
+Resource Owner autentica e autoriza o client no Authorization Server.
+Authorization Server gera codigo (token temporario) de autorizacao (redirect) para o Client.
+Client solicita access token para o Authorization Server.
+Authorization Server retorna access token para o Client.
+Client faz requisicao em recursos da API usando access token para o Resource Server.
+Resource Server consulta access token para o Authorization Server.
+Authorization Server access token valido para o Resource Server.
+Resource Server retorna recurso solicitado Client.
+Client usa recurso e mostra alguma coisa para Resource Owner.
+
 
