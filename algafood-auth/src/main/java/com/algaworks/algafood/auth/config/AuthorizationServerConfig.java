@@ -8,6 +8,7 @@ import org.springframework.security.oauth2.config.annotation.configurers.ClientD
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 
 @Configuration
 @EnableAuthorizationServer
@@ -33,7 +34,14 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 // escopos do cliente
                 .scopes("write", "read")
                 // tempo de validade do token de acesso
-                .accessTokenValiditySeconds(60 * 60 * 6);
+                .accessTokenValiditySeconds(60 * 60 * 6); // 6 horas (padrao eh 12 horas)
+    }
+
+    @Override
+    public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+        // isAuthenticated() => para acessar o endpoint de check token precisa estar autenticado
+//        security.checkTokenAccess("isAuthenticated()");
+        security.checkTokenAccess("permitAll()");
     }
 
     @Override
