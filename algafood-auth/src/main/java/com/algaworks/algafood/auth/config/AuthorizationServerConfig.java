@@ -3,6 +3,7 @@ package com.algaworks.algafood.auth.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -19,6 +20,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private UserDetailsService userDetailsService;
+
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         // detalhes dos clientes do authorization server
@@ -30,11 +34,11 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .withClient("algafood-web")
                 .secret(passwordEncoder.encode("web123"))
                 // identificando o fluxo
-                .authorizedGrantTypes("password")
+                .authorizedGrantTypes("password", "refresh_token")
                 // escopos do cliente
                 .scopes("write", "read")
                 // tempo de validade do token de acesso
-                .accessTokenValiditySeconds(60 * 60 * 6)
+                .accessTokenValiditySeconds(15)
                 .and()
                 .withClient("checktoken")
                 .secret(passwordEncoder.encode("check123")); // 6 horas (padrao eh 12 horas)
@@ -52,6 +56,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         // atraves do authentication manager o authorization server
         // valida o usuario e senha do usuario final que eh passado
         // na autenticacao via API
-        endpoints.authenticationManager(authenticationManager);
+        endpoints
+                .authenticationManager(authenticationManager)
+                .userDetailsService(userDetailsService);
     }
+
 }
