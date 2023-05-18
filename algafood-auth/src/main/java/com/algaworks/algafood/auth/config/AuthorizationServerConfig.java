@@ -34,7 +34,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 // escopos do cliente
                 .scopes("write", "read")
                 // tempo de validade do token de acesso
-                .accessTokenValiditySeconds(60 * 60 * 6); // 6 horas (padrao eh 12 horas)
+                .accessTokenValiditySeconds(60 * 60 * 6)
+                .and()
+                .withClient("checktoken")
+                .secret(passwordEncoder.encode("check123")); // 6 horas (padrao eh 12 horas)
     }
 
     @Override
