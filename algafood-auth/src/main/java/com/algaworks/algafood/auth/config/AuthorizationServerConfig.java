@@ -38,7 +38,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 // escopos do cliente
                 .scopes("write", "read")
                 // tempo de validade do token de acesso
-                .accessTokenValiditySeconds(15)
+                .accessTokenValiditySeconds(6 * 60 * 60) // 6 horas
+                // tempo de validade do refresh token
+                .refreshTokenValiditySeconds(60 * 24 * 60 * 60) // 60 dias
                 .and()
                 .withClient("checktoken")
                 .secret(passwordEncoder.encode("check123")); // 6 horas (padrao eh 12 horas)
@@ -58,7 +60,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         // na autenticacao via API
         endpoints
                 .authenticationManager(authenticationManager)
-                .userDetailsService(userDetailsService);
+                .userDetailsService(userDetailsService)
+                // nao reutiza o refresh token
+                .reuseRefreshTokens(false);
     }
 
 }
