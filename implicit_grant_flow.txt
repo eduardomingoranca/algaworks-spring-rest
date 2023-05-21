@@ -1,0 +1,12 @@
+Implicit Grant 
+
+Usuario Final (Resource Owner) acessa aplicacao cliente (Client).
+Cliente (Client) solicita autorizacao (redirect) ao Authorization Server sendo o response um token.
+Usuario Final (Resource Owner) autoriza acesso ao Authorization Server.
+Authorization Server retorna access token para o cliente (Client) na URL.
+Cliente (Client) faz requisicao em recurso da API usando access token Resource Server (API).
+Resource Server (API) consulta access token ao Authorization Server.
+Authorization Server retorna ao Resource Server (API) o access token valido.
+Resource Server (API) retorna recurso solicitado ao cliente (Client).
+Cliente (Client) usa recurso e mostra alguma coisa ao Usuario Final (Resource Owner).
+
