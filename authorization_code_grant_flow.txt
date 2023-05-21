@@ -1,0 +1,13 @@
+Authorization Code Grant 
+
+Usuario Final (Resource Owner) acessa aplicacao cliente (Client).
+Cliente (Client) solicita autorização (redirect) ao Authorization Server.
+Usuario Final (Resource Owner) autoriza acesso ao Authorization Server.
+Authorization Server gera codigo de autorizacao (redirect) ao cliente (Client).
+Cliente (Client) solicita access token ao Authorization Server.
+Authorization Server retorna access token ao cliente (Client).
+Cliente (Client) faz requisicao em recurso da API usando access token ao Resource Server (API).
+Resource Server (API) consulta access token ao Authorization Server.
+Authorization Server access token valido ao Resource Server (API).
+Resource Server (API) retorna recurso solicitado para o cliente (Client).
+Cliente (Client) usa recurso e mostra alguma coisa usuario final (Resource Owner).
