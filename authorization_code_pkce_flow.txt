@@ -1,0 +1,16 @@
+Authorization Code + PKCE 
+
+Um cliente publico nao consegue manter a confidencialidade no codigo de autorizacao.
+PKCE reduz o risco do fluxo Authorization Code.
+
+Authorization Code + PKCE Flow
+
+Usuario Final (Resource Owner) acessa aplicacao cliente (Client).
+Cliente (Client) gera code verifier e code challenge.
+Cliente (Client) solicita autorizacao (redirect) ao Authorization Server.
+Usuario Final (Resource Owner) autoriza acesso ao Authorization Server.
+Authorization Server gera codigo de autorizacao (redirect) ao cliente (Client).
+Cliente (Client) solicita access token ao Authorization Server.
+Authorization Server valida code challenge com code verifier.
+Authorization Server retorna access token o cliente (Client).
+Cliente (Client) faz requisicao em recurso da API usando o access token Resource Server (API).
