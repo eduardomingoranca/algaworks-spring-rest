@@ -1,0 +1,15 @@
+Tipo de cliente
+	. Publico
+	. Confidencial
+
+Clientes confiaveis
+	vs
+Clientes nao confiaveis
+
+Qual fluxo do OAuth2 usar?
+
+O cliente eh publico? se sim utiliza Authorization Code com PKCE,
+se nao for publico. O cliente tem usuarios finais? se nao Client Credentials Flow,
+cliente confiavel e outros fluxos nao sao viaveis? se sim Password Flow,
+se for nao Authorization Code Flow.
+
