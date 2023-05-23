@@ -1,0 +1,20 @@
+Code Verifier: yovV1agbN-F99oSkdaTbEHyrO5EcpnxtXYqKI2cuekk
+Code Challenge: LbQ9r2CLGXjRrYUhdLj1DPC1Od-xrDHqVp10b10jPLY
+
+exemplo: Code Challenge: base64url(sha256("yovV1agbN-F99oSkdaTbEHyrO5EcpnxtXYqKI2cuekk"))
+
+http://127.0.0.1:8081/oauth/authorize?response_type=code&client_id=foodanalytics&redirect_uri=http://127.0.0.1:8082&code_challenge=LbQ9r2CLGXjRrYUhdLj1DPC1Od-xrDHqVp10b10jPLY&code_challenge_method=s256
+
+
+
+
+
+
+
+
+
+
+
+
+
+
