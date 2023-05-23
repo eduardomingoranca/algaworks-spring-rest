@@ -50,7 +50,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
                 .and()
                 .withClient("foodanalytics")
-                .secret(passwordEncoder.encode("food123"))
+                .secret(passwordEncoder.encode(""))
                 .authorizedGrantTypes("authorization_code")
                 .scopes("write", "read")
                 .redirectUris("http://127.0.0.1:8082")
@@ -76,7 +76,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
         // isAuthenticated() => para acessar o endpoint de check token precisa estar autenticado
 //        security.checkTokenAccess("isAuthenticated()");
-        security.checkTokenAccess("permitAll()");
+        security.checkTokenAccess("permitAll()")
+                .allowFormAuthenticationForClients();
     }
 
     @Override

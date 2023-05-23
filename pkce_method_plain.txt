@@ -1,0 +1,4 @@
+Code Verifier: 89as7r93hj4i23qha9s87fsdaq98s
+Code Challenge: 89as7r93hj4i23qha9s87fsdaq98s
+
+http://127.0.0.1:8081/oauth/authorize?response_type=code&client_id=foodanalytics&redirect_uri=http://127.0.0.1:8082&code_challenge=89as7r93hj4i23qha9s87fsdaq98s&code_challenge_method=plain
