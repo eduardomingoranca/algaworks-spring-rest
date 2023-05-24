@@ -1,0 +1,40 @@
+A comunicacao deve ser stateless (sem estado) por natureza, de forma
+que cada requisicao do cliente para o servidor deve conter todas as
+informacoes necessarias para entende-la e nao pode usar informacoes
+contextuais armazenadas no servidor. O estado da sessao deve ser 
+armazenado inteiramente no cliente.
+
+
+Application State vs Resource State 
+
+stateless => estado da aplicacao (Application State) eh o mesmo que o estado da 
+sessao do usuario, armazena informacoes contextuais que sao intermediarias de um
+determinado momento que nao representam algo completamente.
+ 
+Resource State => dominio do negocio que vai ser armazenado em um banco de dados.
+
+Stateful Authentication 
+
+Cliente solicita o token para o Authorization Server e eh armazenado no servidor Token Store
+Cliente acessa os recursos protegidos para o Resource Server.
+Resource Server valida o token no Authorization Server 
+Authorization Server consulta o Token Store.
+
+Stateless Authentication
+
+Os dados das sessoes dos usuarios sao armazenados do lado do cliente
+em uma aplicacao web sao armazenados no navegador do usuario. O servidor
+nao armazena nada, o servidor nao sabe quais tokens ele emitiu 
+
+Transparent Token => A string do token nao eh aleatoria. O token transparente
+tem todas as informacoes autocontidas dentro dele, quanto mais informacoes dentro
+do token mais fica o codigo dele.
+
+Quando o cliente solicita o token ao Authorization Server
+Authorization Server vai emitir um token transparente com
+todas as informacoes autocontidas dentro desse token e tambem
+assinado com algoritmo criptografico que vai devolver para 
+o cliente. O token nao eh armazenado em lugar nenhum. 
+Quando o cliente acessa recursos protegidos no Resource Server.
+Resource Server nao precisa validar o token no Authorization Server, 
+apenas validar o token pela assinatura.
