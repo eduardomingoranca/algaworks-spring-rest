@@ -1,0 +1,3 @@
+Armazenando tokens no Redis: um banco de dados NoSQL.
+
+Quando o cliente cria um token o balanceador de carga cria as instancias que sao armazenadas no redis.
