@@ -1,0 +1,12 @@
+Chave Simetrica 
+
+Criptografia simetrica usa uma unica chave secreta que eh compartilhada com quem emite e quem recebe
+a mensagem.
+
+Authorization Server emite o JWT e por isso eh necessario a chave secreta para assinatura.
+Depois o Resource Server vai precisar ter acesso a essa mesma chave secreta para verificar
+a integridade do token, ou seja, se tentarem infrigir o acesso ao Resource Server com o JWT
+modifica e assinado o Resource Server nao vai permitir.
+
+
+ 
