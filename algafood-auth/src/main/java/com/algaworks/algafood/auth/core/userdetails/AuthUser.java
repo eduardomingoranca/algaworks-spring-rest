@@ -8,11 +8,13 @@ import static java.util.Collections.emptyList;
 
 @Getter
 public class AuthUser extends User {
+    private final Long userId;
     private final String fullName;
 
     public AuthUser(Usuario usuario) {
         super(usuario.getEmail(), usuario.getSenha(), emptyList());
 
+        this.userId = usuario.getId();
         this.fullName = usuario.getNome();
     }
 

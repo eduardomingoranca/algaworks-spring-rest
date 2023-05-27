@@ -1,6 +1,7 @@
 package com.algaworks.algafood.auth.core.config;
 
 import com.algaworks.algafood.auth.core.config.token.PkceAuthorizationCodeTokenGranter;
+import com.algaworks.algafood.auth.core.config.token.jwt.JwtCustomClaimsTokenEnhancer;
 import com.algaworks.algafood.auth.core.config.token.jwt.JwtKeyStoreProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -18,11 +19,13 @@ import org.springframework.security.oauth2.provider.CompositeTokenGranter;
 import org.springframework.security.oauth2.provider.TokenGranter;
 import org.springframework.security.oauth2.provider.approval.ApprovalStore;
 import org.springframework.security.oauth2.provider.approval.TokenApprovalStore;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 
 import java.security.KeyPair;
+import java.util.Arrays;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -96,6 +99,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
+        TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
+        JwtCustomClaimsTokenEnhancer jwtCustomClaimsTokenEnhancer = new JwtCustomClaimsTokenEnhancer();
+        enhancerChain.setTokenEnhancers(List.of(jwtCustomClaimsTokenEnhancer, jwtAccessTokenConverter()));
+
         // atraves do authentication manager o authorization server
         // valida o usuario e senha do usuario final que eh passado
         // na autenticacao via API
@@ -105,6 +112,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 // nao reutiza o refresh token
                 .reuseRefreshTokens(false)
                 .accessTokenConverter(jwtAccessTokenConverter())
+                .tokenEnhancer(enhancerChain)
                 .approvalStore(approvalStore(endpoints.getTokenStore()))
                 .tokenGranter(tokenGranter(endpoints));
     }
