@@ -6,6 +6,7 @@ import com.algaworks.algafood.domain.model.Grupo;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +22,9 @@ public class CadastroUsuarioService {
 
     @Autowired
     private CadastroGrupoService cadastroGrupo;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Transactional
     public List<Usuario> listar() {
@@ -44,6 +48,9 @@ public class CadastroUsuarioService {
         if (usuarioExistente.isPresent() && !usuarioExistente.get().equals(usuario))
             throw new NegocioException(format("Ja existe um usuario cadastrado com o email %s", usuario.getEmail()));
 
+        if (isNovo(usuario))
+            usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
+
         return usuarioRepository.save(usuario);
     }
 
@@ -51,10 +58,10 @@ public class CadastroUsuarioService {
     public void alterarSenha(Long id, String senhaAtual, String novaSenha) {
         Usuario usuario = buscarOuFalhar(id);
 
-        if (!usuario.getSenha().equalsIgnoreCase(senhaAtual))
+        if (!passwordEncoder.matches(senhaAtual, usuario.getSenha()))
             throw new NegocioException("Senha atual informada nao coincide com a senha do usuario.");
 
-        usuario.setSenha(novaSenha);
+        usuario.setSenha(passwordEncoder.encode(novaSenha));
     }
 
     @Transactional
@@ -79,6 +86,10 @@ public class CadastroUsuarioService {
 
     private void removerGrupo(Usuario usuario, Grupo grupo) {
         usuario.getGrupos().remove(grupo);
+    }
+
+    private boolean isNovo(Usuario usuario) {
+        return usuario.getId() == null;
     }
 
 }
