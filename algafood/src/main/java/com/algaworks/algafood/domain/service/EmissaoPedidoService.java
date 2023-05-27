@@ -1,5 +1,6 @@
 package com.algaworks.algafood.domain.service;
 
+import com.algaworks.algafood.core.security.AlgaSecurity;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.exception.PedidoNaoEncontradoException;
 import com.algaworks.algafood.domain.model.*;
@@ -38,6 +39,9 @@ public class EmissaoPedidoService {
     @Autowired
     private CadastroProdutoService cadastroProduto;
 
+    @Autowired
+    private AlgaSecurity algaSecurity;
+
     @Transactional
     public Page<Pedido> listar(Specification<Pedido> pedidoSpecification, Pageable pageable) {
         return pedidoRepository.findAll(pedidoSpecification, pageable);
@@ -51,8 +55,9 @@ public class EmissaoPedidoService {
 
     @Transactional
     public Pedido salvar(Pedido pedido) {
+        // TODO pegar usuario autenticado
         pedido.setCliente(new Usuario());
-        pedido.getCliente().setId(1L);
+        pedido.getCliente().setId(algaSecurity.getUsuarioId());
 
         Long cidadeID = pedido.getEnderecoEntrega().getCidade().getId();
         Long clienteID = pedido.getCliente().getId();
