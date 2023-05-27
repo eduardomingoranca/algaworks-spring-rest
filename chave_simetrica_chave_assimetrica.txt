@@ -1,0 +1,7 @@
+Entendendo a diferenca entre assinatura com chave simetrica e assimetrica
+
+assinatura com chave simetrica o emissor do token compartilha a mesma chave com o receptor do token 
+
+assinatura com chave assimetrica o emissor do token possui a chave privada que deve ser mantida em segredo,
+essa chave eh utilizada para assinar o JWT. O receptor possui uma chave publica para validar a assinatura do
+token.
