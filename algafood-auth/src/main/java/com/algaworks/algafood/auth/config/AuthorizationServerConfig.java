@@ -1,5 +1,7 @@
 package com.algaworks.algafood.auth.config;
 
+import com.algaworks.algafood.auth.token.PkceAuthorizationCodeTokenGranter;
+import com.algaworks.algafood.auth.token.jwt.JwtKeyStoreProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,6 +35,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Autowired
     private UserDetailsService userDetailsService;
+
+    @Autowired
+    private JwtKeyStoreProperties keyStoreProperties;
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
@@ -103,11 +108,11 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
         JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
 
-        ClassPathResource jksResource = new ClassPathResource("keystores/algafood.jks");
+        ClassPathResource jksResource = new ClassPathResource(keyStoreProperties.getPath());
         // senha para abrir o arquivo jks
-        String keyStorePass = "123456";
+        String keyStorePass = keyStoreProperties.getPassword();
         // nome do conjunto de chaves
-        String keyPairAlias = "algafood";
+        String keyPairAlias = keyStoreProperties.getKeypairAlias();
 
         // abrindo o arquivo jks
         KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(jksResource, keyStorePass.toCharArray());
