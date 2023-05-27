@@ -1,15 +1,9 @@
 package com.algaworks.algafood.core.security;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
-
-import javax.crypto.spec.SecretKeySpec;
-
-import static org.springframework.security.oauth2.jwt.NimbusJwtDecoder.withSecretKey;
 
 @Configuration
 @EnableWebSecurity
@@ -23,14 +17,6 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
                 .cors().and()
                 // habilitando/configurando um resource server
                 .oauth2ResourceServer().jwt();
-    }
-
-    @Bean
-    public JwtDecoder jwtDecoder() {
-        SecretKeySpec secretKey = new SecretKeySpec("89a7sd89f7as98f7dsa98fds7fd89sasd9898asdf98s".getBytes(), "HmacSHA256");
-
-        // adicionado a chave secreta
-        return withSecretKey(secretKey).build();
     }
 
 }
