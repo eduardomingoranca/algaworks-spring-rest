@@ -1,0 +1,3 @@
+keytool ferramenta utilitaria que permite a criacao e gerencia arquivo JKS (Java Key Store).
+arquivo JKS serve como um repositorio para armazenacao de conjuntos de chaves criptograficas
+ou certificados em formato binario.  
