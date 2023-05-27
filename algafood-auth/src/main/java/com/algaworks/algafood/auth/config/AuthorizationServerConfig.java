@@ -87,6 +87,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         // isAuthenticated() => para acessar o endpoint de check token precisa estar autenticado
 //        security.checkTokenAccess("isAuthenticated()");
         security.checkTokenAccess("permitAll()")
+                .tokenKeyAccess("permitAll()")
                 .allowFormAuthenticationForClients();
     }
 
