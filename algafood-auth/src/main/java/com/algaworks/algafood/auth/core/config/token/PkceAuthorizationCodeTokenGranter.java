@@ -1,4 +1,4 @@
-package com.algaworks.algafood.auth.token;
+package com.algaworks.algafood.auth.core.config.token;
 
 import org.springframework.security.oauth2.common.exceptions.InvalidGrantException;
 import org.springframework.security.oauth2.provider.*;

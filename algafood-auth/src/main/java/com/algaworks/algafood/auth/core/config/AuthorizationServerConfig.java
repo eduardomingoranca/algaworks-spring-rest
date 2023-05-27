@@ -1,7 +1,7 @@
-package com.algaworks.algafood.auth.config;
+package com.algaworks.algafood.auth.core.config;
 
-import com.algaworks.algafood.auth.token.PkceAuthorizationCodeTokenGranter;
-import com.algaworks.algafood.auth.token.jwt.JwtKeyStoreProperties;
+import com.algaworks.algafood.auth.core.config.token.PkceAuthorizationCodeTokenGranter;
+import com.algaworks.algafood.auth.core.config.token.jwt.JwtKeyStoreProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package com.algaworks.algafood.auth.token.jwt;
+package com.algaworks.algafood.auth.core.config.token.jwt;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
