@@ -17,6 +17,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -81,7 +82,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .build();
 
         log.error(ex.getMessage(), ex);
-        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        return handleExceptionInternal(ex, problem, httpHeaders, status, request);
     }
 
     @Override
@@ -167,7 +169,22 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleValidacaoException(ValidacaoException ex,
                                                            WebRequest request) {
         log.error(ex.getMessage(), ex);
-        return handleValidationInternal(ex, ex.getBindingResult(), new HttpHeaders(), BAD_REQUEST, request);
+        HttpHeaders headers = new HttpHeaders();
+
+        return handleValidationInternal(ex, ex.getBindingResult(), headers, BAD_REQUEST, request);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<?> handleEntidadeNaoEncontrada(AccessDeniedException ex, WebRequest request) {
+        HttpStatus status = FORBIDDEN;
+        String detail = ex.getMessage();
+
+        Problem problem = createProblemBuilder(status, ACESSO_NEGADO, detail, detail)
+                .userMessage("Nao permitido para executar essa operacao.")
+                .build();
+
+        HttpHeaders headers = new HttpHeaders();
+        return handleExceptionInternal(ex, problem, headers, status, request);
     }
 
     @ExceptionHandler(EntidadeNaoEncontradaException.class)
@@ -180,7 +197,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .build();
 
         log.error(e.getMessage(), e);
-        return handleExceptionInternal(e, problem, new HttpHeaders(), status, request);
+        HttpHeaders headers = new HttpHeaders();
+        return handleExceptionInternal(e, problem, headers, status, request);
     }
 
     @ExceptionHandler(NegocioException.class)
@@ -193,7 +211,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .build();
 
         log.error(e.getMessage(), e);
-        return handleExceptionInternal(e, problem, new HttpHeaders(), status, request);
+        HttpHeaders headers = new HttpHeaders();
+        return handleExceptionInternal(e, problem, headers, status, request);
     }
 
     @ExceptionHandler(EntidadeEmUsoException.class)
@@ -205,7 +224,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .build();
 
         log.error(e.getMessage(), e);
-        return handleExceptionInternal(e, problem, new HttpHeaders(), status, request);
+        HttpHeaders headers = new HttpHeaders();
+        return handleExceptionInternal(e, problem, headers, status, request);
     }
 
     @ExceptionHandler(Exception.class)
@@ -217,7 +237,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .build();
 
         log.error(ex.getMessage(), ex);
-        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+        HttpHeaders headers = new HttpHeaders();
+        return handleExceptionInternal(ex, problem, headers, status, request);
     }
 
     private ResponseEntity<Object> handlePropertyBindingException(PropertyBindingException ex, HttpHeaders headers,
