@@ -68,6 +68,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .withClient("foodanalytics")
                 .secret(passwordEncoder.encode(""))
                 .authorizedGrantTypes("authorization_code")
+                // scopes -> limite o acesso do token do cliente
                 .scopes("write", "read")
                 .redirectUris("http://127.0.0.1:8082")
 

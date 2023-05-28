@@ -7,8 +7,6 @@ import org.springframework.security.core.userdetails.User;
 
 import java.util.Collection;
 
-import static java.util.Collections.emptyList;
-
 @Getter
 public class AuthUser extends User {
     private final Long userId;
