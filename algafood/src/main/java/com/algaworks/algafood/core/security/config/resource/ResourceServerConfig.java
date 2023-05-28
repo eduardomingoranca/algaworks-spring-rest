@@ -1,6 +1,7 @@
 package com.algaworks.algafood.core.security.config.resource;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -11,20 +12,16 @@ import java.util.List;
 
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
-import static org.springframework.http.HttpMethod.*;
 
 @Configuration
 @EnableWebSecurity
+// habilitando metodo global de seguranca
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests()
-                .antMatchers(POST, "/v1/cozinhas/**").hasAuthority("EDITAR_COZINHAS")
-                .antMatchers(PUT, "/v1/cozinhas/**").hasAuthority("EDITAR_COZINHAS")
-                .antMatchers(GET, "/v1/cozinhas/**").authenticated()
-                .anyRequest().denyAll()
-                .and()
+                .csrf().disable()
                 .cors().and()
                 // habilitando/configurando um resource server
                 .oauth2ResourceServer()
