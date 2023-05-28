@@ -1,4 +1,4 @@
-package com.algaworks.algafood.api.v1.controller;
+package com.algaworks.algafood.api.v1.controller.patch;
 
 import com.algaworks.algafood.api.v1.assembler.model.RestauranteModelAssembler;
 import com.algaworks.algafood.api.v1.model.RestauranteModel;
