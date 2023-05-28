@@ -122,7 +122,7 @@ insert into usuario (id, nome, email, senha, data_cadastro) values
 (6, 'Deborah Miller', 'mail.test.aw+deborah@algafood.com', '$2a$12$p5enQf6xbOT5kyeDavq3tO/xCu6PyCu7lzI381xM5OK/6Ep5gwowC', utc_timestamp),
 (7, 'Charles Lewis', 'mail.test.aw+charles@algafood.com', '$2a$12$p5enQf6xbOT5kyeDavq3tO/xCu6PyCu7lzI381xM5OK/6Ep5gwowC', utc_timestamp);
 
-insert into usuario_grupo (usuario_id, grupo_id) values (1, 1), (1, 2), (2, 2);
+insert into usuario_grupo (usuario_id, grupo_id) values (1, 1), (1, 2), (2, 2), (3, 3), (4, 4);
 
 
 insert into restaurante_usuario_responsavel (restaurante_id, usuario_id) values (1, 5), (3, 5);
