@@ -5,13 +5,15 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 
+import java.util.Collection;
 import java.util.List;
 
 import static java.util.Collections.emptyList;
-import static java.util.stream.Collectors.toList;
 
 @Configuration
 @EnableWebSecurity
@@ -39,9 +41,14 @@ public class ResourceServerConfig extends WebSecurityConfigurerAdapter {
             if (authorities == null)
                 authorities = emptyList();
 
-            return authorities.stream()
-                    .map(SimpleGrantedAuthority::new)
-                    .collect(toList());
+            // adicionando authorities dos scopes
+            JwtGrantedAuthoritiesConverter scopesAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
+            Collection<GrantedAuthority> grantedAuthorities = scopesAuthoritiesConverter.convert(jwt);
+
+            grantedAuthorities.addAll(authorities.stream()
+                    .map(SimpleGrantedAuthority::new).toList());
+
+            return grantedAuthorities;
         });
 
         return jwtAuthenticationConverter;

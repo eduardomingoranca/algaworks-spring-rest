@@ -25,7 +25,6 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 
 import java.security.KeyPair;
-import java.util.Arrays;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -58,7 +57,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 // identificando o fluxo
                 .authorizedGrantTypes("password", "refresh_token")
                 // escopos do cliente
-                .scopes("write", "read")
+                .scopes("WRITE", "READ")
                 // tempo de validade do token de acesso
                 .accessTokenValiditySeconds(6 * 60 * 60) // 6 horas
                 // tempo de validade do refresh token
@@ -69,20 +68,20 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .secret(passwordEncoder.encode(""))
                 .authorizedGrantTypes("authorization_code")
                 // scopes -> limite o acesso do token do cliente
-                .scopes("write", "read")
+                .scopes("WRITE", "READ")
                 .redirectUris("http://127.0.0.1:8082")
 
                 .and()
                 .withClient("webadmin")
                 .authorizedGrantTypes("implicit")
-                .scopes("write", "read")
+                .scopes("WRITE", "READ")
                 .redirectUris("http://aplicacao-cliente")
 
                 .and()
                 .withClient("faturamento")
                 .secret(passwordEncoder.encode("faturamento123"))
                 .authorizedGrantTypes("client_credentials")
-                .scopes("write", "read")
+                .scopes("WRITE", "READ")
 
                 .and()
                 .withClient("checktoken")
