@@ -1,4 +1,4 @@
-package com.algaworks.algafood.core.squiggly;
+package com.algaworks.algafood.core.squiggly.customizer;
 
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;

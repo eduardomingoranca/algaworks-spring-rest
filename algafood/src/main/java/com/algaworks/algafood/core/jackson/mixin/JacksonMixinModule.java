@@ -1,4 +1,4 @@
-package com.algaworks.algafood.core.jackson;
+package com.algaworks.algafood.core.jackson.mixin;
 
 import com.algaworks.algafood.api.v1.model.mixin.*;
 import com.algaworks.algafood.domain.model.*;

@@ -1,4 +1,4 @@
-package com.algaworks.algafood.core.squiggly;
+package com.algaworks.algafood.core.squiggly.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.bohnman.squiggly.web.RequestSquigglyContextProvider;

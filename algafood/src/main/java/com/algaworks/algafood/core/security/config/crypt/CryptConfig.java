@@ -1,4 +1,4 @@
-package com.algaworks.algafood.core.crypt;
+package com.algaworks.algafood.core.security.config.crypt;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

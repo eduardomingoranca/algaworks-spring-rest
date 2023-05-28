@@ -1,4 +1,4 @@
-package com.algaworks.algafood.core.jackson;
+package com.algaworks.algafood.core.jackson.json;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;

@@ -1,5 +1,6 @@
-package com.algaworks.algafood.core.web;
+package com.algaworks.algafood.core.web.config;
 
+import com.algaworks.algafood.core.web.handler.APIRetirementHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
