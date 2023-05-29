@@ -5,6 +5,7 @@ import com.algaworks.algafood.api.v1.assembler.model.FormaPagamentoModelAssemble
 import com.algaworks.algafood.api.v1.model.FormaPagamentoModel;
 import com.algaworks.algafood.api.v1.model.input.FormaPagamentoInput;
 import com.algaworks.algafood.api.v1.openapi.controller.FormaPagamentoControllerOpenAPI;
+import com.algaworks.algafood.core.security.annotation.CheckSecurity;
 import com.algaworks.algafood.domain.model.FormaPagamento;
 import com.algaworks.algafood.domain.service.CadastroFormaPagamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenAPI
     @Autowired
     private FormaPagamentoModelAssembler formaPagamentoModelAssembler;
 
+    @CheckSecurity.FormasPagamento.PodeConsultar
     @Override
     @GetMapping
     public ResponseEntity<CollectionModel<FormaPagamentoModel>> listar(ServletWebRequest request) {
@@ -71,6 +73,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenAPI
                 .body(formasPagamentoModel);
     }
 
+    @CheckSecurity.FormasPagamento.PodeConsultar
     @Override
     @GetMapping("/{formasPagamentoId}")
     public ResponseEntity<FormaPagamentoModel> buscar(@PathVariable("formasPagamentoId") Long id,
@@ -96,6 +99,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenAPI
                 .body(formaPagamentoModel);
     }
 
+    @CheckSecurity.FormasPagamento.PodeEditar
     @Override
     @PostMapping
     @ResponseStatus(CREATED)
@@ -106,6 +110,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenAPI
         return formaPagamentoModelAssembler.toModel(salvarFormaPagamento);
     }
 
+    @CheckSecurity.FormasPagamento.PodeEditar
     @Override
     @PutMapping("/{formasPagamentoId}")
     public FormaPagamentoModel atualizar(@PathVariable("formasPagamentoId") Long id,
