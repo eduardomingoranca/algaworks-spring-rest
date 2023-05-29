@@ -47,6 +47,7 @@ public class PedidoController implements PedidoControllerOpenAPI {
     @Autowired
     private PagedResourcesAssembler<Pedido> pagedResourcesAssembler;
 
+    @CheckSecurity.Pedidos.PodePesquisar
     @Override
     @ApiImplicitParams(@ApiImplicitParam(value = "Nomes das propriedades para filtrar na resposta, separados por virgula",
             name = "campos", paramType = "query", type = "string"))
