@@ -4,6 +4,7 @@ import com.algaworks.algafood.api.v1.assembler.model.PermissaoModelAssembler;
 import com.algaworks.algafood.api.v1.links.AlgaLinks;
 import com.algaworks.algafood.api.v1.model.PermissaoModel;
 import com.algaworks.algafood.api.v1.openapi.controller.GrupoPermissaoControllerOpenAPI;
+import com.algaworks.algafood.core.security.annotation.CheckSecurity;
 import com.algaworks.algafood.domain.model.Grupo;
 import com.algaworks.algafood.domain.service.CadastroGrupoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ public class GrupoPermissaoController implements GrupoPermissaoControllerOpenAPI
     @Autowired
     private AlgaLinks algaLinks;
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @Override
     @GetMapping
     public CollectionModel<PermissaoModel> listar(@PathVariable("grupoID") Long id) {
@@ -44,6 +46,7 @@ public class GrupoPermissaoController implements GrupoPermissaoControllerOpenAPI
         return permissoesModel;
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
     @Override
     @PutMapping("/{permissaoID}")
     @ResponseStatus(NO_CONTENT)
@@ -54,6 +57,7 @@ public class GrupoPermissaoController implements GrupoPermissaoControllerOpenAPI
         return noContent().build();
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
     @Override
     @DeleteMapping("/{permissaoID}")
     @ResponseStatus(NO_CONTENT)

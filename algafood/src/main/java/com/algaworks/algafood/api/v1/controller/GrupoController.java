@@ -5,6 +5,7 @@ import com.algaworks.algafood.api.v1.assembler.model.GrupoModelAssembler;
 import com.algaworks.algafood.api.v1.openapi.controller.GrupoControllerOpenAPI;
 import com.algaworks.algafood.api.v1.model.GrupoModel;
 import com.algaworks.algafood.api.v1.model.input.GrupoInput;
+import com.algaworks.algafood.core.security.annotation.CheckSecurity;
 import com.algaworks.algafood.domain.model.Grupo;
 import com.algaworks.algafood.domain.service.CadastroGrupoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ public class GrupoController implements GrupoControllerOpenAPI {
     @Autowired
     private GrupoModelAssembler grupoModelAssembler;
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @Override
     @GetMapping
     public CollectionModel<GrupoModel> listar() {
@@ -37,6 +39,7 @@ public class GrupoController implements GrupoControllerOpenAPI {
         return grupoModelAssembler.toCollectionModel(grupos);
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @Override
     @GetMapping("/{grupoID}")
     public GrupoModel buscar(@PathVariable("grupoID") Long id) {
@@ -45,6 +48,7 @@ public class GrupoController implements GrupoControllerOpenAPI {
         return grupoModelAssembler.toModel(grupo);
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
     @Override
     @PostMapping
     @ResponseStatus(CREATED)
@@ -55,6 +59,7 @@ public class GrupoController implements GrupoControllerOpenAPI {
         return grupoModelAssembler.toModel(salvarGrupo);
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
     @Override
     @PutMapping("/{grupoID}")
     public GrupoModel atualizar(@PathVariable("grupoID") Long id,

@@ -7,6 +7,7 @@ import com.algaworks.algafood.api.v1.model.input.UsuarioInput;
 import com.algaworks.algafood.api.v1.model.input.UsuarioPasswordInput;
 import com.algaworks.algafood.api.v1.model.input.UsuarioUpdateInput;
 import com.algaworks.algafood.api.v1.openapi.controller.UsuarioControllerOpenAPI;
+import com.algaworks.algafood.core.security.annotation.CheckSecurity;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.service.CadastroUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ public class UsuarioController implements UsuarioControllerOpenAPI {
     @Autowired
     private UsuarioInputDisassembler usuarioInputDisassembler;
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @Override
     @GetMapping
     public CollectionModel<UsuarioModel> listar() {
@@ -40,6 +42,7 @@ public class UsuarioController implements UsuarioControllerOpenAPI {
         return usuarioModelAssembler.toCollectionModel(usuarios);
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @Override
     @GetMapping("/{usuarioID}")
     public UsuarioModel buscar(@PathVariable("usuarioID") Long id) {
@@ -48,6 +51,7 @@ public class UsuarioController implements UsuarioControllerOpenAPI {
         return usuarioModelAssembler.toModel(usuario);
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
     @Override
     @PostMapping
     @ResponseStatus(CREATED)
@@ -58,6 +62,7 @@ public class UsuarioController implements UsuarioControllerOpenAPI {
         return usuarioModelAssembler.toModel(salvarUsuario);
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeAlterarUsuario
     @Override
     @PutMapping("/{usuarioID}")
     public UsuarioModel atualizar(@PathVariable("usuarioID") Long id,
@@ -71,6 +76,7 @@ public class UsuarioController implements UsuarioControllerOpenAPI {
         return usuarioModelAssembler.toModel(salvarUsuario);
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeAlterarPropriaSenha
     @Override
     @PutMapping("/{usuarioID}/senha")
     @ResponseStatus(NO_CONTENT)

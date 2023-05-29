@@ -4,6 +4,7 @@ import com.algaworks.algafood.api.v1.assembler.model.GrupoModelAssembler;
 import com.algaworks.algafood.api.v1.links.AlgaLinks;
 import com.algaworks.algafood.api.v1.model.GrupoModel;
 import com.algaworks.algafood.api.v1.openapi.controller.UsuarioGrupoControllerOpenAPI;
+import com.algaworks.algafood.core.security.annotation.CheckSecurity;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.service.CadastroUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ public class UsuarioGrupoController implements UsuarioGrupoControllerOpenAPI {
     @Autowired
     private AlgaLinks algaLinks;
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @Override
     @GetMapping
     public CollectionModel<GrupoModel> listar(@PathVariable("usuarioID") Long id) {
@@ -43,6 +45,7 @@ public class UsuarioGrupoController implements UsuarioGrupoControllerOpenAPI {
         return gruposModel;
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
     @Override
     @PutMapping("/{grupoID}")
     @ResponseStatus(NO_CONTENT)
@@ -53,6 +56,7 @@ public class UsuarioGrupoController implements UsuarioGrupoControllerOpenAPI {
         return noContent().build();
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
     @Override
     @DeleteMapping("/{grupoID}")
     @ResponseStatus(NO_CONTENT)
