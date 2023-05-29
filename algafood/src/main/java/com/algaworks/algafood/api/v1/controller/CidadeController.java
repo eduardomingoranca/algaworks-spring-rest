@@ -5,6 +5,7 @@ import com.algaworks.algafood.api.v1.assembler.model.CidadeModelAssembler;
 import com.algaworks.algafood.api.v1.model.CidadeModel;
 import com.algaworks.algafood.api.v1.model.input.CidadeInput;
 import com.algaworks.algafood.api.v1.openapi.controller.CidadeControllerOpenAPI;
+import com.algaworks.algafood.core.security.annotation.CheckSecurity;
 import com.algaworks.algafood.domain.exception.EstadoNaoEncontradoException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Cidade;
@@ -32,6 +33,7 @@ public class CidadeController implements CidadeControllerOpenAPI {
     @Autowired
     private CidadeModelAssembler cidadeModelAssembler;
 
+    @CheckSecurity.Cidades.PodeConsultar
     @Deprecated
     @Override
     @GetMapping
@@ -41,6 +43,7 @@ public class CidadeController implements CidadeControllerOpenAPI {
         return cidadeModelAssembler.toCollectionModel(cidades);
     }
 
+    @CheckSecurity.Cidades.PodeConsultar
     @Override
     @GetMapping(value = "/{cidadeId}")
     public CidadeModel buscar(@PathVariable("cidadeId") Long id) {
@@ -49,6 +52,7 @@ public class CidadeController implements CidadeControllerOpenAPI {
         return cidadeModelAssembler.toModel(cidade);
     }
 
+    @CheckSecurity.Cidades.PodeEditar
     @Override
     @PostMapping
     @ResponseStatus(CREATED)
@@ -66,6 +70,7 @@ public class CidadeController implements CidadeControllerOpenAPI {
         }
     }
 
+    @CheckSecurity.Cidades.PodeEditar
     @Override
     @PutMapping(value = "/{cidadeId}")
     public CidadeModel atualizar(@PathVariable("cidadeId") Long id,

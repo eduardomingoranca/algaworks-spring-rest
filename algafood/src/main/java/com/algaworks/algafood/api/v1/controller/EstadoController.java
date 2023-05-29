@@ -5,6 +5,7 @@ import com.algaworks.algafood.api.v1.assembler.model.EstadoModelAssembler;
 import com.algaworks.algafood.api.v1.model.EstadoModel;
 import com.algaworks.algafood.api.v1.model.input.EstadoInput;
 import com.algaworks.algafood.api.v1.openapi.controller.EstadoControllerOpenAPI;
+import com.algaworks.algafood.core.security.annotation.CheckSecurity;
 import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.service.CadastroEstadoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ public class EstadoController implements EstadoControllerOpenAPI {
     @Autowired
     private EstadoInputAssembler estadoInputAssembler;
 
+    @CheckSecurity.Estados.PodeConsultar
     @Override
     @GetMapping
     public CollectionModel<EstadoModel> listar() {
@@ -37,6 +39,7 @@ public class EstadoController implements EstadoControllerOpenAPI {
         return estadoModelAssembler.toCollectionModel(estados);
     }
 
+    @CheckSecurity.Estados.PodeConsultar
     @Override
     @GetMapping("/{estadoID}")
     public EstadoModel buscar(@PathVariable("estadoID") Long id) {
@@ -45,6 +48,7 @@ public class EstadoController implements EstadoControllerOpenAPI {
         return estadoModelAssembler.toModel(estado);
     }
 
+    @CheckSecurity.Estados.PodeEditar
     @Override
     @PostMapping
     @ResponseStatus(CREATED)
@@ -55,6 +59,7 @@ public class EstadoController implements EstadoControllerOpenAPI {
         return estadoModelAssembler.toModel(salvarEstado);
     }
 
+    @CheckSecurity.Estados.PodeEditar
     @Override
     @PutMapping("/{estadoID}")
     public EstadoModel atualizar(@PathVariable("estadoID") Long id,
