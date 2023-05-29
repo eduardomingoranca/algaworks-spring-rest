@@ -96,8 +96,6 @@ select 1, id from permissao;
 insert into grupo_permissao (grupo_id, permissao_id)
 select 2, id from permissao where nome like 'CONSULTAR_%';
 
-insert into grupo_permissao (grupo_id, permissao_id) values (2, 14);
-
 -- Adiciona permissoes no grupo do auxiliar
 insert into grupo_permissao (grupo_id, permissao_id)
 select 3, id from permissao where nome like 'CONSULTAR_%';
@@ -111,9 +109,9 @@ insert into usuario (id, nome, email, senha, data_cadastro) values
 (2, 'Mary Johnson', 'mary.vnd@algafood.com.br', '$2a$12$p5enQf6xbOT5kyeDavq3tO/xCu6PyCu7lzI381xM5OK/6Ep5gwowC', utc_timestamp),
 (3, 'Joseph Smith', 'joseph.aux@algafood.com.br', '$2a$12$p5enQf6xbOT5kyeDavq3tO/xCu6PyCu7lzI381xM5OK/6Ep5gwowC', utc_timestamp),
 (4, 'Sebastian McDonald', 'sebastian.cad@algafood.com.br', '$2a$12$p5enQf6xbOT5kyeDavq3tO/xCu6PyCu7lzI381xM5OK/6Ep5gwowC', utc_timestamp),
-(5, 'Matthew Lewis', 'mail.test.aw+matthew@algafood.com', '$2a$12$p5enQf6xbOT5kyeDavq3tO/xCu6PyCu7lzI381xM5OK/6Ep5gwowC', utc_timestamp),
-(6, 'Deborah Miller', 'mail.test.aw+deborah@algafood.com', '$2a$12$p5enQf6xbOT5kyeDavq3tO/xCu6PyCu7lzI381xM5OK/6Ep5gwowC', utc_timestamp),
-(7, 'Charles Lewis', 'mail.test.aw+charles@algafood.com', '$2a$12$p5enQf6xbOT5kyeDavq3tO/xCu6PyCu7lzI381xM5OK/6Ep5gwowC', utc_timestamp);
+(5, 'Matthew Lewis', 'matthew.store@teste.com', '$2a$12$p5enQf6xbOT5kyeDavq3tO/xCu6PyCu7lzI381xM5OK/6Ep5gwowC', utc_timestamp),
+(6, 'Deborah Miller', 'mail.test.aw+deborah@teste.com', '$2a$12$p5enQf6xbOT5kyeDavq3tO/xCu6PyCu7lzI381xM5OK/6Ep5gwowC', utc_timestamp),
+(7, 'Charles Lewis', 'mail.test.aw+charles@teste.com', '$2a$12$p5enQf6xbOT5kyeDavq3tO/xCu6PyCu7lzI381xM5OK/6Ep5gwowC', utc_timestamp);
 
 insert into usuario_grupo (usuario_id, grupo_id) values (1, 1), (1, 2), (2, 2), (3, 3), (4, 4);
 

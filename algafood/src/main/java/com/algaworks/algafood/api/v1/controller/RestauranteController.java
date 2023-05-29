@@ -76,7 +76,7 @@ public class RestauranteController implements RestauranteControllerOpenAPI {
 //    @Validated -> quando for cadastrar um restaurante sera validado um objeto do tipo restaurante que possuem
 //    constraints do grupo cadastro restaurante.
     @Override
-    @CheckSecurity.Restaurantes.PodeEditar
+    @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @PostMapping
     @ResponseStatus(CREATED)
     public RestauranteModel adicionar(@RequestBody @Valid RestauranteInput restauranteInput) {
@@ -90,7 +90,7 @@ public class RestauranteController implements RestauranteControllerOpenAPI {
         }
     }
 
-    @CheckSecurity.Restaurantes.PodeEditar
+    @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @Override
     @PutMapping("/{restauranteId}")
     public RestauranteModel atualizar(@PathVariable("restauranteId") Long id,
@@ -108,7 +108,7 @@ public class RestauranteController implements RestauranteControllerOpenAPI {
         }
     }
 
-    @CheckSecurity.Restaurantes.PodeEditar
+    @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @Override
     // PUT /restaurantes/{id}/ativo
     @PutMapping("/{restauranteId}/ativo")
@@ -119,7 +119,7 @@ public class RestauranteController implements RestauranteControllerOpenAPI {
         return noContent().build();
     }
 
-    @CheckSecurity.Restaurantes.PodeEditar
+    @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @Override
     @DeleteMapping("/{restauranteId}/ativo")
     @ResponseStatus(NO_CONTENT)
@@ -129,7 +129,7 @@ public class RestauranteController implements RestauranteControllerOpenAPI {
         return noContent().build();
     }
 
-    @CheckSecurity.Restaurantes.PodeEditar
+    @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @Override
     // PUT /restaurantes/ativacoes
     @PutMapping("/ativacoes")
@@ -144,7 +144,7 @@ public class RestauranteController implements RestauranteControllerOpenAPI {
         }
     }
 
-    @CheckSecurity.Restaurantes.PodeEditar
+    @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @Override
     // DELETE /restaurantes/ativacoes
     @DeleteMapping("/ativacoes")
@@ -159,7 +159,7 @@ public class RestauranteController implements RestauranteControllerOpenAPI {
         }
     }
 
-    @CheckSecurity.Restaurantes.PodeEditar
+    @CheckSecurity.Restaurantes.PodeGerenciarFuncionamento
     @Override
     @PutMapping("/{restauranteId}/fechamento")
     @ResponseStatus(NO_CONTENT)
@@ -169,7 +169,7 @@ public class RestauranteController implements RestauranteControllerOpenAPI {
         return noContent().build();
     }
 
-    @CheckSecurity.Restaurantes.PodeEditar
+    @CheckSecurity.Restaurantes.PodeGerenciarFuncionamento
     @Override
     @PutMapping("/{restauranteId}/abertura")
     @ResponseStatus(NO_CONTENT)

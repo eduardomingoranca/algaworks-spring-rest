@@ -47,7 +47,7 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
         return formasPagamentoModel;
     }
 
-    @CheckSecurity.Restaurantes.PodeEditar
+    @CheckSecurity.Restaurantes.PodeGerenciarFuncionamento
     @Override
     @DeleteMapping("/{formaPagamentoID}")
     @ResponseStatus(NO_CONTENT)
@@ -57,7 +57,7 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
         return noContent().build();
     }
 
-    @CheckSecurity.Restaurantes.PodeEditar
+    @CheckSecurity.Restaurantes.PodeGerenciarFuncionamento
     @Override
     @PutMapping("/{formaPagamentoID}")
     @ResponseStatus(NO_CONTENT)

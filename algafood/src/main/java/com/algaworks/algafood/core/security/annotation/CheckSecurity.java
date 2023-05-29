@@ -31,7 +31,14 @@ public @interface CheckSecurity {
         @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDITAR_RESTAURANTES')")
         @Retention(RUNTIME)
         @Target(METHOD)
-        @interface PodeEditar { }
+        @interface PodeGerenciarCadastro { }
+
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and " +
+                "(hasAuthority('EDITAR_RESTAURANTES') or " +
+                "@algaSecurity.gerenciaRestaurante(#id))")
+        @Retention(RUNTIME)
+        @Target(METHOD)
+        @interface PodeGerenciarFuncionamento { }
 
         @PreAuthorize("hasAuthority('SCOPE_WRITE') and isAuthenticated()")
         @Retention(RUNTIME)
