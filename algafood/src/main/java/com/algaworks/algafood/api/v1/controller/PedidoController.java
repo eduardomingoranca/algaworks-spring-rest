@@ -8,6 +8,7 @@ import com.algaworks.algafood.api.v1.model.PedidoResumoModel;
 import com.algaworks.algafood.api.v1.model.input.PedidoInput;
 import com.algaworks.algafood.api.v1.openapi.controller.PedidoControllerOpenAPI;
 import com.algaworks.algafood.core.data.wrapper.PageWrapper;
+import com.algaworks.algafood.core.security.annotation.CheckSecurity;
 import com.algaworks.algafood.domain.exception.*;
 import com.algaworks.algafood.domain.filter.PedidoFilter;
 import com.algaworks.algafood.domain.model.Pedido;
@@ -62,12 +63,13 @@ public class PedidoController implements PedidoControllerOpenAPI {
         return pagedResourcesAssembler.toModel(pedidosPage, pedidoResumoModelAssembler);
     }
 
+    @CheckSecurity.Pedidos.PodeBuscar
     @Override
     @ApiImplicitParams(@ApiImplicitParam(value = "Nomes das propriedades para filtrar na resposta, separados por virgula",
             name = "campos", paramType = "query", type = "string"))
     @GetMapping("/{codigoPedido}")
-    public PedidoModel buscar(@PathVariable("codigoPedido") String codigo) {
-        Pedido pedido = emissaoPedido.buscarOuFalhar(codigo);
+    public PedidoModel buscar(@PathVariable("codigoPedido") String id) {
+        Pedido pedido = emissaoPedido.buscarOuFalhar(id);
 
         return pedidoModelAssembler.toModel(pedido);
     }
