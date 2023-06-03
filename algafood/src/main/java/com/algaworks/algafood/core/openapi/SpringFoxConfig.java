@@ -23,10 +23,8 @@ import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.RepresentationBuilder;
 import springfox.documentation.builders.ResponseBuilder;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
-import springfox.documentation.service.Response;
-import springfox.documentation.service.Tag;
+import springfox.documentation.service.*;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.json.JacksonModuleRegistrar;
 import springfox.documentation.spring.web.plugins.Docket;
 
@@ -40,12 +38,14 @@ import java.util.function.Consumer;
 
 import static java.lang.String.valueOf;
 import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static org.springframework.http.HttpMethod.*;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static springfox.documentation.builders.PathSelectors.ant;
 import static springfox.documentation.builders.RequestHandlerSelectors.basePackage;
 import static springfox.documentation.schema.AlternateTypeRules.newRule;
+import static springfox.documentation.service.HttpAuthenticationScheme.JWT_BEARER_BUILDER;
 import static springfox.documentation.spi.DocumentationType.OAS_30;
 
 @Configuration
@@ -74,6 +74,7 @@ public class SpringFoxConfig {
         Tag eighthTag = new Tag("Produtos", "Gerencia os produtos");
         Tag ninethTag = new Tag("Usuarios", "Gerencia os usuarios");
         Tag tenthTag = new Tag("Estatisticas", "Estatisticas da AlgaFood");
+        Tag eleventhTag = new Tag("Permissoes", "Gerencia as permissoes");
         TypeResolver typeResolver = new TypeResolver();
 
         return new Docket(OAS_30)
@@ -115,10 +116,31 @@ public class SpringFoxConfig {
                         RestaurantesBasicoModelOpenAPI.class))
                 .alternateTypeRules(newRule(typeResolver.resolve(CollectionModel.class, UsuarioModel.class),
                         UsuariosModelOpenAPI.class))
+                .securityContexts(singletonList(securityContext()))
+                .securitySchemes(List.of(authenticationScheme()))
+                .securityContexts(List.of(securityContext()))
                 .apiInfo(apiInfo())
                 .tags(firstTag, secondTag, thirdTag, fourthTag, fifthTag, sixthTag, seventhTag, eighthTag,
-                        ninethTag, tenthTag);
+                        ninethTag, tenthTag, eleventhTag);
     }
+
+    private SecurityContext securityContext() {
+        return SecurityContext.builder()
+                .securityReferences(securityReference()).build();
+    }
+
+    private List<SecurityReference> securityReference() {
+        AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
+        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
+        authorizationScopes[0] = authorizationScope;
+        SecurityReference authorization = new SecurityReference("Authorization", authorizationScopes);
+        return List.of(authorization);
+    }
+
+    private HttpAuthenticationScheme authenticationScheme() {
+        return JWT_BEARER_BUILDER.name("Authorization").build();
+    }
+
 
     @Bean
     public Docket apiDocketVersionTwo() {
@@ -147,6 +169,9 @@ public class SpringFoxConfig {
                         CidadesModelVersionTwoOpenAPI.class))
                 .alternateTypeRules(newRule(typeResolver.resolve(PagedModel.class, CozinhaModelVersionTwo.class),
                         CozinhasModelVersionTwoOpenAPI.class))
+                .securityContexts(singletonList(securityContext()))
+                .securitySchemes(List.of(authenticationScheme()))
+                .securityContexts(List.of(securityContext()))
                 .apiInfo(apiInfoVersionTwo())
                 .tags(firstTag, secondTag);
     }
