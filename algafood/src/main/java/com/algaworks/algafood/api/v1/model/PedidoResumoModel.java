@@ -35,7 +35,6 @@ public class PedidoResumoModel extends RepresentationModel<PedidoResumoModel> {
 
     private RestauranteApenasNomeModel restaurante;
 
-    @ApiModelProperty(example = "Fergus Tipton")
-    private String nomeCliente;
+    private UsuarioModel cliente;
 
 }

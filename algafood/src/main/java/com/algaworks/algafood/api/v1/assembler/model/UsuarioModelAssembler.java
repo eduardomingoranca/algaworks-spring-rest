@@ -3,6 +3,7 @@ package com.algaworks.algafood.api.v1.assembler.model;
 import com.algaworks.algafood.api.v1.controller.UsuarioController;
 import com.algaworks.algafood.api.v1.links.AlgaLinks;
 import com.algaworks.algafood.api.v1.model.UsuarioModel;
+import com.algaworks.algafood.core.security.AlgaSecurity;
 import com.algaworks.algafood.domain.model.Usuario;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ public class UsuarioModelAssembler extends RepresentationModelAssemblerSupport<U
     @Autowired
     private AlgaLinks algaLinks;
 
+    @Autowired
+    private AlgaSecurity algaSecurity;
+
     public UsuarioModelAssembler() {
         super(UsuarioController.class, UsuarioModel.class);
     }
@@ -29,11 +33,13 @@ public class UsuarioModelAssembler extends RepresentationModelAssemblerSupport<U
         UsuarioModel usuarioModel = createModelWithId(usuario.getId(), usuario);
         modelMapper.map(usuario, usuarioModel);
 
-        // criando um proxy para interceptar uma chamada.
-        // gerando a URL dinamicamente
-        usuarioModel.add(algaLinks.linkToUsuarios("usuarios"));
+        if (algaSecurity.podeConsultarUsuariosGruposPermissoes()) {
+            // criando um proxy para interceptar uma chamada.
+            // gerando a URL dinamicamente
+            usuarioModel.add(algaLinks.linkToUsuarios("usuarios"));
 
-        usuarioModel.add(algaLinks.linkToGruposUsuario(usuarioModel.getId(), "grupos-usuario"));
+            usuarioModel.add(algaLinks.linkToGruposUsuario(usuarioModel.getId(), "grupos-usuario"));
+        }
 
         return usuarioModel;
     }

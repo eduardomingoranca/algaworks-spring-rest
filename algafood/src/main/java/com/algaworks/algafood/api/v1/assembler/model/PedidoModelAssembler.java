@@ -31,8 +31,12 @@ public class PedidoModelAssembler extends RepresentationModelAssemblerSupport<Pe
     public PedidoModel toModel(Pedido pedido) {
         PedidoModel pedidoModel = createModelWithId(pedido.getId(), pedido);
         modelMapper.map(pedido, pedidoModel);
+        // Nao usei o metodo algaSecurity.podePesquisarPedidos(clienteId, restauranteId) aqui,
+        // porque na geracao do link, nao temos o id do cliente e do restaurante,
+        // entao precisamos saber apenas se a requisicao esta autenticada e tem o escopo de leitura
 
-        pedidoModel.add(algaLinks.linkToPedidos("pedidos"));
+        if (algaSecurity.podePesquisarPedidos())
+            pedidoModel.add(algaLinks.linkToPedidos("pedidos"));
 
         if (algaSecurity.podeGerenciarPedidos(pedido.getCodigo())) {
             if (podeSerConfirmado(pedido))
@@ -45,19 +49,25 @@ public class PedidoModelAssembler extends RepresentationModelAssemblerSupport<Pe
                 pedidoModel.add(algaLinks.linkToEntregaPedido(pedidoModel.getCodigo(), "entregar"));
         }
 
-        pedidoModel.getRestaurante().add(algaLinks.linkToRestaurante(pedido.getRestaurante().getId()));
+        if (algaSecurity.podeConsultarRestaurantes())
+            pedidoModel.getRestaurante().add(algaLinks.linkToRestaurante(pedido.getRestaurante().getId()));
 
-        pedidoModel.getCliente().add(algaLinks.linkToCliente(pedido.getCliente().getId()));
+        if (algaSecurity.podeConsultarUsuariosGruposPermissoes())
+            pedidoModel.getCliente().add(algaLinks.linkToCliente(pedido.getCliente().getId()));
 
-        // Passando null no segundo argumento, porque eh indiferente para a
-        // construcao da URL do recurso de forma de pagamento
-        pedidoModel.getFormaPagamento().add(algaLinks.linkToFormaPagamento(pedido.getFormaPagamento().getId()));
+        if (algaSecurity.podeConsultarFormasPagamento())
+            // Passando null no segundo argumento, porque eh indiferente para a
+            // construcao da URL do recurso de forma de pagamento
+            pedidoModel.getFormaPagamento().add(algaLinks.linkToFormaPagamento(pedido.getFormaPagamento().getId()));
 
-        pedidoModel.getEnderecoEntrega().getCidade().add(algaLinks.linkToCidade(pedido.getEnderecoEntrega()
-                .getCidade().getId()));
+        if (algaSecurity.podeConsultarCidades())
+            pedidoModel.getEnderecoEntrega().getCidade().add(algaLinks.linkToCidade(pedido.getEnderecoEntrega()
+                    .getCidade().getId()));
 
-        pedidoModel.getItens().forEach(item -> item.add(algaLinks.linkToProduto(pedidoModel.getRestaurante().getId(),
-                item.getProdutoId(), "produto")));
+        // Quem pode consultar restaurantes, tambem pode consultar os produtos dos restaurantes
+        if (algaSecurity.podeConsultarRestaurantes())
+            pedidoModel.getItens().forEach(item -> item.add(algaLinks.linkToProduto(pedidoModel.getRestaurante().getId(),
+                    item.getProdutoId(), "produto")));
 
         return pedidoModel;
     }

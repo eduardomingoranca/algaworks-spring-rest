@@ -3,14 +3,13 @@ package com.algaworks.algafood.api.v1.assembler.model;
 import com.algaworks.algafood.api.v1.controller.CidadeController;
 import com.algaworks.algafood.api.v1.links.AlgaLinks;
 import com.algaworks.algafood.api.v1.model.CidadeModel;
+import com.algaworks.algafood.core.security.AlgaSecurity;
 import com.algaworks.algafood.domain.model.Cidade;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @Component
 public class CidadeModelAssembler extends RepresentationModelAssemblerSupport<Cidade, CidadeModel> {
@@ -19,6 +18,9 @@ public class CidadeModelAssembler extends RepresentationModelAssemblerSupport<Ci
 
     @Autowired
     private AlgaLinks algaLinks;
+
+    @Autowired
+    private AlgaSecurity algaSecurity;
 
     public CidadeModelAssembler() {
         super(CidadeController.class, CidadeModel.class);
@@ -29,20 +31,25 @@ public class CidadeModelAssembler extends RepresentationModelAssemblerSupport<Ci
         CidadeModel cidadeModel = createModelWithId(cidade.getId(), cidade);
         modelMapper.map(cidade, cidadeModel);
 
-        // criando um proxy para interceptar uma chamada.
-        // gerando a URL dinamicamente
-        cidadeModel.add(algaLinks.linkToCidades("cidades"));
+        if (algaSecurity.podeConsultarCidades())
+            // criando um proxy para interceptar uma chamada.
+            // gerando a URL dinamicamente
+            cidadeModel.add(algaLinks.linkToCidades("cidades"));
 
-        cidadeModel.getEstado().add(algaLinks.linkToEstado(cidadeModel.getEstado().getId()));
+        if (algaSecurity.podeConsultarEstados())
+            cidadeModel.getEstado().add(algaLinks.linkToEstado(cidadeModel.getEstado().getId()));
 
         return cidadeModel;
     }
 
     @Override
     public CollectionModel<CidadeModel> toCollectionModel(Iterable<? extends Cidade> entities) {
-        return super.toCollectionModel(entities)
-                .add(linkTo(CidadeController.class)
-                        .withSelfRel());
+        CollectionModel<CidadeModel> collectionModel = super.toCollectionModel(entities);
+
+        if (algaSecurity.podeConsultarCidades())
+            collectionModel.add(algaLinks.linkToCidades("cidades"));
+
+        return collectionModel;
     }
 
 }
