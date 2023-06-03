@@ -20,7 +20,7 @@ public class NotificacaoClientePedidoCanceladoListener {
 
         EnvioEmailService.Mensagem mensagem = EnvioEmailService.Mensagem.builder()
                 .assunto(nomeRestaurante + " - Pedido cancelado")
-                .corpo("pedido-cancelado.html")
+                .corpo("emails/pedido-cancelado.html")
                 .variavel("pedido", pedido)
                 .destinatario(email)
                 .build();

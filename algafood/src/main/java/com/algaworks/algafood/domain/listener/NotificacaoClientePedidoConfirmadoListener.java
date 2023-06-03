@@ -25,7 +25,7 @@ public class NotificacaoClientePedidoConfirmadoListener {
 
         EnvioEmailService.Mensagem mensagem = EnvioEmailService.Mensagem.builder()
                 .assunto(nomeRestaurante + " - Pedido confirmado")
-                .corpo("pedido-confirmado.html")
+                .corpo("emails/pedido-confirmado.html")
                 .variavel("pedido", pedido)
                 .destinatario(email)
                 .build();
