@@ -1,7 +1,8 @@
 const config = {
   clientId: "foodanalytics",
-  authorizeUrl: "http://127.0.0.1:8081/oauth/authorize",
-  tokenUrl: "http://127.0.0.1:8081/oauth/token",
+  clientSecret: "food123",
+  authorizeUrl: "http://127.0.0.1:8080/oauth/authorize",
+  tokenUrl: "http://127.0.0.1:8080/oauth/token",
   callbackUrl: "http://127.0.0.1:8082",
   cozinhasUrl: "http://127.0.0.1:8080/v1/cozinhas"
 };
@@ -18,11 +19,11 @@ function generateCodeVerifier() {
 function generateRandomString(length) {
   let text = "";
   let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  
+
   for (let i = 0; i < length; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
   }
-  
+
   return text;
 }
 
@@ -42,51 +43,56 @@ function consultar() {
   alert("Consultando recurso com access token " + accessToken);
 
   $.ajax({
-    url: config.cozinhasUrl,
-    type: "get",
+      url: config.cozinhasUrl,
+      type: "get",
 
-    beforeSend: function(request) {
-      request.setRequestHeader("Authorization", "Bearer " + accessToken);
-    },
+      beforeSend: function (request) {
+          request.setRequestHeader("Authorization", "Bearer " + accessToken);
+      },
 
-    success: function(response) {
-      var json = JSON.stringify(response);
-      $("#resultado").text(json);
-    },
+      success: function (response) {
+          var json = JSON.stringify(response);
+          $("#resultado").text(json);
+      },
 
-    error: function(error) {
-      alert("Erro ao consultar recurso");
-    }
+      error: function (error) {
+          alert("Erro ao consultar recurso");
+      }
   });
 }
 
 function gerarAccessToken(code) {
   alert("Gerando access token com code " + code);
- 
+
   let codeVerifier = getCodeVerifier();
+
+  let clientAuth = btoa(config.clientId + ":" + config.clientSecret);
 
   let params = new URLSearchParams();
   params.append("grant_type", "authorization_code");
   params.append("code", code);
   params.append("redirect_uri", config.callbackUrl);
-  params.append("client_id", config.clientId);
   params.append("code_verifier", codeVerifier);
 
   $.ajax({
-    url: config.tokenUrl,
-    type: "post",
-    data: params.toString(),
-    contentType: "application/x-www-form-urlencoded",
+      url: config.tokenUrl,
+      type: "post",
+      data: params.toString(),
+      contentType: "application/x-www-form-urlencoded",
 
-    success: function(response) {
-      accessToken = response.access_token;
+      beforeSend: function(request) {
+          request.setRequestHeader("Authorization", "Basic " + clientAuth);
+      },    
 
-      alert("Access token gerado: " + accessToken);
-    },
+      success: function (response) {
+          accessToken = response.access_token;
 
-    error: function(error) {
-      alert("Erro ao gerar access key");
-    }
+          alert("Access token gerado: " + accessToken);
+      },
+
+      error: function (error) {
+          alert("Erro ao gerar access key");
+      }
   });
 }
 
@@ -97,14 +103,14 @@ function login() {
   window.location.href = `${config.authorizeUrl}?response_type=code&client_id=${config.clientId}&redirect_uri=${config.callbackUrl}&code_challenge_method=s256&code_challenge=${codeChallenge}`;
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
   let params = new URLSearchParams(window.location.search);
 
   let code = params.get("code");
 
   if (code) {
-    // window.history.replaceState(null, null, "/");
-    gerarAccessToken(code);
+      // window.history.replaceState(null, null, "/");
+      gerarAccessToken(code);
   }
 });
 
