@@ -3,6 +3,10 @@ package com.algaworks.algafood.core.security.authorizationserver.config;
 import com.algaworks.algafood.core.security.authorizationserver.config.token.PkceAuthorizationCodeTokenGranter;
 import com.algaworks.algafood.core.security.authorizationserver.config.token.jwt.JwtCustomClaimsTokenEnhancer;
 import com.algaworks.algafood.core.security.authorizationserver.config.token.jwt.JwtKeyStoreProperties;
+import com.nimbusds.jose.JWSAlgorithm;
+import com.nimbusds.jose.jwk.JWKSet;
+import com.nimbusds.jose.jwk.KeyUse;
+import com.nimbusds.jose.jwk.RSAKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,8 +28,11 @@ import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFacto
 
 import javax.sql.DataSource;
 import java.security.KeyPair;
+import java.security.interfaces.RSAPublicKey;
 import java.util.List;
 
+import static com.nimbusds.jose.JWSAlgorithm.RS256;
+import static com.nimbusds.jose.jwk.KeyUse.SIGNATURE;
 import static java.util.Arrays.asList;
 
 @Configuration
@@ -85,9 +92,26 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     }
 
     @Bean
+    public JWKSet jwkSet() {
+        // passando a chave publica
+        RSAKey.Builder builder = new RSAKey.Builder((RSAPublicKey) keyPair().getPublic())
+                .keyUse(SIGNATURE)
+                .algorithm(RS256)
+                .keyID("algafood-key-id");
+
+        return new JWKSet(builder.build());
+    }
+
+    @Bean
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
         JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
 
+        jwtAccessTokenConverter.setKeyPair(keyPair());
+
+        return jwtAccessTokenConverter;
+    }
+
+    private KeyPair keyPair() {
         // senha para abrir o arquivo jks
         String keyStorePass = keyStoreProperties.getPassword();
         // nome do conjunto de chaves
@@ -97,12 +121,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(keyStoreProperties.getJksLocation(),
                 keyStorePass.toCharArray());
         // obtendo o par de chaves
-        KeyPair keyPair = keyStoreKeyFactory.getKeyPair(keyPairAlias);
-
-        jwtAccessTokenConverter.setKeyPair(keyPair);
-
-        return jwtAccessTokenConverter;
+        return keyStoreKeyFactory.getKeyPair(keyPairAlias);
     }
+
 
     private TokenGranter tokenGranter(AuthorizationServerEndpointsConfigurer endpoints) {
         PkceAuthorizationCodeTokenGranter pkceAuthorizationCodeTokenGranter = new PkceAuthorizationCodeTokenGranter(
