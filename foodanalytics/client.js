@@ -100,7 +100,7 @@ function login() {
   let codeVerifier = generateCodeVerifier();
   let codeChallenge = generateCodeChallenge(codeVerifier);
 
-  window.location.href = `${config.authorizeUrl}?response_type=code&client_id=${config.clientId}&redirect_uri=${config.callbackUrl}&code_challenge_method=s256&code_challenge=${codeChallenge}`;
+  window.location.href = `${config.authorizeUrl}?response_type=code&client_id=${config.clientId}&state=abc&redirect_uri=${config.callbackUrl};
 }
 
 $(document).ready(function () {
