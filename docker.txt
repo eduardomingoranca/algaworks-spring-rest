@@ -1,0 +1,20 @@
+O que eh um container?
+Container eh um pacote que executa dentro dele todos os softwares, bibliotecas e dependencias
+necessarias fazendo isso com alto nivel de portabilidade de forma repetivel e confiavel.
+
+O que eh imagem de um container?
+Imagem do container eh um binario onde possui as configuracoes necessarias, para executar
+a aplicacao completa.
+
+O que eh o docker?
+Docker eh uma plataforma para construir/executar aplicacoes usando containers em varios
+tipos de ambientes.
+O container docker nao eh uma maquina virtual porque um container docker nao levanta
+um sistema operacional inteiro pois o docker isola esses recursos.
+
+Por que usar Docker?
+Alto nivel de portabilidade.
+Compatibilidade de sistemas operacionais.
+Uso amigavel.
+Evita problemas em diferentes ambientes.
+Velocidade no desenvolvimento.
