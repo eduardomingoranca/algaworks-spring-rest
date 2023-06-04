@@ -1,0 +1,5 @@
+Arquitetura do Docker
+
+Ao executar os comandos docker (Docker CLI) se comunica com o host docker daemon atraves de uma API
+Os container sao a instancia executavel de uma imagem e as imagens que estao dentro do docker daemon.
+O docker registry armazena imagens do docker onde o docker daemon realiza o download.
