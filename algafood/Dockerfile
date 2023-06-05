@@ -4,7 +4,7 @@ WORKDIR /app
 
 ARG JAR_FILE
 
-COPY target/{JAR_FILE} /app/api.jar
+COPY target/${JAR_FILE} /app/api.jar
 
 EXPOSE 8080
 
