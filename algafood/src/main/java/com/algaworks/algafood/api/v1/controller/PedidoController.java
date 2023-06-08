@@ -13,8 +13,6 @@ import com.algaworks.algafood.domain.exception.*;
 import com.algaworks.algafood.domain.filter.PedidoFilter;
 import com.algaworks.algafood.domain.model.Pedido;
 import com.algaworks.algafood.domain.service.EmissaoPedidoService;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -49,8 +47,6 @@ public class PedidoController implements PedidoControllerOpenAPI {
 
     @CheckSecurity.Pedidos.PodePesquisar
     @Override
-    @ApiImplicitParams(@ApiImplicitParam(value = "Nomes das propriedades para filtrar na resposta, separados por virgula",
-            name = "campos", paramType = "query", type = "string"))
     @GetMapping
     public PagedModel<PedidoResumoModel> pesquisar(PedidoFilter filtro,
                                                    @PageableDefault(size = 10) Pageable pageable) {
@@ -66,8 +62,6 @@ public class PedidoController implements PedidoControllerOpenAPI {
 
     @CheckSecurity.Pedidos.PodeBuscar
     @Override
-    @ApiImplicitParams(@ApiImplicitParam(value = "Nomes das propriedades para filtrar na resposta, separados por virgula",
-            name = "campos", paramType = "query", type = "string"))
     @GetMapping("/{codigoPedido}")
     public PedidoModel buscar(@PathVariable("codigoPedido") String id) {
         Pedido pedido = emissaoPedido.buscarOuFalhar(id);
