@@ -9,9 +9,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.CollectionModel;
 
 @SecurityRequirement(name = "security_auth")
+@Tag(name = "Cidades")
 public interface CidadeControllerOpenAPI {
 
     CollectionModel<CidadeModel> listar();
