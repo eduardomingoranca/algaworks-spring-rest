@@ -3,16 +3,13 @@ package com.algaworks.algafood.infrastructure.service.mail.smtp;
 import com.algaworks.algafood.core.mail.property.EmailProperties;
 import com.algaworks.algafood.domain.service.mail.EnvioEmailService;
 import com.algaworks.algafood.infrastructure.service.mail.exception.EmailException;
-import freemarker.template.Configuration;
-import freemarker.template.Template;
+import com.algaworks.algafood.infrastructure.service.mail.template.ProcessadorEmailTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-
-import static org.springframework.ui.freemarker.FreeMarkerTemplateUtils.processTemplateIntoString;
 
 public class SMTPEnvioEmailService implements EnvioEmailService {
     @Autowired
@@ -22,7 +19,7 @@ public class SMTPEnvioEmailService implements EnvioEmailService {
     private EmailProperties emailProperties;
 
     @Autowired
-    private Configuration freemarkerConfig;
+    private ProcessadorEmailTemplate processadorEmailTemplate;
 
     @Override
     public void enviar(Mensagem mensagem) {
@@ -38,7 +35,7 @@ public class SMTPEnvioEmailService implements EnvioEmailService {
     }
 
     protected MimeMessage criarMimeMessage(Mensagem mensagem) throws MessagingException {
-        String corpo = processarTemplate(mensagem);
+        String corpo = processadorEmailTemplate.processarTemplate(mensagem);
 
         // mensagem que sera enviada por email
         MimeMessage mimeMessage = mailSender.createMimeMessage();
@@ -51,19 +48,6 @@ public class SMTPEnvioEmailService implements EnvioEmailService {
         helper.setText(corpo, true);
 
         return mimeMessage;
-    }
-
-    protected String processarTemplate(Mensagem mensagem) {
-        try {
-            // obtendo o nome do arquivo do template
-            Template template = freemarkerConfig.getTemplate(mensagem.getCorpo());
-
-            // obtem o html precessar o arquivo utilizando os atributos do objeto java
-            // e retorna em string output
-            return processTemplateIntoString(template, mensagem.getVariaveis());
-        } catch (Exception e) {
-            throw new EmailException("Nao foi possivel montar o template do email.", e);
-        }
     }
 
 }
