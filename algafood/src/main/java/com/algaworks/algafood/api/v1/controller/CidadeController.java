@@ -34,7 +34,6 @@ public class CidadeController implements CidadeControllerOpenAPI {
     private CidadeModelAssembler cidadeModelAssembler;
 
     @CheckSecurity.Cidades.PodeConsultar
-    @Deprecated
     @Override
     @GetMapping
     public CollectionModel<CidadeModel> listar() {

@@ -5,8 +5,10 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
 
+@SecurityRequirement(name = "security_auth")
 public interface FluxoPedidoControllerOpenAPI {
     @ApiResponses({
             @ApiResponse(responseCode = "400", description = "Codigo do pedido invalido.", content =
