@@ -21,6 +21,7 @@ import org.springframework.security.oauth2.provider.CompositeTokenGranter;
 import org.springframework.security.oauth2.provider.TokenGranter;
 import org.springframework.security.oauth2.provider.approval.ApprovalStore;
 import org.springframework.security.oauth2.provider.approval.TokenApprovalStore;
+import org.springframework.security.oauth2.provider.code.JdbcAuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
@@ -70,12 +71,15 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         JwtCustomClaimsTokenEnhancer jwtCustomClaimsTokenEnhancer = new JwtCustomClaimsTokenEnhancer();
         enhancerChain.setTokenEnhancers(List.of(jwtCustomClaimsTokenEnhancer, jwtAccessTokenConverter()));
 
+        JdbcAuthorizationCodeServices authorizationCodeServices = new JdbcAuthorizationCodeServices(dataSource);
+
         // atraves do authentication manager o authorization server
         // valida o usuario e senha do usuario final que eh passado
         // na autenticacao via API
         endpoints
                 .authenticationManager(authenticationManager)
                 .userDetailsService(userDetailsService)
+                .authorizationCodeServices(authorizationCodeServices)
                 // nao reutiza o refresh token
                 .reuseRefreshTokens(false)
                 .accessTokenConverter(jwtAccessTokenConverter())
