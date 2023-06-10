@@ -64,29 +64,48 @@ public class SpringDocConfig {
 
     @Bean
     public OpenApiCustomiser openApiCustomiser() {
-        return openApi -> {
-            openApi.getPaths()
-                    .values()
-                    .stream()
-                    .flatMap(pathItem -> pathItem.readOperations().stream())
-                    .forEach(operation -> {
-                        ApiResponses responses = operation.getResponses();
+        return openApi -> openApi.getPaths()
+                .values()
+                .forEach(pathItem -> pathItem.readOperationsMap()
+                        .forEach(((httpMethod, operation) -> {
+                                    ApiResponses responses = operation.getResponses();
+                                    ApiResponse responseNotFound = new ApiResponse()
+                                            .description("Recurso nao encontrado.");
 
-                        ApiResponse apiResponseNotFound = new ApiResponse()
-                                .description("Recurso nao encontrado");
+                                    ApiResponse responseNotAcceptable = new ApiResponse()
+                                            .description("Recurso nao possui representacao que poderia " +
+                                                    "ser aceita pelo consumidor.");
 
-                        ApiResponse apiResponseInternalError = new ApiResponse()
-                                .description("Erro interno no servidor");
+                                    ApiResponse responseInternalServerError = new ApiResponse()
+                                            .description("Erro interno no servidor.");
 
-                        ApiResponse apiResponseNotAcceptable = new ApiResponse()
-                                .description("Recurso nao possui uma representacao que poderia ser aceita " +
-                                        "pelo consumidor.");
+                                    ApiResponse responseBadRequest = new ApiResponse()
+                                            .description("Requisicao invalida.");
 
-                        responses.addApiResponse("500", apiResponseInternalError);
-                        responses.addApiResponse("400", apiResponseNotFound);
-                        responses.addApiResponse("406", apiResponseNotAcceptable);
-                    });
-        };
+                                    switch (httpMethod) {
+                                        case GET -> {
+                                            responses.addApiResponse("404", responseNotFound);
+                                            responses.addApiResponse("406", responseNotAcceptable);
+                                            responses.addApiResponse("500", responseInternalServerError);
+                                        }
+                                        case POST -> {
+                                            responses.addApiResponse("400", responseBadRequest);
+                                            responses.addApiResponse("500", responseInternalServerError);
+                                        }
+                                        case PUT -> {
+                                            responses.addApiResponse("404", responseNotFound);
+                                            responses.addApiResponse("400", responseBadRequest);
+                                            responses.addApiResponse("500", responseInternalServerError);
+                                        }
+                                        case DELETE -> {
+                                            responses.addApiResponse("404", responseNotFound);
+                                            responses.addApiResponse("500", responseInternalServerError);
+                                        }
+                                        default -> responses.addApiResponse("500", responseInternalServerError);
+                                    }
+                                })
+                        )
+                );
     }
 
 }
