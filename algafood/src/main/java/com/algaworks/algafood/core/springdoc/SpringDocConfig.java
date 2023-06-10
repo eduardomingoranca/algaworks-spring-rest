@@ -1,12 +1,16 @@
 package com.algaworks.algafood.core.springdoc;
 
+import com.algaworks.algafood.api.exceptionhandler.model.Problem;
+import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.oas.annotations.security.OAuthFlow;
 import io.swagger.v3.oas.annotations.security.OAuthFlows;
 import io.swagger.v3.oas.annotations.security.OAuthScope;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import io.swagger.v3.oas.models.tags.Tag;
@@ -14,6 +18,9 @@ import org.springdoc.core.GroupedOpenApi;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static io.swagger.v3.oas.annotations.enums.SecuritySchemeType.OAUTH2;
 import static java.util.Collections.singletonList;
@@ -55,9 +62,13 @@ public class SpringDocConfig {
                             .name("Cidades")
                             .description("Gerencia as cidades");
 
+                    Components componentSchema = new Components()
+                            .schemas(gerarSchema());
+
                     openApi.info(info)
                             .externalDocs(externalDocs)
-                            .tags(singletonList(cidade));
+                            .tags(singletonList(cidade))
+                            .components(componentSchema);
                 })
                 .build();
     }
@@ -106,6 +117,18 @@ public class SpringDocConfig {
                                 })
                         )
                 );
+    }
+
+    private Map<String, Schema> gerarSchema() {
+        final Map<String, Schema> schemaMap = new HashMap<>();
+
+        Map<String, Schema> problemSchema = ModelConverters.getInstance().read(Problem.class);
+        Map<String, Schema> problemObjectSchema = ModelConverters.getInstance().read(Problem.Object.class);
+
+        schemaMap.putAll(problemSchema);
+        schemaMap.putAll(problemObjectSchema);
+
+        return schemaMap;
     }
 
 }
