@@ -7,13 +7,13 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.responses.ApiResponse;
+import io.swagger.v3.oas.models.responses.ApiResponses;
 import io.swagger.v3.oas.models.tags.Tag;
 import org.springdoc.core.GroupedOpenApi;
+import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.Arrays;
-import java.util.Collections;
 
 import static io.swagger.v3.oas.annotations.enums.SecuritySchemeType.OAUTH2;
 import static java.util.Collections.singletonList;
@@ -60,6 +60,33 @@ public class SpringDocConfig {
                             .tags(singletonList(cidade));
                 })
                 .build();
+    }
+
+    @Bean
+    public OpenApiCustomiser openApiCustomiser() {
+        return openApi -> {
+            openApi.getPaths()
+                    .values()
+                    .stream()
+                    .flatMap(pathItem -> pathItem.readOperations().stream())
+                    .forEach(operation -> {
+                        ApiResponses responses = operation.getResponses();
+
+                        ApiResponse apiResponseNotFound = new ApiResponse()
+                                .description("Recurso nao encontrado");
+
+                        ApiResponse apiResponseInternalError = new ApiResponse()
+                                .description("Erro interno no servidor");
+
+                        ApiResponse apiResponseNotAcceptable = new ApiResponse()
+                                .description("Recurso nao possui uma representacao que poderia ser aceita " +
+                                        "pelo consumidor.");
+
+                        responses.addApiResponse("500", apiResponseInternalError);
+                        responses.addApiResponse("400", apiResponseNotFound);
+                        responses.addApiResponse("406", apiResponseNotAcceptable);
+                    });
+        };
     }
 
 }
