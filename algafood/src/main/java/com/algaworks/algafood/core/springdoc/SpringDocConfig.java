@@ -82,6 +82,9 @@ public class SpringDocConfig {
         Tag estado = new Tag().name("Estados")
                 .description("Gerencia os estados");
 
+        Tag produto = new Tag().name("Produtos")
+                .description("Gerencia os produtos");
+
         Components components = new Components()
                 .schemas(gerarSchemas())
                 .responses(gerarResponses());
@@ -90,7 +93,7 @@ public class SpringDocConfig {
                 .info(info)
                 .externalDocs(externalDocs)
                 .tags(asList(cidade, grupo, cozinha, formaPagamento,
-                        pedido, restaurante, estado))
+                        pedido, restaurante, estado, produto))
                 .components(components);
     }
 
