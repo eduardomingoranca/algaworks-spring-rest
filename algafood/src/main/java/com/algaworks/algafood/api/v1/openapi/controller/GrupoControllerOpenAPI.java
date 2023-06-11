@@ -19,12 +19,12 @@ public interface GrupoControllerOpenAPI {
     GrupoModel buscar(@Parameter(description = "ID de um grupo", example = "1", required = true) Long id);
 
     @Operation(summary = "Cadastra um grupo")
-    GrupoModel adicionar(@RequestBody(description = "Representação de um novo grupo", required = true)
+    GrupoModel adicionar(@RequestBody(description = "Representacao de um novo grupo", required = true)
                          GrupoInput grupoInput);
 
     @Operation(summary = "Atualiza um grupo por ID")
     GrupoModel atualizar(@Parameter(description = "ID de um grupo", example = "1", required = true) Long id,
-                         @RequestBody(description = "Representação de um grupo com os novos dados", required = true)
+                         @RequestBody(description = "Representacao de um grupo com os novos dados", required = true)
                          GrupoInput grupoInput);
 
 }
