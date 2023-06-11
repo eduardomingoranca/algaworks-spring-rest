@@ -12,6 +12,7 @@ import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.service.CadastroUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,6 +21,7 @@ import java.util.List;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.ResponseEntity.noContent;
 
 @RestController
 @RequestMapping(value = "/v1/usuarios", produces = APPLICATION_JSON_VALUE)
@@ -80,9 +82,10 @@ public class UsuarioController implements UsuarioControllerOpenAPI {
     @Override
     @PutMapping("/{usuarioID}/senha")
     @ResponseStatus(NO_CONTENT)
-    public void alterarSenha(@PathVariable("usuarioID") Long id,
-                             @RequestBody @Valid UsuarioPasswordInput senha) {
+    public ResponseEntity<Void> alterarSenha(@PathVariable("usuarioID") Long id,
+                                             @RequestBody @Valid UsuarioPasswordInput senha) {
         cadastroUsuario.alterarSenha(id, senha.getSenhaAtual(), senha.getNovaSenha());
+        return noContent().build();
     }
 
 }
