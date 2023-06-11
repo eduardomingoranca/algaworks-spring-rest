@@ -25,7 +25,7 @@ import java.util.Map;
 
 import static io.swagger.v3.core.converter.ModelConverters.getInstance;
 import static io.swagger.v3.oas.annotations.enums.SecuritySchemeType.OAUTH2;
-import static java.util.Collections.singletonList;
+import static java.util.Arrays.asList;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Configuration
@@ -70,13 +70,17 @@ public class SpringDocConfig {
                             .name("Cidades")
                             .description("Gerencia as cidades");
 
+                    Tag grupo = new Tag()
+                            .name("Grupos")
+                            .description("Gerencia os grupos");
+
                     Components componentSchema = new Components()
                             .schemas(gerarSchema())
                             .responses(gerarResponses());
 
                     openApi.info(info)
                             .externalDocs(externalDocs)
-                            .tags(singletonList(cidade))
+                            .tags(asList(cidade, grupo))
                             .components(componentSchema);
                 })
                 .build();
