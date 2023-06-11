@@ -23,6 +23,8 @@ public interface CidadeControllerOpenAPI {
     @Operation(summary = "Busca uma cidade por ID", responses = {
             @ApiResponse(responseCode = "200"),
             @ApiResponse(responseCode = "400", description = "ID da cidade invalido",
+                    content = @Content(schema = @Schema(ref = "Problema"))),
+            @ApiResponse(responseCode = "404", description = "Cidade nao encontrada",
                     content = @Content(schema = @Schema(ref = "Problema")))
     })
     CidadeModel buscar(@Parameter(description = "ID de uma cidade", example = "1", required = true) Long id);
@@ -32,7 +34,13 @@ public interface CidadeControllerOpenAPI {
     CidadeModel adicionar(@RequestBody(description = "Representacao de uma nova cidade", required = true)
                           CidadeInput cidadeInput);
 
-    @Operation(summary = "Atualizado uma cidade por ID")
+    @Operation(summary = "Atualizado uma cidade por ID", responses = {
+            @ApiResponse(responseCode = "200"),
+            @ApiResponse(responseCode = "400", description = "ID da cidade invalido",
+                    content = @Content(schema = @Schema(ref = "Problema"))),
+            @ApiResponse(responseCode = "404", description = "Cidade nao encontrada",
+                    content = @Content(schema = @Schema(ref = "Problema")))
+    })
     CidadeModel atualizar(@Parameter(description = "ID de uma cidade", example = "1", required = true) Long id,
                           @RequestBody(description = "Representacao de uma cidade com dados atualizados", required = true)
                           CidadeInput cidadeInput);
