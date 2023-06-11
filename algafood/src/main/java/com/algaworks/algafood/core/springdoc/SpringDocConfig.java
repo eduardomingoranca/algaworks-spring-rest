@@ -73,6 +73,9 @@ public class SpringDocConfig {
         Tag formaPagamento = new Tag().name("Formas de pagamento")
                 .description("Gerencia as formas de pagamento");
 
+        Tag pedido = new Tag().name("Pedidos")
+                .description("Gerencia os pedidos");
+
         Components components = new Components()
                 .schemas(gerarSchemas())
                 .responses(gerarResponses());
@@ -80,7 +83,7 @@ public class SpringDocConfig {
         return new OpenAPI()
                 .info(info)
                 .externalDocs(externalDocs)
-                .tags(asList(cidade, grupo, cozinha, formaPagamento))
+                .tags(asList(cidade, grupo, cozinha, formaPagamento, pedido))
                 .components(components);
     }
 
