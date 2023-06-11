@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.security.OAuthScope;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.ExternalDocumentation;
+import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.media.Content;
@@ -15,7 +16,6 @@ import io.swagger.v3.oas.models.media.Schema;
 import io.swagger.v3.oas.models.responses.ApiResponse;
 import io.swagger.v3.oas.models.responses.ApiResponses;
 import io.swagger.v3.oas.models.tags.Tag;
-import org.springdoc.core.GroupedOpenApi;
 import org.springdoc.core.customizers.OpenApiCustomiser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -45,83 +45,75 @@ public class SpringDocConfig {
     private final static String NOT_ACCEPTABLE = "NotAcceptableResponse";
     private final static String INTERNAL_SERVER_ERROR = "InternalServerErrorResponse";
 
-
     @Bean
-    public GroupedOpenApi groupedOpenApi() {
-        return GroupedOpenApi.builder()
-                .group("Algafood API")
-                .pathsToMatch("/v1/**")
-                .addOpenApiCustomiser(openApi -> {
-                    License license = new License()
-                            .name("Apache 2.0")
-                            .url("http://springdoc.com");
+    public OpenAPI openAPI() {
+        License license = new License()
+                .name("Apache 2.0")
+                .url("http://springdoc.com");
 
-                    Info info = new Info()
-                            .title("Algafood API")
-                            .version("v1")
-                            .description("REST API do Algafood")
-                            .license(license);
+        Info info = new Info()
+                .title("AlgaFood API")
+                .version("v1")
+                .description("REST API do AlgaFood")
+                .license(license);
 
-                    ExternalDocumentation externalDocs = new ExternalDocumentation()
-                            .description("AlgaWorks")
-                            .url("https://algaworks.com");
+        ExternalDocumentation externalDocs = new ExternalDocumentation()
+                .description("AlgaWorks")
+                .url("https://algaworks.com");
 
-                    Tag cidade = new Tag()
-                            .name("Cidades")
-                            .description("Gerencia as cidades");
+        Tag cidade = new Tag().name("Cidades")
+                .description("Gerencia as cidades");
 
-                    Tag grupo = new Tag()
-                            .name("Grupos")
-                            .description("Gerencia os grupos");
+        Tag grupo = new Tag().name("Grupos")
+                .description("Gerencia os grupos");
 
-                    Components componentSchema = new Components()
-                            .schemas(gerarSchema())
-                            .responses(gerarResponses());
+        Tag cozinha = new Tag().name("Cozinhas")
+                .description("Gerencia as cozinhas");
 
-                    openApi.info(info)
-                            .externalDocs(externalDocs)
-                            .tags(asList(cidade, grupo))
-                            .components(componentSchema);
-                })
-                .build();
+        Components components = new Components()
+                .schemas(gerarSchemas())
+                .responses(gerarResponses());
+
+        return new OpenAPI()
+                .info(info)
+                .externalDocs(externalDocs)
+                .tags(asList(cidade, grupo, cozinha))
+                .components(components);
     }
 
     @Bean
     public OpenApiCustomiser openApiCustomiser() {
-        return openApi -> openApi.getPaths()
-                .values()
-                .forEach(pathItem -> pathItem.readOperationsMap()
-                        .forEach(((httpMethod, operation) -> {
-                                    ApiResponses responses = operation.getResponses();
-                                    ApiResponse responseNotFound = new ApiResponse().
-                                            $ref(NOT_FOUND);
+            return openApi -> {
+            openApi.getPaths()
+                    .values()
+                    .forEach(pathItem -> pathItem.readOperationsMap()
+                            .forEach((httpMethod, operation) -> {
+                                ApiResponses responses = operation.getResponses();
+                                ApiResponse apiResponseNotAcceptable = new ApiResponse()
+                                        .$ref(NOT_ACCEPTABLE);
+                                ApiResponse apiResponseInternalServerError = new ApiResponse()
+                                        .$ref(INTERNAL_SERVER_ERROR);
+                                ApiResponse apiResponseBadRequest = new ApiResponse()
+                                        .$ref(BAD_REQUEST);
 
-                                    ApiResponse responseNotAcceptable = new ApiResponse()
-                                            .$ref(NOT_ACCEPTABLE);
-
-                                    ApiResponse responseInternalServerError = new ApiResponse()
-                                            .$ref(INTERNAL_SERVER_ERROR);
-
-                                    ApiResponse responseBadRequest = new ApiResponse()
-                                            .$ref(BAD_REQUEST);
-
-                                    switch (httpMethod) {
-                                        case GET -> {
-                                            responses.addApiResponse("406", responseNotAcceptable);
-                                            responses.addApiResponse("500", responseInternalServerError);
-                                        }
-                                        case POST, PUT -> {
-                                            responses.addApiResponse("400", responseBadRequest);
-                                            responses.addApiResponse("500", responseInternalServerError);
-                                        }
-                                        default -> responses.addApiResponse("500", responseInternalServerError);
+                                switch (httpMethod) {
+                                    case GET -> {
+                                        responses.addApiResponse("406", apiResponseNotAcceptable);
+                                        responses.addApiResponse("500", apiResponseInternalServerError);
                                     }
-                                })
-                        )
-                );
+                                    case POST, PUT -> {
+                                        responses.addApiResponse("400", apiResponseBadRequest);
+                                        responses.addApiResponse("500", apiResponseInternalServerError);
+                                    }
+                                    default ->
+                                            responses.addApiResponse("500", apiResponseInternalServerError);
+                                }
+                            })
+                    );
+        };
     }
 
-    private Map<String, Schema> gerarSchema() {
+    private Map<String, Schema> gerarSchemas() {
         final Map<String, Schema> schemaMap = new HashMap<>();
 
         Map<String, Schema> problemSchema = getInstance().read(Problem.class);
@@ -136,11 +128,8 @@ public class SpringDocConfig {
     private Map<String, ApiResponse> gerarResponses() {
         final Map<String, ApiResponse> apiResponseMap = new HashMap<>();
 
-        Schema problema = new Schema<Problem>()
-                .$ref("Problema");
-
-        MediaType problemaMediaType = new MediaType()
-                .schema(problema);
+        Schema problema = new Schema<Problem>().$ref("Problema");
+        MediaType problemaMediaType = new MediaType().schema(problema);
 
         Content content = new Content()
                 .addMediaType(APPLICATION_JSON_VALUE,
@@ -155,11 +144,11 @@ public class SpringDocConfig {
                 .content(content);
 
         ApiResponse notAcceptableResponse = new ApiResponse()
-                .description("Recurso nao possui representacao que poderia ser aceita pelo consumidor.")
+                .description("Recurso nao possui representacao que poderia ser aceita pelo consumidor")
                 .content(content);
 
         ApiResponse internalServerErrorResponse = new ApiResponse()
-                .description("Erro interno no servidor.")
+                .description("Erro interno no servidor")
                 .content(content);
 
         apiResponseMap.put(BAD_REQUEST, badRequestResponse);

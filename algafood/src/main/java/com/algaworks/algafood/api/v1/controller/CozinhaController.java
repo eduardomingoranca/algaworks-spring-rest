@@ -15,12 +15,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.ResponseEntity.noContent;
 
 // SLF4J => eh uma biblioteca que abstrai o codigos de varios frameworks
 // de logging essa biliboteca funciona como uma fachada, repassando as
@@ -91,8 +93,9 @@ public class CozinhaController implements CozinhaControllerOpenAPI {
     @Override
     @DeleteMapping("/{cozinhaId}")
     @ResponseStatus(NO_CONTENT)
-    public void remover(@PathVariable("cozinhaId") Long id) {
+    public ResponseEntity<Void> remover(@PathVariable("cozinhaId") Long id) {
         cadastroCozinha.excluir(id);
+        return noContent().build();
     }
 
 }
