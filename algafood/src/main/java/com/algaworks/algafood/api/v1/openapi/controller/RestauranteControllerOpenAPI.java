@@ -23,11 +23,11 @@ import static io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY;
 @Tag(name = "Restaurantes")
 public interface RestauranteControllerOpenAPI {
 
-    @Operation(parameters = {
+    @Operation(summary = "Lista restaurantes", parameters = {
             @Parameter(name = "projecao",
-            description = "Nome da projecao",
-            example = "apenas-nome",
-            in = QUERY)
+                    description = "Nome da projecao",
+                    example = "apenas-nome",
+                    in = QUERY)
     })
     CollectionModel<RestauranteBasicoModel> listar();
 
