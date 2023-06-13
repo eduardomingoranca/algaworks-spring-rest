@@ -88,6 +88,9 @@ public class SpringDocConfig {
         Tag usuario = new Tag().name("Usuarios")
                 .description("Gerencia os usuarios");
 
+        Tag estatistica = new Tag().name("Estatisticas")
+                .description("Estatisticas da AlgaFood");
+
         Components components = new Components()
                 .schemas(gerarSchemas())
                 .responses(gerarResponses());
@@ -96,40 +99,38 @@ public class SpringDocConfig {
                 .info(info)
                 .externalDocs(externalDocs)
                 .tags(asList(cidade, grupo, cozinha, formaPagamento,
-                        pedido, restaurante, estado, produto, usuario))
+                        pedido, restaurante, estado, produto, usuario,
+                        estatistica))
                 .components(components);
     }
 
     @Bean
     public OpenApiCustomiser openApiCustomiser() {
-            return openApi -> {
-            openApi.getPaths()
-                    .values()
-                    .forEach(pathItem -> pathItem.readOperationsMap()
-                            .forEach((httpMethod, operation) -> {
-                                ApiResponses responses = operation.getResponses();
-                                ApiResponse apiResponseNotAcceptable = new ApiResponse()
-                                        .$ref(NOT_ACCEPTABLE);
-                                ApiResponse apiResponseInternalServerError = new ApiResponse()
-                                        .$ref(INTERNAL_SERVER_ERROR);
-                                ApiResponse apiResponseBadRequest = new ApiResponse()
-                                        .$ref(BAD_REQUEST);
+        return openApi -> openApi.getPaths()
+                .values()
+                .forEach(pathItem -> pathItem.readOperationsMap()
+                        .forEach((httpMethod, operation) -> {
+                            ApiResponses responses = operation.getResponses();
+                            ApiResponse apiResponseNotAcceptable = new ApiResponse()
+                                    .$ref(NOT_ACCEPTABLE);
+                            ApiResponse apiResponseInternalServerError = new ApiResponse()
+                                    .$ref(INTERNAL_SERVER_ERROR);
+                            ApiResponse apiResponseBadRequest = new ApiResponse()
+                                    .$ref(BAD_REQUEST);
 
-                                switch (httpMethod) {
-                                    case GET -> {
-                                        responses.addApiResponse("406", apiResponseNotAcceptable);
-                                        responses.addApiResponse("500", apiResponseInternalServerError);
-                                    }
-                                    case POST, PUT -> {
-                                        responses.addApiResponse("400", apiResponseBadRequest);
-                                        responses.addApiResponse("500", apiResponseInternalServerError);
-                                    }
-                                    default ->
-                                            responses.addApiResponse("500", apiResponseInternalServerError);
+                            switch (httpMethod) {
+                                case GET -> {
+                                    responses.addApiResponse("406", apiResponseNotAcceptable);
+                                    responses.addApiResponse("500", apiResponseInternalServerError);
                                 }
-                            })
-                    );
-        };
+                                case POST, PUT -> {
+                                    responses.addApiResponse("400", apiResponseBadRequest);
+                                    responses.addApiResponse("500", apiResponseInternalServerError);
+                                }
+                                default -> responses.addApiResponse("500", apiResponseInternalServerError);
+                            }
+                        })
+                );
     }
 
     private Map<String, Schema> gerarSchemas() {
