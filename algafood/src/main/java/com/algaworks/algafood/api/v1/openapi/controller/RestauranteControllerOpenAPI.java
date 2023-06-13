@@ -48,7 +48,7 @@ public interface RestauranteControllerOpenAPI {
     @Operation(summary = "Cadastra um restaurante", responses = {
             @ApiResponse(responseCode = "201", description = "Restaurante cadastrado"),
     })
-    RestauranteModel adicionar(@RequestBody(description = "Representação de um novo restaurante", required = true)
+    RestauranteModel adicionar(@RequestBody(description = "Representacao de um novo restaurante", required = true)
                                RestauranteInput restauranteInput);
 
     @Operation(summary = "Atualiza um restaurante por ID", responses = {
