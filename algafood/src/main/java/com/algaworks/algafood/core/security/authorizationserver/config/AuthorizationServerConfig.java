@@ -2,6 +2,8 @@ package com.algaworks.algafood.core.security.authorizationserver.config;
 
 import com.algaworks.algafood.core.security.authorizationserver.config.jwt.JwtKeyStoreProperties;
 import com.algaworks.algafood.core.security.authorizationserver.config.property.AlgafoodSecurityProperties;
+import com.algaworks.algafood.core.security.authorizationserver.query.OAuth2AuthorizationQueryService;
+import com.algaworks.algafood.core.security.authorizationserver.query.jdbc.JdbcOAuth2AuthorizationQueryService;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.repository.UsuarioRepository;
 import com.nimbusds.jose.JOSEException;
@@ -130,6 +132,11 @@ public class AuthorizationServerConfig {
     public OAuth2AuthorizationConsentService consentService(JdbcOperations jdbcOperations,
                                                             RegisteredClientRepository clientRepository) {
         return new JdbcOAuth2AuthorizationConsentService(jdbcOperations, clientRepository);
+    }
+
+    @Bean
+    public OAuth2AuthorizationQueryService auth2AuthorizationQueryService(JdbcOperations jdbcOperations) {
+        return new JdbcOAuth2AuthorizationQueryService(jdbcOperations);
     }
 
 }
