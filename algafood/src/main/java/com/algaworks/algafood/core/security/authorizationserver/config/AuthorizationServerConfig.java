@@ -2,6 +2,8 @@ package com.algaworks.algafood.core.security.authorizationserver.config;
 
 import com.algaworks.algafood.core.security.authorizationserver.config.jwt.JwtKeyStoreProperties;
 import com.algaworks.algafood.core.security.authorizationserver.config.property.AlgafoodSecurityProperties;
+import com.algaworks.algafood.domain.model.Usuario;
+import com.algaworks.algafood.domain.repository.UsuarioRepository;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -14,6 +16,9 @@ import org.springframework.core.annotation.Order;
 import org.springframework.core.io.Resource;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
@@ -23,6 +28,8 @@ import org.springframework.security.oauth2.server.authorization.client.Registere
 import org.springframework.security.oauth2.server.authorization.config.ClientSettings;
 import org.springframework.security.oauth2.server.authorization.config.ProviderSettings;
 import org.springframework.security.oauth2.server.authorization.config.TokenSettings;
+import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
+import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
 import org.springframework.security.web.SecurityFilterChain;
 
 import java.io.IOException;
@@ -31,6 +38,8 @@ import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
+import java.util.HashSet;
+import java.util.Set;
 
 import static com.nimbusds.jose.jwk.RSAKey.load;
 import static java.security.KeyStore.getInstance;
@@ -143,6 +152,26 @@ public class AuthorizationServerConfig {
 
         JWKSet jwkSet = new JWKSet(rsaKey);
         return new ImmutableJWKSet<>(jwkSet);
+    }
+
+    @Bean
+    public OAuth2TokenCustomizer<JwtEncodingContext> jwtCustomizer(UsuarioRepository usuarioRepository) {
+        return context -> {
+            Authentication authentication = context.getPrincipal();
+            if (authentication.getPrincipal() instanceof User) {
+                User user = (User) authentication.getPrincipal();
+
+                Usuario usuario = usuarioRepository.findByEmail(user.getUsername()).orElseThrow();
+
+                Set<String> authorities = new HashSet<>();
+                for (GrantedAuthority authority : user.getAuthorities()) {
+                    authorities.add(authority.getAuthority());
+                }
+
+                context.getClaims().claim("usuario_id", usuario.getId().toString());
+                context.getClaims().claim("authorities", authorities);
+            }
+        };
     }
 
 }
