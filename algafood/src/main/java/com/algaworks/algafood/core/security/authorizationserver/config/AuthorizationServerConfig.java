@@ -34,13 +34,13 @@ import java.security.cert.CertificateException;
 
 import static com.nimbusds.jose.jwk.RSAKey.load;
 import static java.security.KeyStore.getInstance;
+import static java.time.Duration.ofDays;
 import static java.time.Duration.ofMinutes;
 import static java.util.Arrays.asList;
 import static org.springframework.core.Ordered.HIGHEST_PRECEDENCE;
 import static org.springframework.security.config.Customizer.withDefaults;
 import static org.springframework.security.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration.applyDefaultSecurity;
-import static org.springframework.security.oauth2.core.AuthorizationGrantType.AUTHORIZATION_CODE;
-import static org.springframework.security.oauth2.core.AuthorizationGrantType.CLIENT_CREDENTIALS;
+import static org.springframework.security.oauth2.core.AuthorizationGrantType.*;
 import static org.springframework.security.oauth2.core.ClientAuthenticationMethod.CLIENT_SECRET_BASIC;
 import static org.springframework.security.oauth2.core.OAuth2TokenFormat.SELF_CONTAINED;
 import static org.springframework.security.oauth2.server.authorization.client.RegisteredClient.withId;
@@ -86,11 +86,14 @@ public class AuthorizationServerConfig {
                 .clientSecret(passwordEncoder.encode("web123"))
                 .clientAuthenticationMethod(CLIENT_SECRET_BASIC)
                 .authorizationGrantType(AUTHORIZATION_CODE)
+                .authorizationGrantType(REFRESH_TOKEN)
                 .scope("READ")
                 .scope("WRITE")
                 .tokenSettings(TokenSettings.builder()
                         .accessTokenFormat(SELF_CONTAINED)
                         .accessTokenTimeToLive(ofMinutes(15))
+                        .reuseRefreshTokens(false)
+                        .refreshTokenTimeToLive(ofDays(1))
                         .build())
                 .redirectUri("http://127.0.0.1:8080/authorized")
                 .redirectUri("http://127.0.0.1:8080/swagger-ui/oauth2-redirect.html")
