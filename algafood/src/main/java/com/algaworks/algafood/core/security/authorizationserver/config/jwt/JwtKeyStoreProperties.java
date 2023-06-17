@@ -1,4 +1,4 @@
-package com.algaworks.algafood.core.security.authorizationserver.config.token.jwt;
+package com.algaworks.algafood.core.security.authorizationserver.config.jwt;
 
 import lombok.Getter;
 import lombok.Setter;
