@@ -20,6 +20,7 @@ import org.springframework.security.oauth2.server.authorization.OAuth2Authorizat
 import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
+import org.springframework.security.oauth2.server.authorization.config.ClientSettings;
 import org.springframework.security.oauth2.server.authorization.config.ProviderSettings;
 import org.springframework.security.oauth2.server.authorization.config.TokenSettings;
 import org.springframework.security.web.SecurityFilterChain;
@@ -34,9 +35,11 @@ import java.security.cert.CertificateException;
 import static com.nimbusds.jose.jwk.RSAKey.load;
 import static java.security.KeyStore.getInstance;
 import static java.time.Duration.ofMinutes;
-import static java.util.Collections.singletonList;
+import static java.util.Arrays.asList;
 import static org.springframework.core.Ordered.HIGHEST_PRECEDENCE;
+import static org.springframework.security.config.Customizer.withDefaults;
 import static org.springframework.security.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration.applyDefaultSecurity;
+import static org.springframework.security.oauth2.core.AuthorizationGrantType.AUTHORIZATION_CODE;
 import static org.springframework.security.oauth2.core.AuthorizationGrantType.CLIENT_CREDENTIALS;
 import static org.springframework.security.oauth2.core.ClientAuthenticationMethod.CLIENT_SECRET_BASIC;
 import static org.springframework.security.oauth2.core.OAuth2TokenFormat.SELF_CONTAINED;
@@ -48,9 +51,11 @@ public class AuthorizationServerConfig {
     // aplicando os filtros de securanca
     @Bean
     @Order(HIGHEST_PRECEDENCE)
-    public SecurityFilterChain authFilterChain(HttpSecurity httpSecurity) throws Exception {
-        applyDefaultSecurity(httpSecurity);
-        return httpSecurity.build();
+    public SecurityFilterChain authFilterChain(HttpSecurity http) throws Exception {
+        applyDefaultSecurity(http);
+        return http
+                .formLogin(withDefaults())
+                .build();
     }
 
     // responsavel por escrever o authorization server que vai assinar os tokens
@@ -76,7 +81,42 @@ public class AuthorizationServerConfig {
                         .build())
                 .build();
 
-        return new InMemoryRegisteredClientRepository(singletonList(algafoodBackend));
+        RegisteredClient algafoodWeb = withId("2")
+                .clientId("algafood-web")
+                .clientSecret(passwordEncoder.encode("web123"))
+                .clientAuthenticationMethod(CLIENT_SECRET_BASIC)
+                .authorizationGrantType(AUTHORIZATION_CODE)
+                .scope("READ")
+                .scope("WRITE")
+                .tokenSettings(TokenSettings.builder()
+                        .accessTokenFormat(SELF_CONTAINED)
+                        .accessTokenTimeToLive(ofMinutes(15))
+                        .build())
+                .redirectUri("http://127.0.0.1:8080/authorized")
+                .redirectUri("http://127.0.0.1:8080/swagger-ui/oauth2-redirect.html")
+                .clientSettings(ClientSettings.builder()
+                        .requireAuthorizationConsent(true)
+                        .build())
+                .build();
+
+        RegisteredClient foodAnalytics = withId("3")
+                .clientId("foodanalytics")
+                .clientSecret(passwordEncoder.encode("web123"))
+                .clientAuthenticationMethod(CLIENT_SECRET_BASIC)
+                .authorizationGrantType(AUTHORIZATION_CODE)
+                .scope("READ")
+                .scope("WRITE")
+                .tokenSettings(TokenSettings.builder()
+                        .accessTokenFormat(SELF_CONTAINED)
+                        .accessTokenTimeToLive(ofMinutes(30))
+                        .build())
+                .redirectUri("http://127.0.0.1:8082")
+                .clientSettings(ClientSettings.builder()
+                        .requireAuthorizationConsent(false)
+                        .build())
+                .build();
+
+        return new InMemoryRegisteredClientRepository(asList(algafoodBackend, algafoodWeb, foodAnalytics));
     }
 
     @Bean
