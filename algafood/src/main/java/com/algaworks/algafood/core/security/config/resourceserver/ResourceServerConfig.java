@@ -15,7 +15,6 @@ import java.util.Collection;
 import java.util.List;
 
 import static java.util.Collections.emptyList;
-import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -32,7 +31,9 @@ public class ResourceServerConfig {
                 .cors().and()
                 .oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtAuthenticationConverter());
 
-        return http.formLogin(withDefaults()).build();
+        return http
+                .formLogin(customizer -> customizer.loginPage("/login"))
+                .build();
     }
 
     private JwtAuthenticationConverter jwtAuthenticationConverter() {

@@ -40,7 +40,6 @@ import java.util.Set;
 import static com.nimbusds.jose.jwk.RSAKey.load;
 import static java.security.KeyStore.getInstance;
 import static org.springframework.core.Ordered.HIGHEST_PRECEDENCE;
-import static org.springframework.security.config.Customizer.withDefaults;
 import static org.springframework.security.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration.applyDefaultSecurity;
 
 @Configuration
@@ -52,7 +51,7 @@ public class AuthorizationServerConfig {
     public SecurityFilterChain authFilterChain(HttpSecurity http) throws Exception {
         applyDefaultSecurity(http);
         return http
-                .formLogin(withDefaults())
+                .formLogin(customizer -> customizer.loginPage("/login"))
                 .build();
     }
 
