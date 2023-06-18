@@ -15,10 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
@@ -40,6 +40,7 @@ import static java.lang.String.format;
 import static java.util.stream.Collectors.joining;
 import static org.apache.commons.lang3.exception.ExceptionUtils.getRootCause;
 import static org.springframework.context.i18n.LocaleContextHolder.getLocale;
+import static org.springframework.http.HttpStatus.valueOf;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.ResponseEntity.status;
 
@@ -53,15 +54,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     private MessageSource messageSource;
 
     @Override
-    protected ResponseEntity<Object> handleBindException(BindException ex, HttpHeaders headers, HttpStatus status,
-                                                         WebRequest request) {
-        log.error(ex.getMessage(), ex);
-        return handleValidationInternal(ex, ex.getBindingResult(), headers, status, request);
-    }
-
-    @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
-                                                                  HttpHeaders headers, HttpStatus status,
+                                                                  HttpHeaders headers, HttpStatusCode status,
                                                                   WebRequest request) {
         // retornando a causa raiz da exception
         Throwable rootCause = getRootCause(ex);
@@ -88,7 +82,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex, HttpHeaders headers,
-                                                        HttpStatus status, WebRequest request) {
+                                                        HttpStatusCode status, WebRequest request) {
 
         if (ex instanceof MethodArgumentTypeMismatchException) {
             String path = ((MethodArgumentTypeMismatchException) ex).getName();
@@ -110,7 +104,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers,
-                                                                   HttpStatus status, WebRequest request) {
+                                                                   HttpStatusCode status, WebRequest request) {
         String path = ex.getRequestURL();
 
         String detail = format("O recurso %s, que voce tentou acessar, eh inexistente.",
@@ -127,7 +121,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     // metodo que captura a exception que eh lancada quando uma regra de validacao eh violada.
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-                                                                  HttpHeaders headers, HttpStatus status,
+                                                                  HttpHeaders headers, HttpStatusCode status,
                                                                   WebRequest request) {
         log.error(ex.getMessage(), ex);
         return handleValidationInternal(ex, ex.getBindingResult(), headers, status, request);
@@ -135,7 +129,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleHttpMediaTypeNotAcceptable(HttpMediaTypeNotAcceptableException ex,
-                                                                      HttpHeaders headers, HttpStatus status,
+                                                                      HttpHeaders headers, HttpStatusCode status,
                                                                       WebRequest request) {
         log.error(ex.getMessage(), ex);
         return status(status).headers(headers).build();
@@ -143,11 +137,11 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers,
-                                                             HttpStatus status, WebRequest request) {
+                                                             HttpStatusCode status, WebRequest request) {
 
         if (body == null) {
             body = Problem.builder()
-                    .title(status.getReasonPhrase()) // ReasonPhrase -> descreve o status que esta sendo retornado
+                    .title(valueOf(status.value()).getReasonPhrase()) // ReasonPhrase -> descreve o status que esta sendo retornado
                     .status(status.value())
                     .timestamp(OffsetDateTime.now())
                     .userMessage(MSG_ERRO_GENERICA_USUARIO_FINAL)
@@ -242,7 +236,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     private ResponseEntity<Object> handlePropertyBindingException(PropertyBindingException ex, HttpHeaders headers,
-                                                                  HttpStatus status, WebRequest request) {
+                                                                  HttpStatusCode status, WebRequest request) {
         // obtendo o campo informado erronemente
         String path = ex.getPath().stream()
                 .map(JsonMappingException.Reference::getFieldName)
@@ -260,7 +254,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     private ResponseEntity<Object> handleInvalidFormatException(InvalidFormatException ex, HttpHeaders headers,
-                                                                HttpStatus status, WebRequest request) {
+                                                                HttpStatusCode status, WebRequest request) {
 
         String path = ex.getPath().stream()
                 // mapeando o campo nome da cada referencia
@@ -280,7 +274,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     // criando um builder
-    private Problem.ProblemBuilder createProblemBuilder(HttpStatus status, ProblemType problemType,
+    private Problem.ProblemBuilder createProblemBuilder(HttpStatusCode status, ProblemType problemType,
                                                         String detail, String userMessage) {
         return Problem.builder()
                 .status(status.value())
@@ -292,7 +286,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     private ResponseEntity<Object> handleValidationInternal(Exception ex, BindingResult bindingResult,
-                                                            HttpHeaders headers, HttpStatus status,
+                                                            HttpHeaders headers, HttpStatusCode status,
                                                             WebRequest request) {
         String detail = "Um ou mais campos estao invalidos. Faca o preenchimento correto e " +
                 "tente novamente.";
