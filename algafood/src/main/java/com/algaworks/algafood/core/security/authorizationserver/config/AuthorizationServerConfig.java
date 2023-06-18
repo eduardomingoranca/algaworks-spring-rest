@@ -22,6 +22,7 @@ import org.springframework.security.config.annotation.web.configurers.oauth2.ser
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.server.authorization.*;
 import org.springframework.security.oauth2.server.authorization.client.JdbcRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
@@ -81,7 +82,8 @@ public class AuthorizationServerConfig {
 
     // responsavel por guardar os clients do authorization server
     @Bean
-    public RegisteredClientRepository registeredClientRepository(JdbcOperations jdbcOperations) {
+    public RegisteredClientRepository registeredClientRepository(PasswordEncoder passwordEncoder,
+                                                                 JdbcOperations jdbcOperations) {
         return new JdbcRegisteredClientRepository(jdbcOperations);
     }
 
@@ -135,8 +137,9 @@ public class AuthorizationServerConfig {
     }
 
     @Bean
-    public OAuth2AuthorizationQueryService auth2AuthorizationQueryService(JdbcOperations jdbcOperations) {
-        return new JdbcOAuth2AuthorizationQueryService(jdbcOperations);
+    public OAuth2AuthorizationQueryService auth2AuthorizationQueryService(JdbcOperations jdbcOperations,
+                                                                          RegisteredClientRepository repository) {
+        return new JdbcOAuth2AuthorizationQueryService(jdbcOperations, repository);
     }
 
 }
