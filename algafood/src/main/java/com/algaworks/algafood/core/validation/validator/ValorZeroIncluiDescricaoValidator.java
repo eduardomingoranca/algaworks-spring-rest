@@ -1,10 +1,10 @@
 package com.algaworks.algafood.core.validation.validator;
 
 import com.algaworks.algafood.core.validation.annotation.ValorZeroIncluiDescricao;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
+import jakarta.validation.ValidationException;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-import javax.validation.ValidationException;
 import java.math.BigDecimal;
 
 import static java.math.BigDecimal.ZERO;

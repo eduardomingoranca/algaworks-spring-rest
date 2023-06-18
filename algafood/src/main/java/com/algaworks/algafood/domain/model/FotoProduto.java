@@ -1,11 +1,11 @@
 package com.algaworks.algafood.domain.model;
 
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.*;
+import static jakarta.persistence.FetchType.LAZY;
 
-import static javax.persistence.FetchType.LAZY;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)

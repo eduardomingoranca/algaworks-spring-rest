@@ -1,16 +1,16 @@
 package com.algaworks.algafood.domain.model;
 
 import com.algaworks.algafood.core.validation.groups.Groups;
+import jakarta.persistence.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.groups.ConvertGroup;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.*;
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.groups.ConvertGroup;
+import static jakarta.persistence.GenerationType.IDENTITY;
 
-import static javax.persistence.GenerationType.IDENTITY;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)

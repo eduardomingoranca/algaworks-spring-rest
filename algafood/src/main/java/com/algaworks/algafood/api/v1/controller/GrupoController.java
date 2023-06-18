@@ -8,11 +8,11 @@ import com.algaworks.algafood.api.v1.model.input.GrupoInput;
 import com.algaworks.algafood.core.security.annotation.CheckSecurity;
 import com.algaworks.algafood.domain.model.Grupo;
 import com.algaworks.algafood.domain.service.CadastroGrupoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;

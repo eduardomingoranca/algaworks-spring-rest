@@ -1,13 +1,13 @@
 package com.algaworks.algafood.domain.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import static jakarta.persistence.FetchType.LAZY;
 
-import static javax.persistence.FetchType.LAZY;
 
 @Data
 @Embeddable

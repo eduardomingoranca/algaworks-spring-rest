@@ -1,11 +1,14 @@
 package com.algaworks.algafood.domain.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.*;
+import static jakarta.persistence.GenerationType.IDENTITY;
 
-import static javax.persistence.GenerationType.IDENTITY;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)

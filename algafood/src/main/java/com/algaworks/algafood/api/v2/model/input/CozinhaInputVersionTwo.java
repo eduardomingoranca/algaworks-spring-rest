@@ -1,9 +1,9 @@
 package com.algaworks.algafood.api.v2.model.input;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.NotBlank;
 
 @Setter
 @Getter

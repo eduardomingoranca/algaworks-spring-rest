@@ -1,9 +1,9 @@
 package com.algaworks.algafood.api.utils;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.experimental.UtilityClass;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
 
 import static java.util.Objects.requireNonNull;

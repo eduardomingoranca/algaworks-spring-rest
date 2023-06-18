@@ -1,14 +1,15 @@
 package com.algaworks.algafood.domain.model;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
-import static javax.persistence.GenerationType.IDENTITY;
+import static jakarta.persistence.GenerationType.IDENTITY;
+
 
 //@JsonRootName("cozinha")
 @Data

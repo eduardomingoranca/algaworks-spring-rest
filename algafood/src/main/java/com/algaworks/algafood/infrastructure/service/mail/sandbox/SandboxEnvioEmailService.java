@@ -2,11 +2,11 @@ package com.algaworks.algafood.infrastructure.service.mail.sandbox;
 
 import com.algaworks.algafood.core.mail.property.EmailProperties;
 import com.algaworks.algafood.infrastructure.service.mail.smtp.SMTPEnvioEmailService;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 
 public class SandboxEnvioEmailService extends SMTPEnvioEmailService {
     @Autowired

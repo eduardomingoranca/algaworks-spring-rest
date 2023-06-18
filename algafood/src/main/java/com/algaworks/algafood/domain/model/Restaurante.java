@@ -1,12 +1,12 @@
 package com.algaworks.algafood.domain.model;
 
 import com.algaworks.algafood.core.validation.annotation.ValorZeroIncluiDescricao;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -14,8 +14,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static jakarta.persistence.GenerationType.IDENTITY;
 import static java.lang.Boolean.TRUE;
-import static javax.persistence.GenerationType.IDENTITY;
 
 @ValorZeroIncluiDescricao(valorField = "taxaFrete", descricaoField = "nome",
         descricaoObrigatoria = "Frete Gratis")

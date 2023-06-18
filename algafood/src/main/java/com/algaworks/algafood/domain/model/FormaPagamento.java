@@ -1,17 +1,16 @@
 package com.algaworks.algafood.domain.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-
 import java.time.OffsetDateTime;
 
-import static javax.persistence.GenerationType.IDENTITY;
+import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)

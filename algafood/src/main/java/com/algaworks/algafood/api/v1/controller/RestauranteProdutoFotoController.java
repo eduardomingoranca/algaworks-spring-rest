@@ -11,6 +11,7 @@ import com.algaworks.algafood.domain.model.Produto;
 import com.algaworks.algafood.domain.service.CadastroProdutoService;
 import com.algaworks.algafood.domain.service.CatalogoFotoProdutoService;
 import com.algaworks.algafood.domain.service.storage.FotoStorageService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
@@ -19,7 +20,6 @@ import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 

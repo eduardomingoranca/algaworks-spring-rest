@@ -1,12 +1,11 @@
 package com.algaworks.algafood.api.v1.model.input;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PositiveOrZero;
 
 @Setter
 @Getter

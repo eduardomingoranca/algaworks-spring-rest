@@ -13,6 +13,7 @@ import com.algaworks.algafood.domain.exception.*;
 import com.algaworks.algafood.domain.filter.PedidoFilter;
 import com.algaworks.algafood.domain.model.Pedido;
 import com.algaworks.algafood.domain.service.EmissaoPedidoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +22,7 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+
 
 import static com.algaworks.algafood.infrastructure.repository.spec.PedidoSpecs.usandoFiltro;
 import static org.springframework.http.HttpStatus.CREATED;

@@ -1,9 +1,9 @@
 package com.algaworks.algafood.core.validation.validator;
 
 import com.algaworks.algafood.core.validation.annotation.Multiplo;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 import java.math.BigDecimal;
 
 import static java.math.BigDecimal.ZERO;

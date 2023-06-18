@@ -4,11 +4,11 @@ import com.algaworks.algafood.domain.filter.VendaDiariaFilter;
 import com.algaworks.algafood.domain.model.Pedido;
 import com.algaworks.algafood.domain.model.dto.VendaDiaria;
 import com.algaworks.algafood.domain.service.query.VendaQueryService;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.*;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -62,7 +62,7 @@ public class VendaQueryServiceImpl implements VendaQueryService {
         List<Predicate> predicates = new ArrayList<>();
 
         if (filtro.getRestauranteId() != null)
-            predicates.add(builder.equal(root.get("restaurante"), filtro.getRestauranteId()));
+            predicates.add(builder.equal(root.get("restaurante").get("id"), filtro.getRestauranteId()));
 
         // data de criacao do pedido deve ser maior que a data de criacao de inicio
         if (filtro.getDataCriacaoInicio() != null)

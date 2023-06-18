@@ -2,9 +2,9 @@ package com.algaworks.algafood.infrastructure.repository.spec;
 
 import com.algaworks.algafood.domain.model.Pedido;
 import com.algaworks.algafood.domain.filter.PedidoFilter;
+import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,10 +24,10 @@ public class PedidoSpecs {
 
             // adicionar predicates/filtros no arraylist
             if (filtro.getClienteId() != null)
-                predicates.add(builder.equal(root.get("cliente"), filtro.getClienteId()));
+                predicates.add(builder.equal(root.get("cliente").get("id"), filtro.getClienteId()));
 
             if (filtro.getRestauranteId() != null)
-                predicates.add(builder.equal(root.get("restaurante"), filtro.getRestauranteId()));
+                predicates.add(builder.equal(root.get("restaurante").get("id"), filtro.getRestauranteId()));
 
             // data de criacao do pedido deve ser maior que a data de criacao de inicio
             if (filtro.getDataCriacaoInicio() != null)
@@ -40,7 +40,8 @@ public class PedidoSpecs {
                         filtro.getDataCriacaoFim()));
 
             // retornando a lista de predicates/filtros
-            return builder.and(predicates.toArray(new Predicate[0]));
+            Predicate[] pred = new Predicate[0];
+            return builder.and(predicates.toArray(pred));
         };
     }
 }

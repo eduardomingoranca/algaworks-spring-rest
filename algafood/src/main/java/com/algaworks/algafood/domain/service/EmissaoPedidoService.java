@@ -5,7 +5,6 @@ import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.exception.PedidoNaoEncontradoException;
 import com.algaworks.algafood.domain.model.*;
 import com.algaworks.algafood.domain.repository.PedidoRepository;
-import com.google.common.collect.ImmutableMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
 import static com.algaworks.algafood.core.data.translator.PageableTranslator.translate;
 import static java.lang.String.format;
@@ -95,12 +95,16 @@ public class EmissaoPedidoService {
     }
 
     public Pageable traduzirPageable(Pageable pageable) {
-        // tambem poderia usar Map.of()
-        ImmutableMap<String, String> mapeamento = ImmutableMap.of(
+        Map<String, String> mapeamento = Map.of(
                 "codigo", "codigo",
+                "subtotal", "subtotal",
+                "taxaFrete", "taxaFrete",
+                "valorTotal", "valorTotal",
+                "dataCriacao", "dataCriacao",
                 "restaurante.nome", "restaurante.nome",
-                "nomeCliente", "cliente.nome",
-                "valorTotal", "valorTotal");
+                "restaurante.id", "restaurante.id",
+                "cliente.id", "cliente.id",
+                "cliente.nome", "cliente.nome");
 
         return translate(pageable, mapeamento);
     }

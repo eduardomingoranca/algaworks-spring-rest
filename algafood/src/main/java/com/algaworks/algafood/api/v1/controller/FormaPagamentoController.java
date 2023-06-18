@@ -8,13 +8,13 @@ import com.algaworks.algafood.api.v1.openapi.controller.FormaPagamentoController
 import com.algaworks.algafood.core.security.annotation.CheckSecurity;
 import com.algaworks.algafood.domain.model.FormaPagamento;
 import com.algaworks.algafood.domain.service.CadastroFormaPagamentoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.ServletWebRequest;
 
-import javax.validation.Valid;
 import java.time.OffsetDateTime;
 import java.util.List;
 

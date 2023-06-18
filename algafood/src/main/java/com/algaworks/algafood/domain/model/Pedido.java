@@ -1,23 +1,23 @@
 package com.algaworks.algafood.domain.model;
 
 import com.algaworks.algafood.domain.enumeration.StatusPedido;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.domain.AbstractAggregateRoot;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.algaworks.algafood.domain.enumeration.StatusPedido.CRIADO;
+import static jakarta.persistence.CascadeType.ALL;
+import static jakarta.persistence.EnumType.STRING;
+import static jakarta.persistence.FetchType.LAZY;
+import static jakarta.persistence.GenerationType.IDENTITY;
 import static java.util.UUID.randomUUID;
-import static javax.persistence.CascadeType.ALL;
-import static javax.persistence.EnumType.STRING;
-import static javax.persistence.FetchType.LAZY;
-import static javax.persistence.GenerationType.IDENTITY;
 
 @Data
 // callSuper = false -> caso nao queira chamar o equals and hash code da super class

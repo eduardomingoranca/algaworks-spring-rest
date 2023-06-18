@@ -1,17 +1,17 @@
 package com.algaworks.algafood.domain.model;
 
 import com.algaworks.algafood.core.validation.groups.Groups;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import static jakarta.persistence.GenerationType.IDENTITY;
 
-import static javax.persistence.GenerationType.IDENTITY;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)

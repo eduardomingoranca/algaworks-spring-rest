@@ -4,12 +4,12 @@ import com.algaworks.algafood.core.mail.property.EmailProperties;
 import com.algaworks.algafood.domain.service.mail.EnvioEmailService;
 import com.algaworks.algafood.infrastructure.service.mail.exception.EmailException;
 import com.algaworks.algafood.infrastructure.service.mail.template.ProcessadorEmailTemplate;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 
 public class SMTPEnvioEmailService implements EnvioEmailService {
     @Autowired

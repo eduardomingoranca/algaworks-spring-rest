@@ -7,6 +7,7 @@ import com.algaworks.algafood.api.v2.model.input.CozinhaInputVersionTwo;
 import com.algaworks.algafood.api.v2.openapi.controller.CozinhaControllerVersionTwoOpenAPI;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.service.CadastroCozinhaService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,7 +16,6 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;

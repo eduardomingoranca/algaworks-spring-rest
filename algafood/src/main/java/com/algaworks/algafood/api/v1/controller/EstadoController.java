@@ -8,11 +8,11 @@ import com.algaworks.algafood.api.v1.openapi.controller.EstadoControllerOpenAPI;
 import com.algaworks.algafood.core.security.annotation.CheckSecurity;
 import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.service.CadastroEstadoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
